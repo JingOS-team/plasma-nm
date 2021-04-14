@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2018 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -26,8 +27,14 @@ EditorProxyModel::EditorProxyModel(QObject *parent)
 {
     setDynamicSortFilter(true);
     setSortCaseSensitivity(Qt::CaseInsensitive);
-    setSortLocaleAware(true);
-    sort(0, Qt::DescendingOrder);
+    NetworkManager::ActiveConnection::Ptr activeConnection = NetworkManager::primaryConnection();
+        if (activeConnection && activeConnection->isValid()) {
+            NetworkManager::Connection::Ptr selectedConnection = activeConnection->connection();
+            m_connectedName = selectedConnection->name();
+            m_connectedPath =  selectedConnection->path();
+            Q_EMIT connectedNameChanged(m_connectedName);
+            Q_EMIT connectedPathChanged(m_connectedPath);          
+    }
 }
 
 EditorProxyModel::~EditorProxyModel()
@@ -44,6 +51,19 @@ bool EditorProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
 
     if (isSlave || isDuplicate) {
         return false;
+    }
+    
+    if(sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activating){
+        m_connectingPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
+        Q_EMIT currentConnectingdPathChanged(m_connectingPath);
+    }
+    
+    if(sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated){
+        m_connectedName = sourceModel()->data(index, NetworkModel::NameRole).toString();
+        m_connectedPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
+        
+        Q_EMIT connectedNameChanged(m_connectedName);
+        Q_EMIT connectedPathChanged(m_connectedPath);
     }
 
     const NetworkManager::ConnectionSettings::ConnectionType type = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();

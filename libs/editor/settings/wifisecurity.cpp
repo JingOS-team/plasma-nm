@@ -205,7 +205,7 @@ void WifiSecurity::loadSecrets(const NetworkManager::Setting::Ptr &setting)
 {
     const NetworkManager::WirelessSecuritySetting::KeyMgmt keyMgmt = m_wifiSecurity->keyMgmt();
     const NetworkManager::WirelessSecuritySetting::AuthAlg authAlg = m_wifiSecurity->authAlg();
-
+    
     if ((keyMgmt == NetworkManager::WirelessSecuritySetting::Ieee8021x && authAlg != NetworkManager::WirelessSecuritySetting::Leap) ||
         keyMgmt == NetworkManager::WirelessSecuritySetting::WpaEap) {
         NetworkManager::Security8021xSetting::Ptr security8021xSetting = setting.staticCast<NetworkManager::Security8021xSetting>();
@@ -217,6 +217,7 @@ void WifiSecurity::loadSecrets(const NetworkManager::Setting::Ptr &setting)
             }
         }
     } else {
+        
         NetworkManager::WirelessSecuritySetting::Ptr wifiSecurity = setting.staticCast<NetworkManager::WirelessSecuritySetting>();
         if (wifiSecurity) {
             if (keyMgmt == NetworkManager::WirelessSecuritySetting::Wep) {
@@ -297,7 +298,7 @@ QVariantMap WifiSecurity::setting() const
     } else if (securityIndex == WpaPsk) { // WPA
         wifiSecurity.setKeyMgmt(NetworkManager::WirelessSecuritySetting::WpaPsk);
         wifiSecurity.setPsk(m_ui->psk->text());
-
+        
         if (m_ui->psk->passwordOption() == PasswordField::StoreForAllUsers) {
             wifiSecurity.setPskFlags(NetworkManager::Setting::None);
         } else if (m_ui->psk->passwordOption() == PasswordField::StoreForUser) {

@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2014 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -43,13 +44,19 @@ bool AppletProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
     if (isSlave && filterRegExp().isEmpty()) {
         return false;
     }
-
+   
     const NetworkManager::ConnectionSettings::ConnectionType type = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();
     if (!UiUtils::isConnectionTypeSupported(type)) {
         return false;
     }
 
     NetworkModelItem::ItemType itemType = (NetworkModelItem::ItemType)sourceModel()->data(index, NetworkModel::ItemTypeRole).toUInt();
+     
+    int connectionState = sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt();
+    if(itemType == NetworkModelItem::AvailableConnection & (connectionState == NetworkManager::ActiveConnection::Activated
+        | connectionState == NetworkManager::ActiveConnection::Activating)){
+       return false;
+    }
 
     if (itemType != NetworkModelItem::AvailableConnection &&
         itemType != NetworkModelItem::AvailableAccessPoint) {
@@ -59,14 +66,15 @@ bool AppletProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
     if (filterRegExp().isEmpty()) {
         return true;
     }
-
+    
     return sourceModel()->data(index, NetworkModel::ItemUniqueNameRole).toString().contains(filterRegExp());
 }
 
 bool AppletProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-    const bool leftAvailable = (NetworkModelItem::ItemType)sourceModel()->data(left, NetworkModel::ItemTypeRole).toUInt() != NetworkModelItem::UnavailableConnection;
-    const bool leftConnected = sourceModel()->data(left, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated;
+    const bool leftUnAvailable = (NetworkModelItem::ItemType)sourceModel()->data(left, NetworkModel::ItemTypeRole).toUInt() == NetworkModelItem::UnavailableConnection;
+    const bool leftAvailable = (NetworkModelItem::ItemType)sourceModel()->data(left, NetworkModel::ItemTypeRole).toUInt() == NetworkModelItem::AvailableConnection;
+    // const bool leftConnected = sourceModel()->data(left, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated;
     const int leftConnectionState = sourceModel()->data(left, NetworkModel::ConnectionStateRole).toUInt();
     const QString leftName = sourceModel()->data(left, NetworkModel::NameRole).toString();
     const UiUtils::SortedConnectionType leftType = UiUtils::connectionTypeToSortedType((NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(left, NetworkModel::TypeRole).toUInt());
@@ -74,7 +82,8 @@ bool AppletProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
     const int leftSignal = sourceModel()->data(left, NetworkModel::SignalRole).toInt();
     const QDateTime leftDate = sourceModel()->data(left, NetworkModel::TimeStampRole).toDateTime();
 
-    const bool rightAvailable = (NetworkModelItem::ItemType)sourceModel()->data(right, NetworkModel::ItemTypeRole).toUInt() != NetworkModelItem::UnavailableConnection;
+    const bool rightUnAvailable = (NetworkModelItem::ItemType)sourceModel()->data(right, NetworkModel::ItemTypeRole).toUInt() == NetworkModelItem::UnavailableConnection;
+    const bool rightAvailable = (NetworkModelItem::ItemType)sourceModel()->data(right, NetworkModel::ItemTypeRole).toUInt() == NetworkModelItem::AvailableConnection;
     const bool rightConnected = sourceModel()->data(right, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated;
     const int rightConnectionState = sourceModel()->data(right, NetworkModel::ConnectionStateRole).toUInt();
     const QString rightName = sourceModel()->data(right, NetworkModel::NameRole).toString();
@@ -83,18 +92,19 @@ bool AppletProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
     const int rightSignal = sourceModel()->data(right, NetworkModel::SignalRole).toInt();
     const QDateTime rightDate = sourceModel()->data(right, NetworkModel::TimeStampRole).toDateTime();
 
+    
     if (leftAvailable < rightAvailable) {
         return true;
     } else if (leftAvailable > rightAvailable) {
         return false;
     }
 
-    if (leftConnected < rightConnected) {
+    if (leftSignal < rightSignal) {
         return true;
-    } else if (leftConnected > rightConnected) {
+    } else if (leftSignal > rightSignal) {
         return false;
     }
-
+    
     if (leftConnectionState > rightConnectionState) {
         return true;
     } else if (leftConnectionState < rightConnectionState) {
@@ -107,22 +117,10 @@ bool AppletProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
         return false;
     }
 
-    if (leftType < rightType) {
-        return false;
-    } else if (leftType > rightType) {
-        return true;
-    }
-
     if (leftDate > rightDate) {
         return false;
     } else if (leftDate < rightDate) {
         return true;
-    }
-
-    if (leftSignal < rightSignal) {
-        return true;
-    } else if (leftSignal > rightSignal) {
-        return false;
     }
 
     if (QString::localeAwareCompare(leftName, rightName) > 0) {

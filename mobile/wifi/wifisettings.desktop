@@ -73,11 +73,11 @@ Comment[zh_CN]=无线网络设置
 Comment[zh_TW]=無線網路設定
 
 Icon=network-wireless-symbolic
-Exec=plasma-settings -m kcm_mobile_wifi
+Exec=plasma-settings -m kcm_wifi
 
 Type=Service
 X-KDE-ServiceTypes=KCModule
-X-KDE-Library=kcm_mobile_wifi
+X-KDE-Library=kcm_wifi
 X-KDE-ParentApp=kcontrol
 X-KDE-FormFactors=handset,tablet,mediacenter
 

@@ -1,10 +1,20 @@
-project (kcm_mobile_wifi)
+project (kcm_wifi)
 
-set (wifisettings_SRCS wifisettings.cpp)
+set (wifisettings_SRCS
+     ../../libs/handler.cpp 
+     ../../libs/debug.cpp
+     wifisettings.cpp)
 
-add_library(kcm_mobile_wifi MODULE ${wifisettings_SRCS})
+qt5_add_resources(RESOURCES resources.qrc)
+add_library(kcm_wifi MODULE ${wifisettings_SRCS} ${RESOURCES})
 
-target_link_libraries(kcm_mobile_wifi
+target_link_libraries(kcm_wifi
+PUBLIC
+    KF5::NetworkManagerQt
+    plasmanm_editor
+    ${NETWORKMANAGER_LIBRARIES}
+    
+PRIVATE
     Qt5::DBus
     Qt5::Gui
     Qt5::Quick
@@ -13,10 +23,17 @@ target_link_libraries(kcm_mobile_wifi
     KF5::NetworkManagerQt
     KF5::Plasma
     KF5::QuickAddons
+    KF5::Notifications
+    KF5::WindowSystem
+    KF5::Service
+    KF5::Wallet
 )
 
-kcoreaddons_desktop_to_json(kcm_mobile_wifi "wifisettings.desktop")
+kcoreaddons_desktop_to_json(kcm_wifi "wifisettings.desktop")
 
-install(FILES wifisettings.desktop DESTINATION ${SERVICES_INSTALL_DIR})
-install(TARGETS kcm_mobile_wifi DESTINATION ${PLUGIN_INSTALL_DIR}/kcms)
-kpackage_install_package(package kcm_mobile_wifi kcms)
+install(FILES wifisettings.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
+install(TARGETS kcm_wifi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kcms)
+kpackage_install_package(package kcm_wifi kcms)
+
+
+

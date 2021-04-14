@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2018 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -37,7 +38,12 @@
 class Q_DECL_EXPORT NetworkModel : public QAbstractListModel
 {
 Q_OBJECT
+
+Q_PROPERTY(bool isAllowUpdate READ isAllowUpdate WRITE setAllowUpdate NOTIFY updateItemChanged);
+
 public:
+    bool isAllowUpdate() const { return m_isAllowUpdate; };
+    void setAllowUpdate(const bool state);
     explicit NetworkModel(QObject *parent = nullptr);
     ~NetworkModel() override;
 
@@ -69,13 +75,31 @@ public:
         VpnState,
         VpnType,
         RxBytesRole,
-        TxBytesRole
+        TxBytesRole,
+        
+        IpAddressRole,
+        SubnetMaskRole,
+        RouterRole,
+        NameServerRole,
+        DNSSearchRole,
+        AutoconnectRole,
+        PasswordRole,
+        GateWayRole,
+        UpdateConnectRole,
+        SaveAndActivedRole,
+        KeyMgmtTypeRole,
+        UpdateItemRole,
     };
     Q_ENUMS(ItemRole)
 
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     QHash<int, QByteArray> roleNames() const override;
+
+Q_SIGNALS:
+    void updateItemChanged(bool state) const;
+    void wirelessNetworkDisappearedChanged(const QString &ssid);
 
 public Q_SLOTS:
     void onItemUpdated();
@@ -109,6 +133,8 @@ private Q_SLOTS:
     void wirelessNetworkReferenceApChanged(const QString &accessPoint);
 
     void initialize();
+    
+    
 private:
     NetworkItemsList m_list;
 
@@ -127,6 +153,7 @@ private:
     void updateFromWirelessNetwork(NetworkModelItem *item, const NetworkManager::WirelessNetwork::Ptr &network, const NetworkManager::WirelessDevice::Ptr &device);
 
     NetworkManager::WirelessSecurityType alternativeWirelessSecurity(const NetworkManager::WirelessSecurityType type);
+    bool m_isAllowUpdate = true;
 };
 
 #endif // PLASMA_NM_NETWORK_MODEL_H

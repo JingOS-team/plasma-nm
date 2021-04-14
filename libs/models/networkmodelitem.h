@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2018 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021  Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -28,12 +29,15 @@
 #include <NetworkManagerQt/Utils>
 
 #include "networkmodel.h"
+#include "handler.h"
+#include <QDBusPendingCallWatcher>
 
 class Q_DECL_EXPORT NetworkModelItem : public QObject
 {
-Q_OBJECT
-public:
 
+Q_OBJECT
+
+public:
     enum ItemType { UnavailableConnection, AvailableConnection, AvailableAccessPoint };
 
     explicit NetworkModelItem(QObject *parent = nullptr);
@@ -115,6 +119,38 @@ public:
     qulonglong txBytes() const;
     void setTxBytes(qulonglong bytes);
 
+    QString ipAddress() const;
+    void setIpAddress(const QString address);
+
+    QString subnetMask() const;
+    void setSubnetMask(const QString mask);
+
+    QString router() const;
+    void setRouter(const QString router);
+    
+    QString dnsServer() const;
+    void setDnsServer(const QString dnsServer);
+
+    QString dnsSearch() const;
+    void setDnsSearch(const QString dnsSearch);
+
+    bool autoConnect();
+    void setAutoConnect(const bool autoConnect);
+
+    QString gateway();
+    void setGateway(const QString gateWay);
+
+    bool saveAndActived(const QString pwd);
+    void updateConnection();
+
+    QString password();
+    void setPassword(const QString password);
+
+    void initPassword();
+
+    NetworkManager::WirelessSecuritySetting::KeyMgmt keyMgmtType();
+    void setKeyMgmtType(const NetworkManager::WirelessSecuritySetting::KeyMgmt type);
+
     bool operator==(const NetworkModelItem *item) const;
 
     QVector<int> changedRoles() const { return m_changedRoles; }
@@ -122,6 +158,8 @@ public:
 
 public Q_SLOTS:
     void invalidateDetails();
+    void replyFinished(QDBusPendingCallWatcher *watcher);
+    void replyFinishedPassword(QDBusPendingCallWatcher *watcher);
 
 private:
     QString computeIcon() const;
@@ -153,6 +191,18 @@ private:
     qulonglong m_txBytes;
     QString m_icon;
     QVector<int> m_changedRoles;
+
+    mutable QString m_ipAdress;
+    mutable QString m_subnetMask;
+    mutable QString m_router;
+    mutable QString m_dnsServer;
+    mutable QString m_dnsSearch;
+    mutable bool m_autoConnect;
+    mutable QString m_gateway;
+    
+    Handler *m_handler;
+    QString m_password;
+    NetworkManager::WirelessSecuritySetting::KeyMgmt m_keyMgmtType;
 };
 
 #endif // PLASMA_NM_MODEL_NETWORK_MODEL_ITEM_H

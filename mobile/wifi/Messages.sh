@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-$XGETTEXT `find . -name \*.cpp -o -name \*.qml` -o $podir/kcm_mobile_wifi.pot
+$XGETTEXT `find . -name \*.cpp -o -name \*.qml` -o $podir/kcm_wifi.pot

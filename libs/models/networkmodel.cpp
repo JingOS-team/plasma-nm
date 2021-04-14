@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2018 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -31,6 +32,7 @@
 #include <NetworkManagerQt/Settings>
 #include <NetworkManagerQt/Utils>
 
+
 NetworkModel::NetworkModel(QObject *parent)
     : QAbstractListModel(parent)
 {
@@ -41,6 +43,53 @@ NetworkModel::NetworkModel(QObject *parent)
 
 NetworkModel::~NetworkModel()
 {
+}
+
+bool NetworkModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    const int row = index.row();
+    if (row >= 0 && row < m_list.count()) {
+        NetworkModelItem *item = m_list.itemAt(row);
+        switch (role) {
+            case IpAddressRole:
+                item->setIpAddress(value.toString());
+                return true;
+            case SubnetMaskRole:
+                item->setSubnetMask(value.toString());
+                return true;
+            case RouterRole:
+                item->setRouter(value.toString());
+                return true;
+            case NameServerRole:
+                item->setDnsServer(value.toString());
+                return true;
+            case DNSSearchRole:
+                item->setDnsSearch(value.toString());
+                return true;
+            case PasswordRole:
+                return item->saveAndActived(value.toString());
+            case SaveAndActivedRole:
+                return item->saveAndActived(value.toString());
+            case AutoconnectRole:
+                item->setAutoConnect(value.toBool());
+                return true;
+            case GateWayRole:
+                item->setGateway(value.toString());
+                return true;
+            case UpdateConnectRole:
+                item->updateConnection();
+                return true;
+            case UpdateItemRole:
+                wirelessNetworkAppeared(value.toString());
+                return true;
+            case ItemTypeRole:
+                return true;
+
+            default:
+                break;
+        }
+    }
+    return false;
 }
 
 QVariant NetworkModel::data(const QModelIndex &index, int role) const
@@ -111,6 +160,26 @@ QVariant NetworkModel::data(const QModelIndex &index, int role) const
                 return item->rxBytes();
             case TxBytesRole:
                 return item->txBytes();
+
+            case IpAddressRole:
+                return item->ipAddress();
+            case SubnetMaskRole:
+                return item->subnetMask();
+            case RouterRole:
+                return item->router();
+            case NameServerRole:
+                return item->dnsServer();
+            case DNSSearchRole:
+                return item->dnsSearch();
+            case AutoconnectRole:
+                return item->autoConnect();
+            case GateWayRole:
+                return item->gateway();
+            case PasswordRole:
+                return item->password();
+            case KeyMgmtTypeRole:
+                return item->keyMgmtType();
+
             default:
                 break;
         }
@@ -157,11 +226,24 @@ QHash<int, QByteArray> NetworkModel::roleNames() const
     roles[RxBytesRole] = "RxBytes";
     roles[TxBytesRole] = "TxBytes";
 
+    roles[IpAddressRole] = "IpAddress";
+    roles[SubnetMaskRole] = "SubnetMask";
+    roles[RouterRole] = "Router";
+    roles[NameServerRole] = "NameServer";
+    roles[DNSSearchRole] = "DNSSearch";
+    roles[AutoconnectRole] = "Autoconnect";
+    roles[PasswordRole] = "Password";
+    roles[GateWayRole] = "GateWay";
+    roles[UpdateConnectRole] = "UpdateConnect";
+    roles[SaveAndActivedRole] = "SaveAndActived";
+    roles[KeyMgmtTypeRole] = "KeyMgmtType";
+    roles[UpdateItemRole] = "UpdateItem";
+
     return roles;
 }
 
 void NetworkModel::initialize()
-{
+{  
     // Initialize existing connections
     for (const NetworkManager::Connection::Ptr &connection : NetworkManager::listConnections()) {
         addConnection(connection);
@@ -270,7 +352,7 @@ void NetworkModel::addActiveConnection(const NetworkManager::ActiveConnection::P
 
     NetworkManager::Device::Ptr device;
     NetworkManager::Connection::Ptr connection = activeConnection->connection();
-
+     
     // Not necessary to have device for VPN connections
     if (activeConnection && !activeConnection->vpn() && !activeConnection->devices().isEmpty()) {
         device = NetworkManager::findNetworkInterface(activeConnection->devices().first());
@@ -416,6 +498,7 @@ void NetworkModel::addConnection(const NetworkManager::Connection::Ptr &connecti
     } else if (item->type() == NetworkManager::ConnectionSettings::Wireless) {
         item->setMode(wirelessSetting->mode());
         item->setSecurityType(NetworkManager::securityTypeFromConnectionSetting(settings));
+       
         item->setSsid(QString::fromUtf8(wirelessSetting->ssid()));
     }
 
@@ -514,7 +597,6 @@ void NetworkModel::addWirelessNetwork(const NetworkManager::WirelessNetwork::Ptr
     item->setType(NetworkManager::ConnectionSettings::Wireless);
     item->setSecurityType(securityType);
     item->invalidateDetails();
-
     const int index = m_list.count();
     beginInsertRows(QModelIndex(), index, index);
     m_list.insertItem(item);
@@ -660,12 +742,12 @@ void NetworkModel::availableConnectionAppeared(const QString &connection)
     if (!device) {
         return;
     }
-
+    
     addAvailableConnection(connection, device);
 }
 
 void NetworkModel::availableConnectionDisappeared(const QString &connection)
-{
+{  
     for (NetworkModelItem *item : m_list.returnItems(NetworkItemsList::Connection, connection)) {
         bool available = false;
         const QString devicePath = item->devicePath();
@@ -691,7 +773,6 @@ void NetworkModel::availableConnectionDisappeared(const QString &connection)
             item->setDevicePath(QString());
             item->setDeviceState(NetworkManager::Device::UnknownState);
             item->setSignal(0);
-            item->setSpecificPath(QString());
             qCDebug(PLASMA_NM) << "Item " << item->name() << " removed as available connection";
             // Check whether the connection is still available as an access point, this happens
             // when we change its properties, like ssid, bssid, security etc.
@@ -991,13 +1072,18 @@ void NetworkModel::wirelessNetworkAppeared(const QString &ssid)
     NetworkManager::Device::Ptr device = NetworkManager::findNetworkInterface(qobject_cast<NetworkManager::Device*>(sender())->uni());
     if (device && device->type() == NetworkManager::Device::Wifi) {
         NetworkManager::WirelessDevice::Ptr wirelessDevice = device.objectCast<NetworkManager::WirelessDevice>();
-        NetworkManager::WirelessNetwork::Ptr network = wirelessDevice->findNetwork(ssid);
-        addWirelessNetwork(network, wirelessDevice);
+       if(wirelessDevice) {
+            NetworkManager::WirelessNetwork::Ptr network = wirelessDevice->findNetwork(ssid);
+            if(network) {
+                addWirelessNetwork(network, wirelessDevice);
+            }
+        }
     }
 }
 
 void NetworkModel::wirelessNetworkDisappeared(const QString &ssid)
 {
+    emit wirelessNetworkDisappearedChanged(ssid);
     NetworkManager::Device::Ptr device = NetworkManager::findNetworkInterface(qobject_cast<NetworkManager::Device*>(sender())->uni());
     if (!device) {
         return;
@@ -1056,6 +1142,10 @@ void NetworkModel::wirelessNetworkReferenceApChanged(const QString &accessPoint)
 
 void NetworkModel::wirelessNetworkSignalChanged(int signal)
 {
+    if(!m_isAllowUpdate) {
+        return;
+    }
+   
     NetworkManager::WirelessNetwork *networkPtr = qobject_cast<NetworkManager::WirelessNetwork*>(sender());
     if (!networkPtr) {
         return;
@@ -1113,6 +1203,14 @@ void NetworkModel::updateFromWirelessNetwork(NetworkModelItem *item, const Netwo
             }
         }
     }
+    
     item->setSecurityType(securityType);
     updateItem(item);
 }
+
+void NetworkModel::setAllowUpdate(const bool state)
+{
+    m_isAllowUpdate = state;
+    Q_EMIT updateItemChanged(m_isAllowUpdate);
+}
+

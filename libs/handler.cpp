@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2014 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021  Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -64,13 +65,13 @@
 #define AGENT_PATH "/modules/networkmanagement"
 #define AGENT_IFACE "org.kde.plasmanetworkmanagement"
 
-// 10 seconds
-#define NM_REQUESTSCAN_LIMIT_RATE 10000
+#define NM_REQUESTSCAN_LIMIT_RATE 5000
 
 Handler::Handler(QObject *parent)
     : QObject(parent)
     , m_tmpWirelessEnabled(NetworkManager::isWirelessEnabled())
     , m_tmpWwanEnabled(NetworkManager::isWwanEnabled())
+    , m_isScanning(false)
 {
     QDBusConnection::sessionBus().connect(QStringLiteral(AGENT_SERVICE),
                                             QStringLiteral(AGENT_PATH),
@@ -137,7 +138,6 @@ void Handler::activateConnection(const QString& connection, const QString& devic
                 notification->sendEvent();
                 return;
             }
-
         }
     }
 
@@ -499,7 +499,7 @@ void Handler::updateConnection(const NetworkManager::Connection::Ptr& connection
 }
 
 void Handler::requestScan(const QString &interface)
-{
+{   
     for (NetworkManager::Device::Ptr device : NetworkManager::networkInterfaces()) {
         if (device->type() == NetworkManager::Device::Wifi) {
             NetworkManager::WirelessDevice::Ptr wifiDevice = device.objectCast<NetworkManager::WirelessDevice>();
@@ -532,7 +532,8 @@ void Handler::requestScan(const QString &interface)
                     m_wirelessScanRetryTimer.value(interface)->stop();
                     delete m_wirelessScanRetryTimer.take(interface);
                 }
-
+                m_isScanning = true;
+                Q_EMIT scanningStateChanged(m_isScanning);
                 qCDebug(PLASMA_NM) << "Requesting wifi scan on device" << wifiDevice->interfaceName();
                 QDBusPendingReply<> reply = wifiDevice->requestScan();
                 QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
@@ -684,7 +685,6 @@ bool Handler::checkHotspotSupported()
             }
         }
 
-
         if (!wifiFound) {
             return false;
         }
@@ -735,15 +735,20 @@ void Handler::scanRequestFailed(const QString &interface)
 
 void Handler::secretAgentError(const QString &connectionPath, const QString &message)
 {
-    // If the password was wrong, forget it
-    removeConnection(connectionPath);
-    emit connectionActivationFailed(connectionPath, message);
+    NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(connectionPath);
+    
+    if (connection) {
+        NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
+        QString id = connectionSettings->id();
+        Q_EMIT passwordErrorChanged(id,connectionPath);
+    }
 }
 
 void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
 {
     QDBusPendingReply<> reply = *watcher;
     if (reply.isError() || !reply.isValid()) {
+        
         KNotification *notification = nullptr;
         QString error = reply.error().message();
         Handler::HandlerAction action = (Handler::HandlerAction)watcher->property("action").toUInt();
@@ -752,9 +757,10 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
                 notification = new KNotification("FailedToActivateConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to activate %1", watcher->property("connection").toString()));
                 break;
-            case Handler::AddAndActivateConnection:
+            case Handler::AddAndActivateConnection:  
                 notification = new KNotification("FailedToAddConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to add %1", watcher->property("connection").toString()));
+                Q_EMIT addConnectionFailed(watcher->property("connection").toString()); 
                 break;
             case Handler::AddConnection:
                 notification = new KNotification("FailedToAddConnection", KNotification::CloseOnTimeout, this);
@@ -774,6 +780,8 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
                 break;
             case Handler::RequestScan:
             {
+                m_isScanning = false;
+                Q_EMIT scanningStateChanged(m_isScanning);
                 const QString interface = watcher->property("interface").toString();
                 qCWarning(PLASMA_NM) << "Wireless scan on" << interface << "failed:" << error;
                 scanRequestFailed(interface);
@@ -811,7 +819,11 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
                 notification->setText(i18n("Connection %1 has been updated", watcher->property("connection").toString()));
                 break;
             case Handler::RequestScan:
+                 m_isScanning = false;
+                 Q_EMIT scanningStateChanged(m_isScanning);
                 qCDebug(PLASMA_NM) << "Wireless scan on" << watcher->property("interface").toString() << "succeeded";
+                break;
+                case Handler::ActivateConnection:
                 break;
             default:
                 break;
@@ -874,3 +886,6 @@ void Handler::unlockRequiredChanged(MMModemLock modemLock)
 }
 #endif
 
+void Handler::passwordError(const QString msg)
+{
+}

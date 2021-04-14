@@ -97,7 +97,7 @@ private:
      * normally if it failed to open
      * @return true if the item was processed
      */
-    bool processGetSecrets(SecretsRequest &request) const;
+    bool processGetSecrets(SecretsRequest &request) ;
     bool processSaveSecrets(SecretsRequest &request) const;
     bool processDeleteSecrets(SecretsRequest &request) const;
     /**

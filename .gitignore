@@ -7,7 +7,7 @@ tags
 .swp.*
 .kdev4/
 *.kdev4
-CMakeLists.txt.user
+CMakeLists.txt.user.*
 *.qmlc
 .clang-format
 /build*/

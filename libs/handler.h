@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2014 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021  Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -32,9 +33,9 @@
 #include <ModemManagerQt/GenericTypes>
 #endif
 
-
 class Q_DECL_EXPORT Handler : public QObject
 {
+
 Q_OBJECT
 
 public:
@@ -53,8 +54,13 @@ public:
     ~Handler() override;
 
     Q_PROPERTY(bool hotspotSupported READ hotspotSupported NOTIFY hotspotSupportedChanged);
+    Q_PROPERTY(bool isCanning READ isCanning NOTIFY scanningStateChanged);
+    Q_PROPERTY(QString passwordError READ passwordError NOTIFY passwordErrorChanged);
+
 public:
     bool hotspotSupported() const { return m_hotspotSupported; };
+    bool isCanning() const {return m_isScanning; };
+    QString passwordError() const {return m_passwordError; };
 
 public Q_SLOTS:
     /**
@@ -124,6 +130,8 @@ public Q_SLOTS:
     void createHotspot();
     void stopHotspot();
 
+    void passwordError(const QString msg);
+
 private Q_SLOTS:
     void secretAgentError(const QString &connectionPath, const QString &message);
     void replyFinished(QDBusPendingCallWatcher *watcher);
@@ -138,6 +146,11 @@ Q_SIGNALS:
     void hotspotCreated();
     void hotspotDisabled();
     void hotspotSupportedChanged(bool hotspotSupported);
+    void scanningStateChanged(bool isScanning);
+    void passwordErrorChanged(QString name,QString connectionPath);
+    void sendNotificationToQml(const  QString msg);
+    void addConnectionFailed(const QString ssid);
+
 private:
     bool m_hotspotSupported;
     bool m_tmpWirelessEnabled;
@@ -156,6 +169,8 @@ private:
     bool checkRequestScanRateLimit(const NetworkManager::WirelessDevice::Ptr &wifiDevice);
     bool checkHotspotSupported();
     void scheduleRequestScan(const QString &interface, int timeout);
+    bool m_isScanning;
+    QString m_passwordError;
 };
 
 #endif // PLASMA_NM_HANDLER_H

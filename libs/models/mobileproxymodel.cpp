@@ -1,6 +1,7 @@
 /*
  * Mobile proxy model - model for displaying netwoks in mobile kcm
  * Copyright 2017  Martin Kacej <m.kacej@atlas.sk>
+ * Copyright 2021  Wang Rui <wangrui@jingos.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -57,16 +58,14 @@ bool MobileProxyModel::filterAcceptsRow(int source_row, const QModelIndex& sourc
         return false;
     }
 
-    const NetworkManager::ConnectionSettings::ConnectionType type = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();
-    if (type == NetworkManager::ConnectionSettings::Wireless) {
-        NetworkModelItem::ItemType itemType = (NetworkModelItem::ItemType)sourceModel()->data(index, NetworkModel::ItemTypeRole).toUInt(); 
-        if (showSavedMode()) {
-            return itemType == NetworkModelItem::UnavailableConnection;
-        } else {
-            return itemType >= NetworkModelItem::AvailableConnection;
-        }
+    NetworkModelItem::ItemType itemType = (NetworkModelItem::ItemType)sourceModel()->data(index, NetworkModel::ItemTypeRole).toUInt();
+
+    if (itemType != NetworkModelItem::AvailableConnection &&
+        itemType != NetworkModelItem::AvailableAccessPoint) {
+        return false;
     }
-    return false;
+
+    return sourceModel()->data(index, NetworkModel::ItemUniqueNameRole).toString().contains(filterRegExp());
 }
 
 bool MobileProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right) const

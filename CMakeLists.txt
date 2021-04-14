@@ -118,9 +118,10 @@ add_subdirectory(kded)
 add_subdirectory(kcm)
 add_subdirectory(libs)
 add_subdirectory(vpn)
+add_subdirectory(mobile)
 
 if (BUILD_MOBILE)
-    add_subdirectory(mobile)
+    #add_subdirectory(mobile)
 endif()
 
 # Enable unit testing

@@ -1,5 +1,6 @@
 /*
     Copyright 2016-2018 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021      Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -27,6 +28,7 @@
 class Q_DECL_EXPORT KcmIdentityModel : public QIdentityProxyModel
 {
 Q_OBJECT
+
 public:
     explicit KcmIdentityModel(QObject *parent = nullptr);
     ~KcmIdentityModel() override;
@@ -34,7 +36,8 @@ public:
     enum KcmItemRole {
         KcmConnectionIconRole = Qt::UserRole + 100,
         KcmConnectionTypeRole,
-        KcmVpnConnectionExportable
+        KcmVpnConnectionExportable,
+        KcmConnectionStateRole
     };
 
     QHash< int, QByteArray > roleNames() const override;
@@ -45,6 +48,7 @@ public:
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
     QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
+    int rowCount(const QModelIndex &parent) const override;
 };
 
 #endif // PLASMA_NM_KCM_IDENTITY_MODEL_H

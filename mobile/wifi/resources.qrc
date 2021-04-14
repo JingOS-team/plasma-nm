@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/">
+	<file alias="main.qml">package/contents/ui/main.qml</file>
+	<file alias="WifiItem.qml">package/contents/ui/WifiItem.qml</file>
+	<file alias="InputItem.qml">package/contents/ui/InputItem.qml</file>
+	<file alias="ConnectedItem.qml">package/contents/ui/ConnectedItem.qml</file>
+	<file alias="SwitchItem.qml">package/contents/ui/SwitchItem.qml</file>
+	<file alias="SelectItem.qml">package/contents/ui/SelectItem.qml</file>
+	<file alias="IPV4.qml">package/contents/ui/IPV4.qml</file>
+	<file alias="DNS.qml">package/contents/ui/DNS.qml</file>
+	<file alias="Home.qml">package/contents/ui/Home.qml</file>
+	<file alias="Password.qml">package/contents/ui/Password.qml</file>
+	<file alias="NormalInputItem.qml">package/contents/ui/NormalInputItem.qml</file>
+	<file alias="JInputDialog.qml">package/contents/ui/JInputDialog.qml</file>
+	<file alias="OtherNetwork.qml">package/contents/ui/OtherNetwork.qml</file>
+	<file alias="SecurityListView.qml">package/contents/ui/SecurityListView.qml</file>
+	<file alias="JDialog.qml">package/contents/ui/JDialog.qml</file>
+	<file alias="WifiLoadingItem.qml">package/contents/ui/WifiLoadingItem.qml</file>
+    </qresource>
+    <qresource prefix="/image">
+        <file alias="pwd_cancel.png">image/pwd_cancel.png</file>
+        <file alias="pwd_confirm.png">image/pwd_confirm.png</file>
+        <file alias="pwd_disable.png">image/pwd_disable.png</file>
+        <file alias="arrow_left.png">image/arrow_left.png</file>
+        <file alias="arrow_right.png">image/arrow_right.png</file>
+        <file alias="wifi_detail.png">image/wifi_detail.png</file>
+        <file alias="wifi_icon.png">image/wifi_icon.png</file>
+        <file alias="wifi_lock.png">image/wifi_lock.png</file>
+        <file alias="select_blue.png">image/select_blue.png</file>
+        <file alias="txt_close.png">image/txt_close.png</file>
+        <file alias="loading.png">image/loading.png</file>
+        <file alias="signal_weak.png">image/signal_weak.png</file>
+        <file alias="signal_low.png">image/signal_low.png</file>
+        <file alias="signal_medium.png">image/signal_medium.png</file>
+        <file alias="signal_high.png">image/signal_high.png</file>
+        <file alias="signal_full.png">image/signal_full.png</file>
+        <file alias="pwd_hidden.png">image/pwd_hidden.png</file>
+        <file alias="pwd_visible.png">image/pwd_visible.png</file>
+    </qresource>
+</RCC>

@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2018 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021      Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -60,6 +61,7 @@ QHash<int, QByteArray> KcmIdentityModel::roleNames() const
     roles[KcmConnectionIconRole] = "KcmConnectionIcon";
     roles[KcmConnectionTypeRole] = "KcmConnectionType";
     roles[KcmVpnConnectionExportable] = "KcmVpnConnectionExportable";
+    roles[KcmConnectionStateRole] = "KcmConnectionState";
 
     return roles;
 }
@@ -71,6 +73,7 @@ QVariant KcmIdentityModel::data(const QModelIndex &index, int role) const
 
     NetworkManager::ConnectionSettings::Ptr settings;
     NetworkManager::VpnSetting::Ptr vpnSetting ;
+ 
     if (type == NetworkManager::ConnectionSettings::Vpn) {
         settings = NetworkManager::findConnection(sourceModel()->data(sourceIndex, NetworkModel::ConnectionPathRole).toString())->settings();
         if (settings) {
@@ -81,6 +84,16 @@ QVariant KcmIdentityModel::data(const QModelIndex &index, int role) const
     QString tooltip;
     const QString iconName = UiUtils::iconAndTitleForConnectionSettingsType(type, tooltip);
 
+    if(role == KcmConnectionStateRole) {
+        int connectionState = sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt();
+        NetworkModelItem::ItemType itemType = (NetworkModelItem::ItemType)sourceModel()->data(index, NetworkModel::ItemTypeRole).toUInt();
+        if (itemType == NetworkModelItem::AvailableConnection) {
+            return "Saved network";
+        }else if(itemType == NetworkModelItem::AvailableAccessPoint){
+            return "Other networks";
+        }
+    }
+    
     if (role == KcmConnectionIconRole) {
         return iconName;
     } else if (role == KcmConnectionTypeRole) {
@@ -115,5 +128,11 @@ QModelIndex KcmIdentityModel::mapToSource(const QModelIndex &proxyIndex) const
     }
 
     return QIdentityProxyModel::mapToSource(proxyIndex);
+}
+
+int KcmIdentityModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return parent.isValid() ? 0 : sourceModel()->rowCount(parent);
 }
 

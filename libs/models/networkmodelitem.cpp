@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2018 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Wang Rui <wangrui@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -36,8 +37,11 @@
 #include <NetworkManagerQt/WiredDevice>
 #include <NetworkManagerQt/WirelessDevice>
 #include <NetworkManagerQt/WirelessSetting>
+#include <NetworkManagerQt/Ipv4Setting>
+#include <NetworkManagerQt/ConnectionSettings>
 
 #include <KLocalizedString>
+#include <KUser>
 
 #if WITH_MODEMMANAGER_SUPPORT
 #include <ModemManagerQt/manager.h>
@@ -46,6 +50,7 @@
 #include <ModemManagerQt/modem3gpp.h>
 #include <ModemManagerQt/modemcdma.h>
 #endif
+#include <KNotification>
 
 NetworkModelItem::NetworkModelItem(QObject *parent)
     : QObject(parent)
@@ -61,6 +66,9 @@ NetworkModelItem::NetworkModelItem(QObject *parent)
     , m_vpnState(NetworkManager::VpnConnection::Unknown)
     , m_rxBytes(0)
     , m_txBytes(0)
+    , m_handler(new Handler(this))
+    , m_password("")
+    , m_keyMgmtType(NetworkManager::WirelessSecuritySetting::WpaPsk)
 {
 }
 
@@ -81,10 +89,14 @@ NetworkModelItem::NetworkModelItem(const NetworkModelItem *item, QObject *parent
     , m_vpnState(NetworkManager::VpnConnection::Unknown)
     , m_rxBytes(0)
     , m_txBytes(0)
+    , m_handler(new Handler(this))
+    , m_router("Automatic")
+    , m_autoConnect(true)
 {
 }
 
 NetworkModelItem::~NetworkModelItem()
+
 {
 }
 
@@ -503,6 +515,176 @@ void NetworkModelItem::setTxBytes(qulonglong bytes)
     }
 }
 
+QString NetworkModelItem::ipAddress() const
+{
+    updateDetails();
+    return m_ipAdress;
+}
+
+void NetworkModelItem::setIpAddress(const QString address)
+{
+    m_ipAdress = address;
+}
+
+QString NetworkModelItem::subnetMask() const
+{
+    updateDetails();
+    return m_subnetMask;
+}
+
+void NetworkModelItem::setSubnetMask(const QString mask)
+{
+    m_subnetMask = mask;
+}
+
+QString NetworkModelItem::router() const
+{
+    return m_router;
+}
+
+void NetworkModelItem::setRouter(const QString router)
+{
+    m_router = router;
+}
+
+QString NetworkModelItem::dnsServer() const
+{
+    updateDetails();
+    return m_dnsServer;
+}
+
+void NetworkModelItem::setDnsServer(const QString dnsServer)
+{
+    m_dnsServer = dnsServer;
+}
+
+QString NetworkModelItem::dnsSearch() const
+{
+    updateDetails();
+    return m_dnsSearch;
+}
+
+void NetworkModelItem::setDnsSearch(const QString dnsSearch)
+{
+    m_dnsSearch = dnsSearch;
+}
+
+bool NetworkModelItem::autoConnect()
+{
+    updateDetails();
+    return m_autoConnect;
+}
+
+void NetworkModelItem::setAutoConnect(const bool autoConnect)
+{
+    m_autoConnect = autoConnect;
+    updateConnection();
+}
+
+QString NetworkModelItem::gateway()
+{
+    return m_gateway;
+}
+
+void NetworkModelItem::setGateway(const QString gateWay)
+{
+    m_gateway = gateWay;
+}
+
+QString NetworkModelItem::password()
+{
+    return m_password;
+}
+
+void NetworkModelItem::setPassword(const QString password)
+{
+    m_password = password;
+}
+
+NetworkManager::WirelessSecuritySetting::KeyMgmt NetworkModelItem::keyMgmtType()
+{
+    return m_keyMgmtType;
+}
+
+void NetworkModelItem::setKeyMgmtType(const NetworkManager::WirelessSecuritySetting::KeyMgmt type)
+{
+    m_keyMgmtType = type;
+}
+
+void NetworkModelItem::initPassword()
+{
+    NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(m_connectionPath);
+    if(!connection) {
+        return;
+    }
+
+    NetworkManager::WirelessSecuritySetting::Ptr wifiSecurity = connection->settings()->setting(NetworkManager::Setting::WirelessSecurity).staticCast<NetworkManager::WirelessSecuritySetting>();
+    QStringList requiredSecrets = wifiSecurity->needSecrets();
+    QVariantMap setting = wifiSecurity->toMap();
+    QString settingName = QLatin1String("802-11-wireless-security");
+    bool requestSecrets = false;
+
+    for (const QString &secret : requiredSecrets) {
+            if (setting.contains(secret + QLatin1String("-flags"))) {
+                NetworkManager::Setting::SecretFlagType secretFlag = (NetworkManager::Setting::SecretFlagType)setting.value(secret + QLatin1String("-flags")).toInt();
+                if (secretFlag == NetworkManager::Setting::None || secretFlag == NetworkManager::Setting::AgentOwned) {
+                    requestSecrets = true;
+                }
+            } else {
+                requestSecrets = true;
+            }
+    }
+
+    QDBusPendingReply<NMVariantMapMap> reply;
+    if (requestSecrets) {
+        reply = connection->secrets(settingName);
+        QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+        watcher->setProperty("connection", connection->name());
+        watcher->setProperty("settingName", settingName);
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, &NetworkModelItem::replyFinishedPassword);
+    }
+}
+
+void NetworkModelItem::updateConnection()
+{
+    NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(m_connectionPath);
+    if(!connection){
+        return;
+    }
+
+    NetworkManager::WirelessSecuritySetting::Ptr wifiSecurity = connection->settings()->setting(NetworkManager::Setting::WirelessSecurity).staticCast<NetworkManager::WirelessSecuritySetting>();
+    QStringList requiredSecrets = wifiSecurity->needSecrets();
+    QVariantMap setting = wifiSecurity->toMap();
+    QString settingName = QLatin1String("802-11-wireless-security");
+    bool requestSecrets = false;
+
+    for (const QString &secret : requiredSecrets) {
+        if (setting.contains(secret + QLatin1String("-flags"))) {
+            NetworkManager::Setting::SecretFlagType secretFlag = (NetworkManager::Setting::SecretFlagType)setting.value(secret + QLatin1String("-flags")).toInt();
+            if (secretFlag == NetworkManager::Setting::None || secretFlag == NetworkManager::Setting::AgentOwned) {
+                requestSecrets = true;
+            }
+        } else {
+            requestSecrets = true;
+        }
+    }
+
+    QDBusPendingReply<NMVariantMapMap> reply;
+    if (requestSecrets) {
+        reply = connection->secrets(settingName);
+        QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+        watcher->setProperty("connection", connection->name());
+        watcher->setProperty("settingName", settingName);
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, &NetworkModelItem::replyFinished);
+    }
+}
+
+bool NetworkModelItem::saveAndActived(const QString pwd)
+{
+    m_handler->addAndActivateConnection(m_devicePath,m_specificPath,pwd);
+    return true;
+}
+
 bool NetworkModelItem::operator==(const NetworkModelItem *item) const
 {
     if (!item->uuid().isEmpty() && !uuid().isEmpty()) {
@@ -541,11 +723,15 @@ void NetworkModelItem::updateDetails() const
             QHostAddress addr = device->ipV4Config().addresses().first().ip();
             if (!addr.isNull()) {
                 m_details << i18n("IPv4 Address") << addr.toString();
+                
+                m_ipAdress = addr.toString();
             }
         }
         if (!device->ipV4Config().gateway().isEmpty()) {
             QString addr = device->ipV4Config().gateway();
+
             if (!addr.isNull()) {
+                m_gateway = device->ipV4Config().gateway();
                 m_details << i18n("IPv4 Default Gateway") << addr;
             }
         }
@@ -553,6 +739,7 @@ void NetworkModelItem::updateDetails() const
             QHostAddress addr = device->ipV4Config().nameservers().first();
             if (!addr.isNull()) {
                 m_details << i18n("IPv4 Nameserver") << addr.toString();
+                m_dnsServer = addr.toString();
             }
         }
     }
@@ -671,8 +858,7 @@ void NetworkModelItem::updateDetails() const
         }
     } else if (m_type == NetworkManager::ConnectionSettings::Adsl) {
         m_details << i18n("Type") << i18n("Adsl");
-    }
-      else if (m_type == NetworkManager::ConnectionSettings::Team) {
+    } else if (m_type == NetworkManager::ConnectionSettings::Team) {
         NetworkManager::TeamDevice::Ptr teamDevice = device.objectCast<NetworkManager::TeamDevice>();
         m_details << i18n("Type") << i18n("Team");
         if (teamDevice) {
@@ -683,4 +869,141 @@ void NetworkModelItem::updateDetails() const
     if (device && m_connectionState == NetworkManager::ActiveConnection::Activated) {
         m_details << i18n("Device") << device->interfaceName();
     }
+
+    NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(m_connectionPath);
+    if (connection) {
+        NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
+        m_autoConnect = connectionSettings->autoconnect();
+        NetworkManager::Setting::Ptr settings = connectionSettings->setting(NetworkManager::Setting::Ipv4);
+        NetworkManager::Ipv4Setting::Ptr ipv4Setting = settings.staticCast<NetworkManager::Ipv4Setting>();
+        
+        switch (ipv4Setting->method()) {
+            case NetworkManager::Ipv4Setting::Automatic:
+                m_router = "Automatic";
+                break;
+            case NetworkManager::Ipv4Setting::Manual:
+                m_router = "Manual";
+                break;
+        }
+
+        m_dnsSearch = ipv4Setting->dnsSearch().join(",");
+        for (const NetworkManager::IpAddress &addr : ipv4Setting->addresses()) {
+            m_subnetMask = addr.netmask().toString();
+            break;
+        }
+    }
 }
+
+void NetworkModelItem::replyFinished(QDBusPendingCallWatcher *watcher)
+{
+    QDBusPendingReply<NMVariantMapMap> reply = *watcher;
+    const QString settingName = watcher->property("settingName").toString();
+
+    if (reply.isValid()) {
+        NMVariantMapMap secrets = reply.argumentAt<0>();
+
+        for (const QString &key : secrets.keys()) {
+            if (key == settingName) {
+                NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(m_connectionPath);
+                NetworkManager::Setting::Ptr setting = connection->settings()->setting(NetworkManager::Setting::typeFromString(key));
+                if (setting) {
+                    setting->secretsFromMap(secrets.value(key));
+
+                    NetworkManager::WirelessSecuritySetting::Ptr wifiSecurity = setting.staticCast<NetworkManager::WirelessSecuritySetting>();
+                    QVariantMap wssMap = wifiSecurity->toMap();
+                    NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
+                    connectionSettings->setAutoconnect(m_autoConnect);
+                    NetworkManager::Ipv4Setting::Ptr m_tmpIpv4Setting = NetworkManager::Ipv4Setting::Ptr(new NetworkManager::Ipv4Setting());
+                    NetworkManager::Ipv4Setting::Ptr ipv4Setting = connectionSettings->setting(NetworkManager::Setting::Ipv4).staticCast<NetworkManager::Ipv4Setting>();
+                    
+                    m_tmpIpv4Setting->setRouteMetric(ipv4Setting->routeMetric());
+                    m_tmpIpv4Setting->setRoutes(ipv4Setting->routes());
+                    m_tmpIpv4Setting->setNeverDefault(ipv4Setting->neverDefault());
+                    m_tmpIpv4Setting->setIgnoreAutoRoutes(ipv4Setting->ignoreAutoRoutes());
+                    m_tmpIpv4Setting->setDhcpHostname(ipv4Setting->dhcpHostname());
+                    m_tmpIpv4Setting->setDhcpSendHostname(ipv4Setting->dhcpSendHostname());
+                    m_tmpIpv4Setting->setDadTimeout(ipv4Setting->dadTimeout());
+
+                    if(m_router == "Automatic") {
+                        m_tmpIpv4Setting->setMethod(NetworkManager::Ipv4Setting::Automatic);
+                    } else {
+                        QList<NetworkManager::IpAddress> list;
+                        m_tmpIpv4Setting->setMethod(NetworkManager::Ipv4Setting::Manual);
+                        NetworkManager::IpAddress address;
+
+                        if(!m_ipAdress.isEmpty()) {
+                            address.setIp(QHostAddress(m_ipAdress));
+                        }
+                        if(!m_subnetMask.isEmpty()) {
+                            address.setNetmask(QHostAddress(m_subnetMask));
+                        }else{
+                            address.setNetmask(QHostAddress("255.255.0.0"));
+                        }
+                        if(!m_ipAdress.isEmpty()) {
+                            address.setGateway(QHostAddress(m_gateway));
+                        }
+                         
+                        list << address;
+                        m_tmpIpv4Setting->setAddresses(list);
+                        QList<QHostAddress> tmpAddrList;
+                        QHostAddress addr(m_dnsServer);
+
+                        if (!addr.isNull()) {
+                            tmpAddrList.append(addr);
+                            m_tmpIpv4Setting->setDns(tmpAddrList);
+                        }
+                        if(!m_dnsSearch.isEmpty()) {
+                            m_tmpIpv4Setting->setDnsSearch(m_dnsSearch.split(','));
+                        }    
+                    }
+
+                    NMVariantMapMap csMapMap = connectionSettings->toMap();
+                    QVariantMap ipv4Map = m_tmpIpv4Setting->toMap();
+
+                    csMapMap.insert(NetworkManager::Setting::typeAsString(NetworkManager::Setting::Ipv4), ipv4Map);
+                    csMapMap.insert(NetworkManager::Setting::typeAsString(NetworkManager::Setting::WirelessSecurity), wssMap);
+                    m_handler->updateConnection(connection,csMapMap);
+                }
+            }
+        }
+    } else {
+        KNotification *notification = new KNotification("FailedToGetSecrets", KNotification::CloseOnTimeout);
+        notification->setComponentName("networkmanagement");
+        notification->setTitle(i18n("Failed to get secrets for %1", watcher->property("connection").toString()));
+        notification->setText(reply.error().message());
+        notification->setIconName(QStringLiteral("dialog-warning"));
+        notification->sendEvent();
+    }
+    watcher->deleteLater();
+    // We should be now fully with secrets
+}
+
+void NetworkModelItem::replyFinishedPassword(QDBusPendingCallWatcher *watcher)
+{
+    QDBusPendingReply<NMVariantMapMap> reply = *watcher;
+    const QString settingName = watcher->property("settingName").toString();
+    if (reply.isValid()) {
+        NMVariantMapMap secrets = reply.argumentAt<0>();
+        for (const QString &key : secrets.keys()) {
+            if (key == settingName) {
+                NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(m_connectionPath);
+                NetworkManager::Setting::Ptr setting = connection->settings()->setting(NetworkManager::Setting::typeFromString(key));
+                if (setting) {
+                    setting->secretsFromMap(secrets.value(key));
+                    NetworkManager::WirelessSecuritySetting::Ptr wifiSecurity = setting.staticCast<NetworkManager::WirelessSecuritySetting>();
+                    m_password = wifiSecurity->psk();
+                }
+            }
+        }
+    } else {
+        KNotification *notification = new KNotification("FailedToGetSecrets", KNotification::CloseOnTimeout);
+        notification->setComponentName("networkmanagement");
+        notification->setTitle(i18n("Failed to get secrets for %1", watcher->property("connection").toString()));
+        notification->setText(reply.error().message());
+        notification->setIconName(QStringLiteral("dialog-warning"));
+        notification->sendEvent();
+    }
+    watcher->deleteLater();
+    // We should be now fully with secrets
+}
+

@@ -109,7 +109,8 @@ void Notification::stateChanged(NetworkManager::Device::State newstate, NetworkM
     case NetworkManager::Device::NoSecretsReason:
         text = i18nc("@info:status Notification when the device failed due to NoSecretsReason",
                      "No secrets were provided");
-        break;
+        return;
+        // break;
     case NetworkManager::Device::AuthSupplicantDisconnectReason:
         text = i18nc("@info:status Notification when the device failed due to AuthSupplicantDisconnectReason",
                      "Authorization supplicant disconnected");
