@@ -82,7 +82,7 @@ Wifi module for jingos-settings.
 ```
 
 
-#### Install
+### Install
 
 ```
 sudo make install
