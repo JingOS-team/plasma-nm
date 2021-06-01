@@ -1,0 +1,23 @@
+[Desktop Entry]
+Name=vpn
+Name[x-test]=xxvpnxx
+Comment=vpn
+Comment[x-test]=xxvpnxx
+
+
+Type=Service
+X-KDE-ServiceTypes=KCModule
+X-KDE-Library=kcm_vpn
+X-KDE-FormFactors=handset,tablet,mediacenter
+Categories=Qt;KDE;X-KDE-settings-system;
+X-KDE-Keywords=info,vpn
+X-KDE-Keywords[x-test]=xxinfoxx,xxvpnxx
+X-KDE-ParentApp=kcontrol
+Exec=plasma-settings -m kcm_vpn
+Icon=network-vpn
+
+X-KDE-System-Settings-Parent-Category=network
+X-KDE-Weight=70
+Categories=Qt;KDE;X-KDE-settings-system;
+
+

@@ -30,7 +30,7 @@ Popup {
     property int selectIndex: 2
 
     height: listView.height
-    width: 369 * appScale
+    width: 240 * appScale
 
     padding: 0
     
@@ -41,11 +41,11 @@ Popup {
     contentItem: Rectangle {
         anchors.fill: parent
 
-        radius: 15 * appScale
+        radius: 10 * appScale
         layer.enabled: true
         layer.effect: DropShadow {
             horizontalOffset: 0
-            radius: 20
+            radius: 15
             samples: 25
             color: "#1A000000"
             verticalOffset: 0
@@ -66,7 +66,7 @@ Popup {
                     right: parent.right
                 }
 
-                height: 69 * appScale
+                height: 45 * appScale
 
                 titleName: model.displayName
                 imgPath: "qrc:/image/select_blue.png"

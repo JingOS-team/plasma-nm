@@ -9,6 +9,7 @@ set(plasmanm_internal_SRCS
     models/networkitemslist.cpp
     models/networkmodel.cpp
     models/networkmodelitem.cpp
+    models/vpnproxymodel.cpp
 
     configuration.cpp
     debug.cpp

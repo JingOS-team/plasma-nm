@@ -19,7 +19,7 @@
 
 import org.kde.kcm 1.2 as KCM
 import QtQuick 2.7
-import org.kde.kirigami 2.10 as Kirigami
+import org.kde.kirigami 2.15 as Kirigami
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
@@ -28,9 +28,10 @@ Rectangle {
     id: root
 
     property int defaultFontSize: theme.defaultFont.pointSize
-    property int preferWidth: 934 * appScale
-    property int preferHeigh: 69 * appScale
+    property int preferWidth: root.width - 40 * appScale
+    property int preferHeigh: 34 * appScale
     property int selectIndex: 0
+    property bool isConfigChanged: false
 
     color: "#FFF6F9FF"
 
@@ -48,11 +49,12 @@ Rectangle {
         anchors {
             left: parent.left
             top: parent.top
-            leftMargin: 18 * appScale
-            topMargin: 68 * appScale
+            right: parent.right
+            leftMargin: 14 * appScale
+            topMargin: 48 * appScale
         }
 
-        height: 36 * appScale
+        height: 20 * appScale
         width: parent.width
 
         Image {
@@ -61,8 +63,8 @@ Rectangle {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            width: 34 * appScale
-            height: 34 * appScale
+            width: 22 * appScale
+            height: 22 * appScale
 
             source: "qrc:/image/arrow_left.png"
 
@@ -80,26 +82,35 @@ Rectangle {
 
             anchors {
                 left: backIcon.right
-                leftMargin: 15 * appScale
+                leftMargin: 10 * appScale
                 verticalCenter: parent.verticalCenter
             }
 
-            font.pointSize: defaultFontSize + 9
+            font.pixelSize: 20
             font.bold: true
-            text: currentModel.Name + " Confiaure IPv4"
+            text: currentModel.Name +" "+ i18n(" Confiaure IPv4")
         }
 
-        Image {
+        Kirigami.JIconButton {
             id: confirmIcon
 
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            anchors.rightMargin: 68 * appScale
+            anchors.rightMargin: 31 * appScale
 
-            width: 34 * appScale
-            height: 34 * appScale
+            width: 40 * appScale + 10
+            height: 22 * appScale + 10
 
-            source: "qrc:/image/pwd_confirm.png"
+            enabled: isConfigChanged
+
+            Text{
+                anchors.centerIn: parent
+                
+                font.pixelSize: 17
+                text: i18n("Save")
+                color: confirmIcon.enabled ? "#FF3C4BE8" : "#2E000000"
+            }
+            //source: "qrc:/image/pwd_confirm.png"
 
             MouseArea {
                 anchors.fill: parent
@@ -126,14 +137,14 @@ Rectangle {
 
         anchors {
             top: topItem.bottom
-            topMargin: 42 * appScale
+            topMargin: 31 * appScale
             horizontalCenter: parent.horizontalCenter
         }
 
         width: preferWidth
         height: listView.height
 
-        radius: 15 * appScale
+        radius: 10 * appScale
         color: "white"
 
         ListView {
@@ -151,13 +162,14 @@ Rectangle {
 
                 imgPath: "qrc:/image/select_blue.png"
                 arrowVisible: index == selectIndex
-                titleName: model.displayName
+                titleName: i18n(model.displayName)
                 showBottomLine: index == listView.count - 1 ? false : true
 
                 MouseArea {
                     anchors.fill: parent
 
                     onClicked: {
+                        isConfigChanged = true
                         selectIndex = index
                         wifi_root.selectIpv4Method(model.displayName)
                     }
@@ -168,10 +180,10 @@ Rectangle {
         SwitchItem {
             anchors {
                 top: listView.bottom
-                topMargin: 39 * appScale
+                topMargin: 24 * appScale
             }
 
-            radius: 15 * appScale
+            radius: 10 * appScale
             color: "white"
             visible: false
             switchVisible: false
@@ -201,26 +213,26 @@ Rectangle {
             top: routerSetting.bottom
             left: routerSetting.left
             right: routerSetting.right
-            topMargin: 39 * appScale
+            topMargin: 24 * appScale
         }
 
+        spacing: 10 * appScale
         visible: defaultIpv4Method === "Manual"
 
-        Kirigami.Label {
+        Text {
             anchors {
                 left: parent.left
-                leftMargin: 30 * appScale
+                leftMargin: 20 * appScale
             }
-
-            font.pointSize: defaultFontSize - 4
-            text: "Manual IP"
+            font.pixelSize: 14
+            text: i18n("Manual IP")
         }
 
         Rectangle {
             width: parent.width
             height: childrenRect.height
 
-            radius: 15 * appScale
+            radius: 10 * appScale
             color: "white"
 
             Column {
@@ -229,7 +241,7 @@ Rectangle {
                 InputItem {
                     id: ipAddress
 
-                    titleName: "IpAddress "
+                    titleName: i18n("IpAddress")
                     hintText: "0.0.0.0"
                     inputName: currentModel.IpAddress
                 }
@@ -237,7 +249,7 @@ Rectangle {
                 InputItem {
                     id: netMask
 
-                    titleName: "NetMask"
+                    titleName: i18n("NetMask")
                     hintText: "255.255.0.0"
                     inputName: currentModel.SubnetMask
                 }
@@ -245,9 +257,10 @@ Rectangle {
                 InputItem {
                     id: gateWay
                     
-                    titleName: "GateWay"
+                    titleName: i18n("GateWay")
                     hintText: "0.0.0.0"
                     inputName: currentModel.GateWay
+                    showBottomLine: false
                 }
             }
         }

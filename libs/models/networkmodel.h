@@ -89,6 +89,7 @@ public:
         SaveAndActivedRole,
         KeyMgmtTypeRole,
         UpdateItemRole,
+        SavedCountRole
     };
     Q_ENUMS(ItemRole)
 
@@ -96,6 +97,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     QHash<int, QByteArray> roleNames() const override;
+    Q_INVOKABLE int getSavedCount() const;
 
 Q_SIGNALS:
     void updateItemChanged(bool state) const;

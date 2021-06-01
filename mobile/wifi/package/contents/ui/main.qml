@@ -33,8 +33,10 @@ Item {
 
     property int rootWidth: parent.width
     property int rootHeigh: parent.height
-    property real appScale: 1.3
-    property int defaultFontSize: theme.defaultFont.pointSize
+    property real appScale: 1
+    //property real appScale: 1.3 * rootWidth / (1920 * 0.7)
+    //property real appRealScale: 1.3 * rootWidth / (1920 * 0.7)
+    property int defaultFontSize: theme.defaultFont.pointSize + 2
     property var currentModel
     property int currentIndex: 0
     property bool apletType: true
@@ -84,6 +86,7 @@ Item {
     }
 
     Component.onCompleted: {
+        kcm.setHandler(handler);
         currenProxyModel.sourceModel.sourceModel.isAllowUpdate = true
     }
 
@@ -152,11 +155,53 @@ Item {
     JDialog {
         id: errorDialog
         
-        title: "Failed to join"
-        centerButtonText: qsTr("OK")
+        title: i18n("Failed to join")
+        centerButtonText: i18n("OK")
 
         onCenterButtonClicked: {
             errorDialog.visible = false
+        }
+    }
+
+    Kirigami.JDialog {
+        id: passwordPop
+
+        property var devicePath
+        property var specificPath
+
+        title: i18n("Enter Password")
+        inputEnable: true
+        showPassword: true
+        leftButtonText: i18n("Cancel")
+        rightButtonText: i18n("Ok")
+
+        onInputTextChanged:{
+            if(inputText.length > 5 ){
+                rightButtonEnable = true
+            }else{
+                rightButtonEnable = false
+            }
+            if(inputText.length > 32){
+                passwordPop.inputText = inputText.substring(0,32)
+            }
+        }
+
+        onRightButtonClicked: {
+
+            if(passwordPop.inputText.length > 5){
+                if (networkStatus.networkStatus == "Connecting") {
+                handler.removeConnection(
+                            editorProxyModel.currentConnectingdPath)
+                }
+                handler.addAndActivateConnection(passwordPop.devicePath,
+                                                passwordPop.specificPath,
+                                                passwordPop.inputText)
+                passwordPop.visible = false
+            }
+        }
+        
+        onLeftButtonClicked: {
+            passwordPop.visible = false
         }
     }
 

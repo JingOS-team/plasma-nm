@@ -35,7 +35,7 @@ Rectangle {
     property string wifiIconPath: "qrc:/image/signal_full.png"
 
     width: parent.width
-    height: 69 * appScale
+    height: 45 * appScale
    
     radius: bgRadius
     color: bgColor
@@ -45,12 +45,12 @@ Rectangle {
 
         anchors {
             left: parent.left
-            leftMargin: 31 * appScale
+            leftMargin: 20 * appScale
             verticalCenter: parent.verticalCenter
         }
 
-        width: 34 * appScale
-        height: 34 * appScale
+        width: 20 * appScale
+        height: 20 * appScale
 
         visible: loadingType == 2
         source: "qrc:/image/select_blue.png"
@@ -61,12 +61,12 @@ Rectangle {
 
         anchors {
             left: parent.left
-            leftMargin: 31 * appScale
+            leftMargin: 20 * appScale
             verticalCenter: parent.verticalCenter
         }
 
-        width: 34 * appScale
-        height: 34 * appScale
+        width: 22 * appScale
+        height: 22 * appScale
 
         visible: !connectedState.visible
         source: "qrc:/image/loading.png"
@@ -90,7 +90,7 @@ Rectangle {
 
         text: titleName
         color: titleNameColor
-        font.pointSize: defaultFontSize
+        font.pixelSize: 14
     }
 
     MouseArea {
@@ -105,11 +105,11 @@ Rectangle {
         id: wifiDetail
 
         anchors.right: parent.right
-        anchors.rightMargin: 32 * appScale
+        anchors.rightMargin: 14 * appScale
         anchors.verticalCenter: parent.verticalCenter
 
-        width: 34 * appScale
-        height: 34 * appScale
+        width: 22 * appScale
+        height: 22 * appScale
 
         source: "qrc:/image/wifi_detail.png"
 
@@ -126,11 +126,11 @@ Rectangle {
         id: wifiIcon
 
         anchors.right: wifiDetail.left
-        anchors.rightMargin: 17 * appScale
+        anchors.rightMargin: 3 * appScale
         anchors.verticalCenter: parent.verticalCenter
 
-        width: 34 * appScale
-        height: 34 * appScale
+        width: 22 * appScale
+        height: 22 * appScale
 
         source: wifiIconPath
     }
@@ -139,11 +139,11 @@ Rectangle {
         id: wifiLock
 
         anchors.right: wifiIcon.left
-        anchors.rightMargin: 17 * appScale
+        anchors.rightMargin: 3 * appScale
         anchors.verticalCenter: parent.verticalCenter
 
-        width: 34 * appScale
-        height: 34 * appScale
+        width: 22 * appScale
+        height: 22 * appScale
 
         visible: lockIconVisible
         source: "qrc:/image/wifi_lock.png"
@@ -153,12 +153,12 @@ Rectangle {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 31 * appScale
-            rightMargin: 31 * appScale
+            leftMargin: 20 * appScale
+            rightMargin: 20 * appScale
             bottom: parent.bottom
         }
 
         visible: showBottomLine
-        border.color: "#FFE5E5EA"
+        color: "#FFE5E5EA"
     }
 }

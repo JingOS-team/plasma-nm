@@ -33,20 +33,20 @@ Item {
     property string imgPath: "qrc:/image/arrow_right.png"
 
     width: parent.width
-    height: 69 * appScale
+    height: 45 * appScale
 
     Text {
         anchors.left: parent.left
-        anchors.leftMargin: 31 * appScale
+        anchors.leftMargin: 20 * appScale
         anchors.verticalCenter: parent.verticalCenter
         text: titleName
-        font.pointSize: defaultFontSize
+        font.pixelSize: 14
     }
 
     Item {
         anchors {
             right: parent.right
-            rightMargin: 31 * appScale
+            rightMargin: 20 * appScale
         }
 
         height: parent.height
@@ -61,8 +61,8 @@ Item {
                 verticalCenter: parent.verticalCenter
             }
 
-            sourceSize.width: 34 * appScale
-            sourceSize.height: 34 * appScale
+            sourceSize.width: 22 * appScale
+            sourceSize.height: 22 * appScale
 
             visible: arrowVisible
             source: imgPath
@@ -73,6 +73,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
 
             text: selectName
+            font.pixelSize: 14
         }
     }
 
@@ -80,12 +81,13 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 31 * appScale
-            rightMargin: 31 * appScale
+            leftMargin: 20 * appScale
+            rightMargin: 20 * appScale
             bottom: parent.bottom
         }
 
         visible: showBottomLine
-        border.color: "#FFE5E5EA"
+        height: 1
+        color: "#FFE5E5EA"
     }
 }

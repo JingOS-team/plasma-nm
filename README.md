@@ -1,6 +1,6 @@
-# Jing-nm
+# Plasma-nm
 
-Wifi module for jingos-settings.
+wifi module of plasma-settings for JingOS.
 
 
 
@@ -22,15 +22,17 @@ Wifi module for jingos-settings.
   * Icon
   * Picture
   
+* The Plasma-nm that the application handles follow the [ical](https://tools.ietf.org/html/rfc5545) standard.
+
 
 
 ## Links
 
 * Home page: https://www.jingos.com/
 
-* Project page: https://invent.kde.org/plasma/plasma-nm
+* Project page: https://github.com/JingOS-team/plasma-nm
 
-* Issues: https://invent.kde.org/plasma/plasma-nm/-/issues
+* Issues: https://github.com/JingOS-team/plasma-nm/issues
 
 * Development channel: https://forum.jingos.com/
 
@@ -71,8 +73,13 @@ Wifi module for jingos-settings.
 
 
 
+## Build
 
-### Build
+To build Plasma-nm from source on Linux, execute the below commands.
+
+
+
+### Compile
 
 ```
   mkdir build
@@ -82,7 +89,17 @@ Wifi module for jingos-settings.
 ```
 
 
-### Install
+
+#### Run
+
+```
+bin/plasma-settings -m wifi
+bin/plasma-settings -m vpn
+```
+
+
+
+#### Install
 
 ```
 sudo make install

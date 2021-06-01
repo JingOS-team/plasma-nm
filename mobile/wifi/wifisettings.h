@@ -45,6 +45,7 @@ public:
     Q_INVOKABLE bool addOtherConnection(const QString ssid,const QString userName,const QString pwd,const QString type);
     Q_INVOKABLE void addAndActivateConnection(QString devicePath,QString specificPath,QString pwd);
     Q_INVOKABLE void addNoSecurityConnection(QString connectionPath,QString devicePath,QString specificPath);
+    Q_INVOKABLE void setHandler(Handler *handler);
 
 private:
     Handler *m_handler;

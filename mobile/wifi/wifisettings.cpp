@@ -50,6 +50,7 @@ WifiSettings::WifiSettings(QObject* parent, const QVariantList& args) : KQuickAd
 {
     KAboutData* about = new KAboutData("kcm_wifi", i18n("Wi-Fi networks"),
                                        "0.1", QString(), KAboutLicense::LGPL);
+    KLocalizedString::setApplicationDomain("kcm_wifi");
     about->addAuthor(i18n("Martin Kacej"), QString(), "m.kacej@atlas.sk");
     setAboutData(about);
     m_handler->requestScan();
@@ -421,6 +422,11 @@ bool WifiSettings::isExitWiredlessSsid(const QString ssid)
 
 void WifiSettings::onSelectedItemChanged(const QString connectionPath,const QString specificPath,const QString devicePath)
 {
+}
+
+void WifiSettings::setHandler(Handler *handler)
+{
+    m_handler = handler;
 }
 
 #include "wifisettings.moc"

@@ -86,12 +86,19 @@ QVariant KcmIdentityModel::data(const QModelIndex &index, int role) const
 
     if(role == KcmConnectionStateRole) {
         int connectionState = sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt();
+        
         NetworkModelItem::ItemType itemType = (NetworkModelItem::ItemType)sourceModel()->data(index, NetworkModel::ItemTypeRole).toUInt();
-        if (itemType == NetworkModelItem::AvailableConnection) {
-            return "Saved network";
-        }else if(itemType == NetworkModelItem::AvailableAccessPoint){
-            return "Other networks";
+        if((sourceModel()->data(index, NetworkModel::TypeRole) ==  NetworkManager::ConnectionSettings::Wireless) && 
+            !sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString().isEmpty()){
+            return i18n("Saved network");
         }
+        if (itemType == NetworkModelItem::AvailableConnection) {
+            return i18n("Saved network");
+        }else if(itemType == NetworkModelItem::AvailableAccessPoint){
+            return i18n("Other networks");
+        }
+      
+        return i18n("Other networks");
     }
     
     if (role == KcmConnectionIconRole) {
@@ -135,4 +142,3 @@ int KcmIdentityModel::rowCount(const QModelIndex &parent) const
     Q_UNUSED(parent);
     return parent.isValid() ? 0 : sourceModel()->rowCount(parent);
 }
-

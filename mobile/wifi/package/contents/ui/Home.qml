@@ -29,11 +29,12 @@ import org.kde.kcm 1.2
 
 SimpleKCM {
     id: home
-
+    
     property int defaultFontSize: theme.defaultFont.pointSize
     property bool isDisconnected: enabledConnections.wirelessEnabled
                                   & networkStatus.networkStatus == "Disconnected"
     property var currentSelectSsid
+    property var savedNetworkCount: 0 
 
     signal selectedUuidChanged(string uuid)
 
@@ -52,19 +53,21 @@ SimpleKCM {
         color: "#FFF6F9FF"
     }
 
-    Kirigami.Label {
+    Text {
         id: title
 
         anchors {
             top: parent.top
             left: parent.left
-            topMargin: 68 * appScale
-            leftMargin: 72 * appScale
+            topMargin: 48 * appScale
+            leftMargin: 20 * appScale
         }
 
-        font.pointSize: defaultFontSize + 9
+        height: 22 * appScale
+        
+        font.pixelSize: 20
         font.bold: true
-        text: "WLAN"
+        text: i18n("WLAN") 
     }
 
     Rectangle {
@@ -72,16 +75,16 @@ SimpleKCM {
 
         anchors {
             top: title.bottom
-            topMargin: 42 * appScale
+            topMargin: 18 * appScale
             left: parent.left
             right: parent.right
-            rightMargin: 72 * appScale
-            leftMargin: 72 * appScale
+            rightMargin: 20 * appScale
+            leftMargin: 20 * appScale
         }
 
         height: childrenRect.height
 
-        radius: 15 * appScale
+        radius: 10 * appScale
         color: "white"
 
         Item {
@@ -93,26 +96,26 @@ SimpleKCM {
                 right: parent.right
             }
 
-            height: 69 * appScale
+            height: 45 * appScale
 
             Kirigami.Label {
                 anchors.left: parent.left
-                anchors.leftMargin: 31 * appScale
+                anchors.leftMargin: 20 * appScale
                 anchors.verticalCenter: parent.verticalCenter
 
-                text: "WLAN"
-                font.pointSize: defaultFontSize
+                text: i18n("WLAN")
+                font.pixelSize: 17
             }
 
             Kirigami.JSwitch {
                 id: mSwitch
                 
                 anchors.right: parent.right
-                anchors.rightMargin: 18 * appScale
+                anchors.rightMargin: 20 * appScale
                 anchors.verticalCenter: parent.verticalCenter
 
-                width: 68 * appScale
-                height: 40 * appScale
+                implicitWidth: 43 * appScale
+                implicitHeight: 26 * appScale
 
                 checked: enabledConnections.wirelessEnabled
 
@@ -122,6 +125,7 @@ SimpleKCM {
                             handler.enableWireless(checked)
                             handler.requestScan()
                         }
+                        savedNetworkCount =  currenProxyModel.sourceModel.sourceModel.getSavedCount()
                         column.visible = true
                     } else {
                         if (enabledConnections.wirelessEnabled) {
@@ -143,7 +147,8 @@ SimpleKCM {
 
                 visible: mSwitch.checked & networkStatus.networkStatus
                          == "Connecting" | networkStatus.networkStatus == "Connected"
-                border.color: "#FFE5E5EA"
+                color: "#FFE5E5EA"
+                height: 1
             }
         }
 
@@ -159,7 +164,7 @@ SimpleKCM {
                     
                 height: Type == 14 & (networkStatus.networkStatus == "Connecting"
                                       | networkStatus.networkStatus == "Connected")
-                        & mSwitch.checked ? 69 * appScale : 0
+                        & mSwitch.checked ? 45 * appScale : 0
 
                 titleName: Name
                 showBottomLine: false
@@ -202,20 +207,21 @@ SimpleKCM {
         anchors {
             top: wifiSetting.bottom
             bottom: home.bottom
-            topMargin: 28 * appScale
-            bottomMargin: 28 * appScale
+            topMargin: 24 * appScale
+            bottomMargin: 24 * appScale
             left: parent.left
             right: parent.right
-            rightMargin: 72 * appScale
-            leftMargin: 72 * appScale
+            rightMargin: 20 * appScale
+            leftMargin: 20 * appScale
         }
 
         visible: enabledConnections.wirelessEnabled
 
         Item {
             width: parent.width
-            height: 56 * appScale
+            height: 36 * appScale
 
+            visible: false
             Kirigami.Label {
                 id: otherLabel
 
@@ -224,9 +230,8 @@ SimpleKCM {
                     leftMargin: 30 * appScale
                     verticalCenter: parent.verticalCenter
                 }
-
-                font.pointSize: defaultFontSize - 4
-                text: "Nearby network"
+                font.pixelSize: 12
+                text: i18n("Nearby network")
                 color: "#4D000000"
             }
 
@@ -239,8 +244,8 @@ SimpleKCM {
                     verticalCenter: parent.verticalCenter
                 }
 
-                width: 34 * appScale
-                height: 34 * appScale
+                width: 22 * appScale
+                height: 22 * appScale
 
                 visible: isRefreshing
                 source: "qrc:/image/loading.png"
@@ -262,11 +267,10 @@ SimpleKCM {
             id: bottomRect
             
             width: parent.width
-            height: listView.height + otherItem.height
-
-            radius: 15 * appScale
+            //height: listView.height + otherItem.height
+            height: childrenRect.height
+            radius: 10 * appScale
             color: "white"
-
             ListView {
                 id: listView
 
@@ -275,28 +279,29 @@ SimpleKCM {
                 property int contentYOnFlickStarted
 
                 width: parent.width
-                height: listView.count
-                        != 0 ? listView.count
-                               < 8 ? 104 * appScale + listView.count * 69
-                                     * appScale : 104 + 7.2 * 69 * appScale
-                                     + (isDisconnected ? 69 * appScale : 0) : 0
+                height: listView.count != savedNetworkCount ? savedNetworkCount > 0 ? listView.count == 0 ?  0 : listView.count < 7 ? 68 + listView.count * 45 * appScale : 370 * appScale
+                        : listView.count < 8 ? 34 + listView.count * 45 * appScale : 370 * appScale : savedNetworkCount * 45 * appScale + 34
 
+                /*height: listView.count
+                        != 0 ? listView.count
+                               < 8 ?  listView.count * 69 * appScale :  8 * 69 * appScale
+                                     + (isDisconnected ? 69 * appScale : 0) : 0
+                */
                 ScrollBar.vertical: ScrollBar {}
 
                 clip: true
                 model: appletProxyModel
 
                 section.property: "KcmConnectionState"
-                section.delegate: Rectangle {
+                section.delegate: Item {
                     id: sectionRect
 
                     anchors {
                         left: parent.left
-                        leftMargin: 15 * appScale
                     }
 
-                    width: parent.width - 30 * appScale
-                    height: 52 * appScale
+                    width: parent.width - 40 * appScale
+                    height: 34
 
                     Text {
                         id: sectionText
@@ -304,13 +309,42 @@ SimpleKCM {
                         anchors {
                             bottom: parent.bottom
                             left: parent.left
-                            leftMargin: 16 * appScale
-                            bottomMargin: 9 * appScale
+                            leftMargin: 20 * appScale
+                            bottomMargin: 6 * appScale
                         }
 
-                        text: section
+                        text: i18n(section)
                         color: "#4D000000"
-                        font.pointSize: defaultFontSize - 4
+                        font.pixelSize: 12
+                    }
+
+                    Image {
+                        id: loadingState2
+                        
+                        anchors {
+                            left: sectionText.right
+                            leftMargin: 10 * appScale
+                            bottom: parent.bottom
+                            bottomMargin: 2 * appScale
+                            //verticalCenter: parent.verticalCenter
+                        }
+
+                        width: 22 * appScale
+                        height: 22 * appScale
+
+                        visible: isRefreshing
+                        source: "qrc:/image/loading.png"
+
+                        RotationAnimation {
+                            id: scanAnim
+
+                            target: loadingState2
+                            loops: Animation.Infinite
+                            running: true
+                            from: 0
+                            to: 360
+                            duration: 3000
+                        }
                     }
                 }
 
@@ -343,7 +377,7 @@ SimpleKCM {
                     signal detailClicked
                     signal itemClicked(real mouseX, real mouseY)
 
-                    width: parent.width
+                    width: listView.width
 
                     titleName: model.Name
                     showBottomLine: true
@@ -387,38 +421,29 @@ SimpleKCM {
                         if (model.SecurityType == -1) {
                             wifi_root.currentModel = model
                             wifi_root.currentIndex = index
-                            kcm.addNoSecurityConnection(model.ConnectionPath,
-                                                        model.DevicePath,
-                                                        model.SpecificPath)
+                            kcm.addNoSecurityConnection(connectionPath,
+                                                        devicePath,
+                                                        specificPath)
                             return;
                         }
 
                         if (model.ItemType == 1 | model.SecurityType == 0) {
                             wifi_root.currentModel = model
                             wifi_root.currentIndex = index
-                            handler.activateConnection(model.ConnectionPath,
-                                                       model.DevicePath,
-                                                       model.SpecificPath)
+                            handler.activateConnection(connectionPath,
+                                                       devicePath,
+                                                       specificPath)
                         } else if (ItemType == 2) {
                             currentSelectSsid = model.Ssid
                             wifi_root.currentModel = model
                             wifi_root.currentIndex = index
                             apletType = true
 
-                            passwordPop.wifiName = model.Name
+                            passwordPop.inputText = ""
                             passwordPop.devicePath = model.DevicePath
                             passwordPop.specificPath = model.SpecificPath
-                            passwordPop.echoMode = TextInput.Password
-
-                            var jx = mapToItem(listView, mouseX, mouseY)
-                            var jh = mapToItem(home, mouseX, mouseY)
-                            passwordPop.x = wifiItem.x + 16 * appScale
-
-                            if (jh.y + passwordPop.height + 10 < rootHeigh) {
-                                passwordPop.y = jx.y
-                            } else {
-                                passwordPop.y = jx.y - passwordPop.height
-                            }
+                            passwordPop.text = i18n("Enter the password for”%1”",model.Name);
+                            passwordPop.rightButtonEnable = false
                             passwordPop.visible = true
                         }
                     }
@@ -427,12 +452,12 @@ SimpleKCM {
 
             WifiItem {
                 id: otherItem
-
+                
                 anchors.top: listView.bottom
 
                 width: parent.width
 
-                titleName: "Add other…"
+                titleName: i18n("Add other")+"..."
                 titleNameColor: "#FF3C4BE8"
                 iconVisible: false
 
@@ -462,42 +487,6 @@ SimpleKCM {
             if (ssid == currentSelectSsid) {
                 passwordPop.visible = false
             }
-        }
-    }
-
-    JInputDialog {
-        id: passwordPop
-
-        parent: listView
-        title: "Enter Password"
-        focus: true
-        echoMode: TextInput.Password
-
-        onCancelButtonClicked: {
-            passwordPop.visible = false
-        }
-
-        onOkButtonClicked: {
-            if (networkStatus.networkStatus == "Connecting") {
-                handler.removeConnection(
-                            editorProxyModel.currentConnectingdPath)
-            }
-            handler.addAndActivateConnection(passwordPop.devicePath,
-                                             passwordPop.specificPath,
-                                             passwordPop.inputText)
-            passwordPop.visible = false
-        }
-
-        onEnteredClick: {
-            if (networkStatus.networkStatus == "Connecting") {
-                handler.removeConnection(
-                            editorProxyModel.currentConnectingdPath)
-            }
-            
-            handler.addAndActivateConnection(passwordPop.devicePath,
-                                             passwordPop.specificPath,
-                                             passwordPop.inputText)
-            passwordPop.visible = false
         }
     }
 }
