@@ -179,6 +179,8 @@ QVariant NetworkModel::data(const QModelIndex &index, int role) const
                 return item->password();
             case KeyMgmtTypeRole:
                 return item->keyMgmtType();
+            case SavedCountRole:
+                return getSavedCount();
 
             default:
                 break;
@@ -238,6 +240,8 @@ QHash<int, QByteArray> NetworkModel::roleNames() const
     roles[SaveAndActivedRole] = "SaveAndActived";
     roles[KeyMgmtTypeRole] = "KeyMgmtType";
     roles[UpdateItemRole] = "UpdateItem";
+    roles[SavedCountRole] = "SavedCount";
+    
 
     return roles;
 }
@@ -1212,5 +1216,20 @@ void NetworkModel::setAllowUpdate(const bool state)
 {
     m_isAllowUpdate = state;
     Q_EMIT updateItemChanged(m_isAllowUpdate);
+}
+
+int NetworkModel::getSavedCount() const
+{
+    int count = 0;
+    for (int row = 0; row < m_list.count(); row++) {
+         NetworkModelItem *item = m_list.itemAt(row);
+       
+        if(item->type() == NetworkManager::ConnectionSettings::Wireless && 
+           !item->connectionPath().isEmpty() && item->connectionState() != NetworkManager::ActiveConnection::Activated){
+            count ++;
+        }
+    }
+    
+    return count;
 }
 

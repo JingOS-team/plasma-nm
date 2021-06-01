@@ -33,30 +33,32 @@ Item {
     property var titleName: ""
     property bool inputFocus: false
     property var inputEchoMode: TextInput.Normal
+    property bool clearEnable: false
 
     signal enteredClick
+    signal textChanged(var txt)
 
     width: parent.width
-    height: 69 * appScale
+    height: 45 * appScale
 
     RegExpValidator {
         id: ipValidator
         regExp: /^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$/
     }
 
-    Kirigami.Label {
+    Text {
         id: label
 
         anchors {
             left: parent.left
-            leftMargin: 31 * appScale
+            leftMargin: 20 * appScale
             verticalCenter: parent.verticalCenter
         }
 
-        width: 120 * appScale
+        width: 89 * appScale
 
         text: titleName
-        font.pointSize: defaultFontSize
+        font.pixelSize: 14
         visible: isTitleNameShow
     }
 
@@ -65,19 +67,19 @@ Item {
 
         anchors {
             left: isTitleNameShow ? label.right : parent.left
-            leftMargin: isTitleNameShow ? 0 : 31 * appScale
-            right: parent.right
-            rightMargin: 31 * appScale
+            leftMargin: isTitleNameShow ? 0 : 20 * appScale
+            right: clearEnable ? img_pwd.left : parent.right
+            rightMargin: 20 * appScale
             verticalCenter: parent.verticalCenter
         }
-
+        
         placeholderText: hintText
         text: inputName
         wrapMode: TextInput.WordWrap
         echoMode: inputEchoMode
         passwordMaskDelay: 500
         validator: ipValid ? ipValidator : ""
-        font.pointSize: defaultFontSize
+        font.pixelSize: 14
 
         background: Rectangle {
             color: "transparent"
@@ -85,6 +87,62 @@ Item {
 
         onAccepted: {
             root.enteredClick()
+        }
+
+        onTextChanged:{
+            root.textChanged(textFiled.text)
+        }
+    }
+
+    Image{
+        id: img_pwd
+
+        anchors {
+            right:img_clear.left
+            rightMargin: 8 * appScale
+            verticalCenter:parent.verticalCenter
+        }
+        
+        width: 22
+        height: 22
+
+        visible: clearEnable  
+        source: textFiled.echoMode == TextInput.Password ? "qrc:/image/pwd_hidden.png" : "qrc:/image/pwd_visible.png"
+        MouseArea{
+            
+            anchors.fill: parent
+            onClicked: {
+                if(textFiled.echoMode == TextInput.Password){
+                    textFiled.echoMode = TextInput.Normal
+                }else{
+                    textFiled.echoMode = TextInput.Password
+                }
+            }
+            
+        }
+    
+    }
+
+    Image{
+        id: img_clear
+
+        anchors {
+            right:parent.right
+            rightMargin: 20 * appScale
+            verticalCenter:parent.verticalCenter
+        }
+        
+        width: 22
+        height: 22
+        source: "qrc:/image/txt_close.png"
+
+        visible: clearEnable && textFiled.text.length > 0
+        MouseArea{
+            
+            anchors.fill: parent
+            onClicked: {
+                textFiled.text = ""
+            }
         }
     }
 
@@ -94,12 +152,13 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 31 * appScale
-            rightMargin: 31 * appScale
+            leftMargin: 20 * appScale
+            rightMargin: 20 * appScale
             bottom: parent.bottom
         }
 
-        border.color: "#FFE5E5EA"
+        height: 1
+        color: "#FFE5E5EA"
     }
     
     Component.onCompleted: {

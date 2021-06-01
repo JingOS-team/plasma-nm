@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+	 <file alias="main.qml">package/contents/ui/main.qml</file>
+        <file alias="Home.qml">package/contents/ui/Home.qml</file>
+        <file alias="VPNDetails.qml">package/contents/ui/VPNDetails.qml</file>
+        <file alias="AddConfig.qml">package/contents/ui/AddConfig.qml</file>
+        <file alias="EditConfig.qml">package/contents/ui/EditConfig.qml</file>
+        
+    </qresource>
+    <qresource prefix="/package/contents/image">
+       <file alias="icon_confirm.png">package/contents/image/icon_confirm.png</file>
+	<file alias="confirm_disable.png">package/contents/image/confirm_disable.png</file>
+    </qresource>
+</RCC>

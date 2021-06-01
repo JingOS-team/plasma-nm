@@ -28,13 +28,17 @@ EditorProxyModel::EditorProxyModel(QObject *parent)
     setDynamicSortFilter(true);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     NetworkManager::ActiveConnection::Ptr activeConnection = NetworkManager::primaryConnection();
-        if (activeConnection && activeConnection->isValid()) {
+    if(activeConnection){
+        NetworkManager::ConnectionSettings::ConnectionType type = activeConnection->type();
+        if ((type == NetworkManager::ConnectionSettings::Wireless) && activeConnection && activeConnection->isValid()) {
             NetworkManager::Connection::Ptr selectedConnection = activeConnection->connection();
             m_connectedName = selectedConnection->name();
             m_connectedPath =  selectedConnection->path();
             Q_EMIT connectedNameChanged(m_connectedName);
             Q_EMIT connectedPathChanged(m_connectedPath);          
+        }
     }
+    connect(NetworkManager::notifier(), &NetworkManager::Notifier::statusChanged, this, &EditorProxyModel::statusChanged);
 }
 
 EditorProxyModel::~EditorProxyModel()
@@ -52,13 +56,14 @@ bool EditorProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
     if (isSlave || isDuplicate) {
         return false;
     }
-    
-    if(sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activating){
+
+    const NetworkManager::ConnectionSettings::ConnectionType connType = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();
+    if(connType == NetworkManager::ConnectionSettings::Wireless && sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activating){
         m_connectingPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
         Q_EMIT currentConnectingdPathChanged(m_connectingPath);
     }
-    
-    if(sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated){
+
+    if(connType == NetworkManager::ConnectionSettings::Wireless && sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated){
         m_connectedName = sourceModel()->data(index, NetworkModel::NameRole).toString();
         m_connectedPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
         
@@ -75,6 +80,7 @@ bool EditorProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
     if (itemType == NetworkModelItem::AvailableAccessPoint) {
         return false;
     }
+   
 
     const QString pattern = filterRegExp().pattern();
     if (!pattern.isEmpty()) {  // filtering on data (connection name), wildcard-only
@@ -132,5 +138,15 @@ bool EditorProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
         return true;
     } else {
         return false;
+    }
+}
+
+void EditorProxyModel::statusChanged(NetworkManager::Status status)
+{
+    if(status == NetworkManager::Disconnected){
+        m_connectedName = "";
+        m_connectedPath =  "";
+        Q_EMIT connectedNameChanged("");
+        Q_EMIT connectedPathChanged(""); 
     }
 }

@@ -181,18 +181,10 @@ Popup {
                     }
                 }
 
-                background: Item {
+                background: Rectangle {
                     width: parent.width
                     height: parent.height
-
-                    Rectangle {
-                        anchors.bottom: parent.bottom
-
-                        width: parent.width
-                        height: 1
-
-                        color: "#EEE5E5EA"
-                    }
+                    color: "transparent"
                 }
 
                 cursorDelegate: Rectangle {
@@ -226,6 +218,16 @@ Popup {
                         onFocusChanged: cursorBg.visible = focus
                     }
                 }
+            }
+            Rectangle {
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: units.gridUnit * 1.4
+
+                width: parent.width
+                height: 1
+
+                color: "#EEE5E5EA"
             }
         }
     }

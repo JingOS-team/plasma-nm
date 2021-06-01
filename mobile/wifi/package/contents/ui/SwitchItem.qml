@@ -35,7 +35,7 @@ Rectangle {
     signal autoConnectChecked(bool checked)
 
     width: parent.width
-    height: 69 * appScale
+    height: 45 * appScale
 
     color: "transparent"
 
@@ -44,12 +44,12 @@ Rectangle {
 
         anchors {
             left: parent.left
-            leftMargin: 31 * appScale
+            leftMargin: 20 * appScale
             verticalCenter: parent.verticalCenter
         }
 
-        width: 34 * appScale
-        height: 34 * appScale
+        width: 22 * appScale
+        height: 22 * appScale
 
         visible: isConnecting
         source: "qrc:/image/loading.png"
@@ -68,11 +68,11 @@ Rectangle {
 
     Kirigami.Label {
         anchors.left: isConnecting ? loadingState.right : parent.left
-        anchors.leftMargin: isConnecting ? 10 * appScale : 31 * appScale
+        anchors.leftMargin: isConnecting ? 10 * appScale : 20 * appScale
         anchors.verticalCenter: parent.verticalCenter
 
         text: titleName
-        font.pointSize: defaultFontSize
+        font.pixelSize: 14
         color: titleColor
     }
 
@@ -80,11 +80,11 @@ Rectangle {
         id: mSwitch
 
         anchors.right: parent.right
-        anchors.rightMargin: 18 * appScale
+        anchors.rightMargin: 20 * appScale
         anchors.verticalCenter: parent.verticalCenter
 
-        width: 68 * appScale
-        height: 40 * appScale
+        width: 43 * appScale
+        height: 20 * appScale
 
         visible: switchVisible
         checked: switchChecked
@@ -98,12 +98,13 @@ Rectangle {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 31 * appScale
-            rightMargin: 31 * appScale
+            leftMargin: 20 * appScale
+            rightMargin: 20 * appScale
             bottom: parent.bottom
         }
 
         visible: showBottomLine
-        border.color: "#FFE5E5EA"
+        color: "#FFE5E5EA"
+        height: 1
     }
 }

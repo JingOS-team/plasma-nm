@@ -24,12 +24,12 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
 
-SimpleKCM {
+Item {
     id: root
 
     property int defaultFontSize: theme.defaultFont.pointSize
     property int preferWidth: 934 * appScale
-    property int preferHeigh: 69 * appScale
+    property int preferHeigh: 45 * appScale
     property int selectIndex: 0
     property var securityType: "WPA/WPA2"
     property bool isTypeNone: false
@@ -48,11 +48,11 @@ SimpleKCM {
             anchors {
                 left: parent.left
                 top: parent.top
-                leftMargin: 18 * appScale
-                topMargin: 68 * appScale
+                leftMargin: 14 * appScale
+                topMargin: 48 * appScale
             }
 
-            height: 36 * appScale
+            height: 20 * appScale
             width: parent.width
 
             Image {
@@ -61,8 +61,8 @@ SimpleKCM {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
 
-                width: 34 * appScale
-                height: 34 * appScale
+                width: 22 * appScale
+                height: 22 * appScale
 
                 source: "qrc:/image/arrow_left.png"
 
@@ -80,13 +80,13 @@ SimpleKCM {
 
                 anchors {
                     left: backIcon.right
-                    leftMargin: 15 * appScale
+                    leftMargin: 10 * appScale
                     verticalCenter: parent.verticalCenter
                 }
 
-                font.pointSize: defaultFontSize + 9
+                font.pixelSize: 20
                 font.bold: true
-                text: "Other Network"
+                text: i18n("Other Network")
             }
 
             Kirigami.JIconButton {
@@ -94,14 +94,21 @@ SimpleKCM {
 
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.rightMargin: 68 * appScale
+                anchors.rightMargin: 31 * appScale
 
-                width: 34 * appScale
-                height: 34 * appScale
+                width: 40 * appScale + 10
+                height: 22 * appScale + 10
 
-                source: !enabled ? "qrc:/image/pwd_confirm.png" : "qrc:/image/select_blue.png"
                 enabled: networkNameInput.inputName.length > 0
                          & (passwordInput.inputName.length > 7 | securityType == "None")
+
+                Text{
+                    anchors.centerIn: parent
+                    
+                    font.pixelSize: 17
+                    text: i18n("Join")
+                    color: confirmIcon.enabled ? "#FF3C4BE8" : "#2E000000"
+                }
 
                 MouseArea {
                     anchors.fill: parent
@@ -124,27 +131,29 @@ SimpleKCM {
                 top: topItem.bottom
                 left: parent.left
                 right: parent.right
-                topMargin: 42 * appScale
-                leftMargin: 68 * appScale
-                rightMargin: 68 * appScale
+                topMargin: 31 * appScale
+                leftMargin: 20 * appScale
+                rightMargin: 20 * appScale
             }
+
+            spacing: 24 * appScale
 
             Rectangle {
                 width: parent.width
                 height: preferHeigh
 
-                radius: 15 * appScale
+                radius: 10 * appScale
                 color: "white"
 
                 NormalInputItem {
                     id: networkNameInput
 
                     ipValid: false
-                    titleName: "Name"
+                    titleName: i18n("Name")
                     showBottomLine: false
                     isTitleNameShow: true
                     inputFocus: true
-                    hintText: "Network Name"
+                    hintText: i18n("Network Name")
 
                     onEnteredClick: {
                         if (confirmIcon.enabled) {
@@ -160,18 +169,13 @@ SimpleKCM {
                 }
             }
 
-            Item {
-                width: parent.width
-                height: 37 * appScale
-            }
-
             Rectangle {
                 id: rect
 
                 width: parent.width
                 height: childrenRect.height
 
-                radius: 15 * appScale
+                radius: 10 * appScale
 
                 Column {
                     width: rect.width
@@ -181,7 +185,7 @@ SimpleKCM {
 
                         signal itemSelect(var type)
 
-                        titleName: "Security"
+                        titleName: i18n("Security")
                         arrowVisible: true
                         showBottomLine: !isTypeNone
                         selectName: "WPA/WPA2"
@@ -206,10 +210,10 @@ SimpleKCM {
 
                         ipValid: false
                         visible: !isTypeNone & securityType == "WEP"
-                        titleName: "UserName"
+                        titleName: i18n("UserName")
                         showBottomLine: true
                         isTitleNameShow: true
-                        hintText: "input username"
+                        hintText: i18n("input username")
                     }
 
                     NormalInputItem {
@@ -217,11 +221,12 @@ SimpleKCM {
 
                         ipValid: false
                         visible: !isTypeNone
-                        titleName: "Password"
+                        titleName: i18n("Password")
                         showBottomLine: false
                         isTitleNameShow: true
-                        hintText: "input password"
+                        hintText: i18n("input password")
                         inputEchoMode: TextInput.Password
+                        clearEnable: true
 
                         onEnteredClick: {
                             if (confirmIcon.enabled) {
@@ -265,7 +270,7 @@ SimpleKCM {
         SecurityListView {
             id: securityListView
             
-            x: parent.width - 369 * appScale
+            x: parent.width - securityListView.width
             y: -30 * appScale
 
             parent: passwordInput

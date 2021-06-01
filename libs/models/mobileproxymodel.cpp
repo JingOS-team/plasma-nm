@@ -60,8 +60,18 @@ bool MobileProxyModel::filterAcceptsRow(int source_row, const QModelIndex& sourc
 
     NetworkModelItem::ItemType itemType = (NetworkModelItem::ItemType)sourceModel()->data(index, NetworkModel::ItemTypeRole).toUInt();
 
-    if (itemType != NetworkModelItem::AvailableConnection &&
+     if (itemType != NetworkModelItem::AvailableConnection &&
         itemType != NetworkModelItem::AvailableAccessPoint) {
+            QString connectionPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
+            NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(connectionPath);
+            if(connection){
+                NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
+                if(connectionSettings->connectionType() == NetworkManager::ConnectionSettings::Wireless){
+                    
+                    return true;
+                }
+            }
+        
         return false;
     }
 

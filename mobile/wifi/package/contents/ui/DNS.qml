@@ -19,7 +19,7 @@
 
 import org.kde.kcm 1.2 as KCM
 import QtQuick 2.7
-import org.kde.kirigami 2.10 as Kirigami
+import org.kde.kirigami 2.15 as Kirigami
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
@@ -28,9 +28,10 @@ Rectangle {
     id: root
 
     property int defaultFontSize: theme.defaultFont.pointSize
-    property int preferWidth: 934 * appScale
-    property int preferHeigh: 69 * appScale
+    property int preferWidth: root.width - 40 * appScale
+    property int preferHeigh: 45 * appScale
     property int selectIndex: 0
+    property bool isConfigChanged: false
 
     color: "#FFF6F9FF"
 
@@ -47,13 +48,14 @@ Rectangle {
 
         anchors {
             left: parent.left
+            right:  parent.right
             top: parent.top
-            leftMargin: 18 * appScale
-            topMargin: 68 * appScale
+            leftMargin: 14 * appScale
+            topMargin: 48 * appScale
         }
 
-        height: 36 * appScale
-        width: parent.width
+        height: 20 * appScale
+        //width: parent.width
 
         Image {
             id: backIcon
@@ -61,8 +63,8 @@ Rectangle {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            width: 34 * appScale
-            height: 34 * appScale
+            width: 22 * appScale
+            height: 22 * appScale
 
             source: "qrc:/image/arrow_left.png"
 
@@ -80,41 +82,46 @@ Rectangle {
 
             anchors {
                 left: backIcon.right
-                leftMargin: 15 * appScale
+                leftMargin: 10 * appScale
                 verticalCenter: parent.verticalCenter
             }
 
-            font.pointSize: defaultFontSize + 9
+            font.pixelSize: 14
             font.bold: true
-            text: currentModel.Name + " DNS"
+            text: currentModel.Name + i18n(" DNS")
         }
 
-        Image {
+        Kirigami.JIconButton {
             id: confirmIcon
 
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            anchors.rightMargin: 68 * appScale
+            anchors.rightMargin: 25 * appScale
 
-            width: 34 * appScale
-            height: 34 * appScale
+            width: 40 * appScale + 10
+            height: 22 * appScale + 10
 
-            source: "qrc:/image/pwd_confirm.png"
+            enabled : isConfigChanged
 
-            MouseArea {
-                anchors.fill: parent
-
-                onClicked: {
-                    if (defaultDnsMethod === "Automatic") {
-                        currentModel.Router = "Automatic"
-                        currentModel.UpdateConnect = "update"
-                    } else if (defaultDnsMethod === "Manual") {
-                        currentModel.Router = "Manual"
-                        currentModel.NameServer = dnsServer.inputName
-                        currentModel.DNSSearch = dnsSearch.inputName
-                        currentModel.UpdateConnect = "update"
-                    }
+            Text{
+                anchors.centerIn: parent
+                
+                font.pixelSize: 17
+                text: i18n("Save")
+                color: confirmIcon.enabled ? "#FF3C4BE8" : "#2E000000"
+            }
+            
+            onClicked: {
+                if (defaultDnsMethod === "Automatic") {
+                    currentModel.Router = "Automatic"
+                    currentModel.UpdateConnect = "update"
+                } else if (defaultDnsMethod === "Manual") {
+                    currentModel.Router = "Manual"
+                    currentModel.NameServer = dnsServer.inputName
+                    currentModel.DNSSearch = dnsSearch.inputName
+                    currentModel.UpdateConnect = "update"
                 }
+                wifi_root.popView()
             }
         }
     }
@@ -122,7 +129,7 @@ Rectangle {
     Rectangle {
         anchors {
             top: topItem.bottom
-            topMargin: 42 * appScale
+            topMargin: 31 * appScale
             horizontalCenter: parent.horizontalCenter
         }
 
@@ -130,7 +137,7 @@ Rectangle {
         height: listView.height
 
         color: "white"
-        radius: 15 * appScale
+        radius: 10 * appScale
         
         ListView {
             id: listView
@@ -145,13 +152,14 @@ Rectangle {
                 
                 imgPath: "qrc:/image/select_blue.png"
                 arrowVisible: index == selectIndex
-                titleName: model.displayName
+                titleName: i18n(model.displayName)
                 showBottomLine: index == listView.count - 1 ? false : true
 
                 MouseArea {
                     anchors.fill: parent
 
                     onClicked: {
+                        isConfigChanged = true
                         selectIndex = index
                         wifi_root.selectDnsMethod(model.displayName)
                     }
@@ -164,35 +172,41 @@ Rectangle {
 
             anchors {
                 top: listView.bottom
-                topMargin: 39 * appScale
+                topMargin: 24 * appScale
             }
 
             width: preferWidth
 
-            spacing: 18 * appScale
+            spacing: 10 * appScale
 
-            Kirigami.Label {
+            Text {
                 anchors {
                     left: parent.left
-                    leftMargin: 31 * appScale
+                    leftMargin: 20 * appScale
                 }
 
-                text: "DNS Servers"
+                text: i18n("DNS Servers")
                 color: "#4D000000"
-                font.pointSize: defaultFontSize - 4
+                font.pixelSize: 12
             }
 
             Rectangle {
                 width: preferWidth
                 height: preferHeigh
 
-                radius: 15 * appScale
+                radius: 10 * appScale
 
                 NormalInputItem {
                     id: dnsServer
 
                     inputName: currentModel.NameServer
                     showBottomLine: false
+                    onTextChanged:{
+                        if(txt != currentModel.NameServer){
+                            isConfigChanged = true
+                        }
+                        
+                    }
                 }
             }
         }
@@ -200,7 +214,7 @@ Rectangle {
         Column {
             anchors {
                 top: dnsServerColumn.bottom
-                topMargin: 39 * appScale
+                topMargin: 24 * appScale
             }
 
             width: preferWidth
@@ -208,22 +222,22 @@ Rectangle {
             spacing: 18 * appScale
             visible: wifi_root.defaultDnsMethod === "Manual"
 
-            Kirigami.Label {
+            Text {
                 anchors {
                     left: parent.left
-                    leftMargin: 31 * appScale
+                    leftMargin: 20 * appScale
                 }
 
-                text: "Search Domains"
+                text: i18n("Search Domains")
                 color: "#4D000000"
-                font.pointSize: defaultFontSize - 4
+                font.pixelSize: 12
             }
 
             Rectangle {
                 width: preferWidth
                 height: preferHeigh
 
-                radius: 15 * appScale
+                radius: 10 * appScale
 
                 NormalInputItem {
                     id: dnsSearch

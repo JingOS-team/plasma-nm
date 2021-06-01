@@ -49,6 +49,9 @@ Q_SIGNALS:
     void connectedNameChanged(QString name) const;
     void connectedPathChanged(QString path) const;
     void currentConnectingdPathChanged(QString path) const;
+    
+private Q_SLOTS:
+    void statusChanged(NetworkManager::Status status);
 
 private:
     mutable QString m_connectedName = "";

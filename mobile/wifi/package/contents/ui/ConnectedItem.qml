@@ -29,8 +29,8 @@ Rectangle {
     id: root
 
     property int defaultFontSize: theme.defaultFont.pointSize
-    property int preferWidth: 934 * appScale
-    property int preferHeigh: 69 * appScale
+    property int preferWidth: root.width - 40 * appScale
+    property int preferHeigh: 45 * appScale
     property bool isConnected: currentModel.ConnectionState == PlasmaNM.Enums.Activated
     property var currentName: currentModel.Name
     property bool isOperator: false
@@ -68,12 +68,12 @@ Rectangle {
         anchors {
             left: parent.left
             top: parent.top
-            leftMargin: 18 * appScale
-            topMargin: 68 * appScale
+            leftMargin: 14 * appScale
+            topMargin: 48 * appScale
         }
 
-        height: 36 * appScale
         width: childrenRect.width
+        height: 20 * appScale
 
         Image {
             id: backIcon
@@ -81,8 +81,8 @@ Rectangle {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            width: 34 * appScale
-            height: 34 * appScale
+            width: 22 * appScale
+            height: 22 * appScale
 
             source: "qrc:/image/arrow_left.png"
 
@@ -101,11 +101,11 @@ Rectangle {
 
             anchors {
                 left: backIcon.right
-                leftMargin: 15 * appScale
+                leftMargin: 11 * appScale
                 verticalCenter: parent.verticalCenter
             }
 
-            font.pointSize: defaultFontSize + 9
+            font.pixelSize: 20
             font.bold: true
             text: wifiName
         }
@@ -117,8 +117,8 @@ Rectangle {
         anchors {
             top: topItem.bottom
             bottom: root.bottom
-            topMargin: 42 * appScale
-            bottomMargin: 37 * appScale
+            topMargin: 31 * appScale
+            bottomMargin: 20 * appScale
             horizontalCenter: root.horizontalCenter
         }
 
@@ -128,7 +128,7 @@ Rectangle {
         ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
         Column {
-            spacing: 37 * appScale
+            spacing: 24 * appScale
 
             Row {
                 width: preferWidth
@@ -141,14 +141,14 @@ Rectangle {
 
                     anchors.fill: parent
 
-                    radius: 15 * appScale
+                    radius: 10 * appScale
                     color: "white"
 
                     SwitchItem {
                         id: connectItem
 
                         titleName: (!isConnectedSuccess
-                                    & isConnectting) ? "On Connection" : "Connect"
+                                    & isConnectting) ? i18n("On Connection") : i18n("Connect")
                         titleColor: isConnectedSuccess ? "#FF3C4BE8" : isConnectting ? "#FFA8A8AC" : "#FF3C4BE8"
                         isConnecting: isConnectedSuccess ? false : isConnectting
                         switchVisible: false
@@ -171,18 +171,20 @@ Rectangle {
                 width: preferWidth
                 height: preferHeigh
 
+                visible:isConnectedSuccess | !isConnectting
+
                 Rectangle {
                     id: forgetWifi
 
                     anchors.fill: parent
 
-                    radius: 15 * appScale
+                    radius: 10 * appScale
                     color: "white"
 
                     SwitchItem {
                         id: networkStateItem
 
-                        titleName: isConnectedSuccess ? "Forget This Network" : (currentModel.ItemType == 1) | isConnected ? "Forget This Network" : "Join This Network"
+                        titleName: isConnectedSuccess ? i18n("Forget This Network") : (currentModel.ItemType == 1) | isConnected ? i18n("Forget This Network") : i18n("Join This Network")
                         titleColor: "#FF3C4BE8"
                         switchVisible: false
 
@@ -191,22 +193,22 @@ Rectangle {
 
                             onClicked: {
 
-                                if (networkStateItem.titleName == "Forget This Network") {
-                                    if (nameEquals) {
-                                        connectionPath = connectiontedPath
-                                    }
-                                    handler.removeConnection(connectionPath)
-                                    handler.requestScan()
-                                    //currenProxyModel.sourceModel.sourceModel.isAllowUpdate = true
-                                    wifi_root.popView()
-                                } else if (networkStateItem.titleName == "Join This Network") {
+                                if (networkStateItem.titleName == i18n("Forget This Network")) {
+                                    deleteDialog.visible = true
+                                } else if (networkStateItem.titleName == i18n("Join This Network")) {
+
                                     isOperator = true
-                                    passwordPop.echoMode = TextInput.Password
-                                    passwordPop.wifiName = wifiName
                                     passwordPop.devicePath = devicePath
                                     passwordPop.specificPath = specificPath
-                                    passwordPop.visible = true
+                                    passwordPop.text = i18n("Enter the password for”%1”",currentName);
                                     isConnecttingFailed = false
+                                    if(currentModel.SecurityType == -1 | currentModel.SecurityType == 0){
+                                        kcm.addNoSecurityConnection(connectionPath,
+                                                        devicePath,
+                                                        specificPath)
+                                                       return;
+                                    }
+                                    passwordPop.visible = true
                                 }
                             }
                         }
@@ -223,11 +225,11 @@ Rectangle {
                 Rectangle {
                     anchors.fill: parent
 
-                    radius: 15 * appScale
+                    radius: 10 * appScale
                     color: "white"
 
                     SwitchItem {
-                        titleName: "Auto-Join"
+                        titleName: i18n("Auto-Join")
                         switchChecked: currentModel.Autoconnect
 
                         onAutoConnectChecked: {
@@ -242,18 +244,18 @@ Rectangle {
             Column {
                 width: preferWidth
 
-                spacing: 12 * appScale
+                spacing: 4 * appScale
                 visible: false
                 
                 Rectangle {
                     width: preferWidth
                     height: preferHeigh
                     
-                    radius: 15 * appScale
+                    radius: 10 * appScale
                     color: "white"
 
                     SwitchItem {
-                        titleName: "Low Kata Mode "
+                        titleName: i18n("Low Kata Mode ")
                         switchChecked: false
                     }
                 }
@@ -261,39 +263,39 @@ Rectangle {
                 Kirigami.Label {
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    width: 875 * appScale
+                    width: 563 * appScale
 
                     wrapMode: Text.WordWrap
-                    font.pointSize: defaultFontSize - 4
+                    font.pixelSize: 12
                     color: "#4D000000"
-                    text: "Low Data Mode helps reduce your pad data usage over your cellular network or specific WLAN networks you select.When Low Data Mode is turned on,automatic updates and background tasks,such as Photos syncing,are paused."
+                    text: i18n("Low Data Mode helps reduce your pad data usage over your cellular network or specific WLAN networks you select.When Low Data Mode is turned on,automatic updates and background tasks,such as Photos syncing,are paused.")
                 }
             }
 
             Column {
                 width: preferWidth
 
-                spacing: 12 * appScale
+                spacing: 10 * appScale
                 visible: isConnected
 
-                Kirigami.Label {
+                Text {
                     id: mLable
 
                     anchors {
                         left: parent.left
-                        leftMargin: 31 * appScale
+                        leftMargin: 20 * appScale
                     }
 
-                    text: "IPV4 Address"
+                    text: i18n("IPV4 Address")
                     color: "#4D000000"
-                    font.pointSize: defaultFontSize - 4
+                    font.pixelSize: 12
                 }
 
                 Rectangle {
                     width: preferWidth
                     height: childrenRect.height
 
-                    radius: 15 * appScale
+                    radius: 10 * appScale
 
                     SwitchItem {
                         id: ipTitle
@@ -302,7 +304,7 @@ Rectangle {
 
                         width: preferWidth
 
-                        titleName: "Configure IP"
+                        titleName: i18n("Configure IP")
                         switchVisible: false
                         showBottomLine: true
                     }
@@ -314,7 +316,7 @@ Rectangle {
 
                         width: parent.width
 
-                        titleName: "IP Address"
+                        titleName: i18n("IP Address")
                         selectName: currentModel.IpAddress
                         arrowVisible: false
                     }
@@ -326,7 +328,7 @@ Rectangle {
                             
                         width: parent.width
 
-                        titleName: "Subnet Mask"
+                        titleName: i18n("Subnet Mask")
                         selectName: currentModel.SubnetMask
                         arrowVisible: false
                     }
@@ -338,8 +340,8 @@ Rectangle {
                             
                         width: parent.width
 
-                        titleName: "Router"
-                        selectName: defaultIpv4Method
+                        titleName: i18n("Router")
+                        selectName: i18n(defaultIpv4Method)
                         arrowVisible: true
                         showBottomLine: false
 
@@ -363,11 +365,11 @@ Rectangle {
                 Rectangle {
                     anchors.fill: parent
 
-                    radius: 15 * appScale
+                    radius: 10 * appScale
                     color: "white"
 
                     SwitchItem {
-                        titleName: "Renew Lease"
+                        titleName: i18n("Renew Lease")
                         titleColor: "#FF3C4BE8"
                         switchVisible: false
 
@@ -388,28 +390,28 @@ Rectangle {
 
             Column {
                 width: preferWidth
-                spacing: 12 * appScale
+                spacing: 4 * appScale
 
-                Kirigami.Label {
+                Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 31 * appScale
+                        leftMargin: 20 * appScale
                     }
 
-                    text: "DNS"
+                    text: i18n("DNS")
                     color: "#4D000000"
-                    font.pointSize: defaultFontSize - 4
+                    font.pixelSize: 12
                 }
 
                 Rectangle {
                     width: preferWidth
                     height: preferHeigh
 
-                    radius: 15 * appScale
+                    radius: 10 * appScale
 
                     SelectItem {
-                        titleName: "Configure DNS"
-                        selectName: wifi_root.defaultDnsMethod
+                        titleName: i18n("Configure DNS")
+                        selectName: i18n(wifi_root.defaultDnsMethod)
                         arrowVisible: true
                         showBottomLine: false
                     }
@@ -427,29 +429,30 @@ Rectangle {
             Column {
                 width: preferWidth
 
-                spacing: 12 * appScale
-
-                Kirigami.Label {
+                spacing: 4 * appScale
+                visible: false
+                
+                Text {
 
                     anchors {
                         left: parent.left
-                        leftMargin: 31 * appScale
+                        leftMargin: 20 * appScale
                     }
 
-                    text: "Http Proxy"
+                    text: i18n("Http Proxy")
                     color: "#4D000000"
-                    font.pointSize: defaultFontSize - 4
+                    font.pixelSize: 12
                 }
 
                 Rectangle {
                     width: preferWidth
                     height: preferHeigh
 
-                    radius: 15 * appScale
+                    radius: 10 * appScale
 
                     SelectItem {
-                        titleName: "Configure Proxy"
-                        selectName: "Off"
+                        titleName: i18n("Configure Proxy")
+                        selectName: i18n("Off")
                         arrowVisible: true
                         showBottomLine: false
                     }
@@ -458,31 +461,28 @@ Rectangle {
         }
     }
 
-    JInputDialog {
-        id: passwordPop
+    Kirigami.JDialog {
+        id: deleteDialog
 
-        parent: forgetWifi
-        focus: true
-        title: "Enter Password"
-        echoMode: TextInput.Password
+        title: i18n("Forget WLAN Network")
+        inputEnable: false
+        text: i18n("Your device will no longer join this WLAN network.")
+        leftButtonText: i18n("Cancel")
+        rightButtonText: i18n("Forget")
+        rightButtonTextColor: "#FF3C4BE8"
 
-        onCancelButtonClicked: {
-            passwordPop.visible = false
+        onRightButtonClicked: {
+            if (nameEquals) {
+                connectionPath = connectiontedPath
+            }
+            handler.removeConnection(connectionPath)
+            handler.requestScan()
+            wifi_root.popView()
+            deleteDialog.visible = false
         }
-
-        onOkButtonClicked: {
-            kcm.addAndActivateConnection(passwordPop.devicePath,
-                                         passwordPop.specificPath,
-                                         passwordPop.inputText)
-
-            passwordPop.visible = false
-        }
-
-        onEnteredClick: {
-            kcm.addAndActivateConnection(passwordPop.devicePath,
-                                         passwordPop.specificPath,
-                                         passwordPop.inputText)
-            passwordPop.visible = false
+        
+        onLeftButtonClicked: {
+            deleteDialog.visible = false
         }
     }
 }

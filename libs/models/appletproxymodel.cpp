@@ -46,7 +46,7 @@ bool AppletProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
     }
    
     const NetworkManager::ConnectionSettings::ConnectionType type = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();
-    if (!UiUtils::isConnectionTypeSupported(type)) {
+    if (type != NetworkManager::ConnectionSettings::Wireless) {
         return false;
     }
 
@@ -58,8 +58,21 @@ bool AppletProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
        return false;
     }
 
-    if (itemType != NetworkModelItem::AvailableConnection &&
-        itemType != NetworkModelItem::AvailableAccessPoint) {
+    if (itemType == NetworkModelItem::UnavailableConnection){
+        return false;
+    }
+    
+    if (itemType != NetworkModelItem::AvailableConnection && itemType != NetworkModelItem::AvailableAccessPoint) {
+        QString connectionPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
+        NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(connectionPath);
+        if (connection) {
+            NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
+            if(connectionSettings->connectionType() == NetworkManager::ConnectionSettings::Wireless){
+                
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -74,7 +87,6 @@ bool AppletProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
 {
     const bool leftUnAvailable = (NetworkModelItem::ItemType)sourceModel()->data(left, NetworkModel::ItemTypeRole).toUInt() == NetworkModelItem::UnavailableConnection;
     const bool leftAvailable = (NetworkModelItem::ItemType)sourceModel()->data(left, NetworkModel::ItemTypeRole).toUInt() == NetworkModelItem::AvailableConnection;
-    // const bool leftConnected = sourceModel()->data(left, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated;
     const int leftConnectionState = sourceModel()->data(left, NetworkModel::ConnectionStateRole).toUInt();
     const QString leftName = sourceModel()->data(left, NetworkModel::NameRole).toString();
     const UiUtils::SortedConnectionType leftType = UiUtils::connectionTypeToSortedType((NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(left, NetworkModel::TypeRole).toUInt());
@@ -92,6 +104,11 @@ bool AppletProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
     const int rightSignal = sourceModel()->data(right, NetworkModel::SignalRole).toInt();
     const QDateTime rightDate = sourceModel()->data(right, NetworkModel::TimeStampRole).toDateTime();
 
+     if (leftConnectionState > rightConnectionState) {
+        return true;
+    } else if (leftConnectionState < rightConnectionState) {
+        return false;
+    }
     
     if (leftAvailable < rightAvailable) {
         return true;
@@ -105,12 +122,6 @@ bool AppletProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
         return false;
     }
     
-    if (leftConnectionState > rightConnectionState) {
-        return true;
-    } else if (leftConnectionState < rightConnectionState) {
-        return false;
-    }
-
     if (leftUuid.isEmpty() && !rightUuid.isEmpty()) {
         return true;
     } else if (!leftUuid.isEmpty() && rightUuid.isEmpty()) {
