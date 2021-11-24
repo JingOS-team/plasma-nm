@@ -1,0 +1,50 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-23 15:32+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgid "Personal Hotspot"
+msgstr "个人热点"
+
+msgid "Allow Others to Join"
+msgstr "允许其他人加入"
+
+msgid "WLAN Password"
+msgstr "WLAN密码"
+
+msgid "Enter Password"
+msgstr "输入密码"
+
+msgid "The password must contain at least 8 characters.Changing the password will disconnect any currently connected users. Other users will join your shared WLAN network using this password."
+msgstr "密码必须至少包含 8 个字符。更改密码将断开所有当前连接的用户的连接。其他用户将使用此密码加入您的共享 WLAN 网络。"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "OK"
+msgstr "确定"
+
+msgid "Turn on WLAN"
+msgstr "打开WLAN"
+
+msgid "Do you \nwant to enable it over WLAN?"
+msgstr "是否要通过WLAN启用它？"
+
+msgid "Turn on"
+msgstr "打开"
+

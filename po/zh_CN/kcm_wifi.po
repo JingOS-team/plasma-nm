@@ -255,11 +255,6 @@ msgstr ""
 msgid "Hotspot password:"
 msgstr ""
 
-#: kcm/qml/ConfigurationDialog.qml:121
-#, kde-format
-msgid "Ok"
-msgstr "确定"
-
 #: kcm/qml/ConnectionItem.qml:125
 #, kde-format
 msgid "Delete"
@@ -1014,26 +1009,6 @@ msgstr "无法加入"
 msgid "Incorrect password for %1"
 msgstr ""
 
-#: libs/declarative/networkstatus.cpp:120
-#, kde-format
-msgctxt ""
-"A network device is connected, but there is only link-local connectivity"
-msgid "Connected"
-msgstr ""
-
-#: libs/declarative/networkstatus.cpp:123
-#, kde-format
-msgctxt ""
-"A network device is connected, but there is only site-local connectivity"
-msgid "Connected"
-msgstr ""
-
-#: libs/declarative/networkstatus.cpp:126
-#, kde-format
-msgctxt "A network device is connected, with global network connectivity"
-msgid "Connected"
-msgstr ""
-
 #: libs/declarative/networkstatus.cpp:129
 #, kde-format
 msgctxt "Networking is inactive and all devices are disabled"
@@ -1341,12 +1316,6 @@ msgstr ""
 #, kde-format
 msgctxt "infiniband transport mode"
 msgid "Datagram"
-msgstr ""
-
-#: libs/editor/settings/infinibandwidget.cpp:37
-#, kde-format
-msgctxt "infiniband transport mode"
-msgid "Connected"
 msgstr ""
 
 #: libs/editor/settings/ipv4widget.cpp:69
@@ -2202,11 +2171,6 @@ msgctxt "description of unavailable network interface state"
 msgid "Unavailable"
 msgstr ""
 
-#: libs/uiutils.cpp:310
-#, kde-format
-msgctxt "description of unconnected network interface state"
-msgid "Not connected"
-msgstr ""
 
 #: libs/uiutils.cpp:313
 #, kde-format
@@ -2243,12 +2207,6 @@ msgstr ""
 msgctxt ""
 "a secondary connection (e.g. VPN) has to be activated first to continue"
 msgid "Waiting for a secondary connection"
-msgstr ""
-
-#: libs/uiutils.cpp:332
-#, kde-format
-msgctxt "network interface connected state label"
-msgid "Connected"
 msgstr ""
 
 #: libs/uiutils.cpp:334
@@ -2977,7 +2935,7 @@ msgstr "添加其他"
 
 #: mobile/wifi/package/contents/ui/IPV4.qml:89
 #, kde-format
-msgid " Confiaure IPv4"
+msgid "Configure IPv4"
 msgstr "配置 IPv4"
 
 #: mobile/wifi/package/contents/ui/IPV4.qml:216
@@ -3003,7 +2961,7 @@ msgstr "网关"
 #: mobile/wifi/package/contents/ui/main.qml:158
 #, kde-format
 msgid "OK"
-msgstr "是"
+msgstr "确定"
 
 #: mobile/wifi/package/contents/ui/OtherNetwork.qml:89
 #, kde-format
@@ -3403,15 +3361,11 @@ msgid "Incorrect password for \"%1\""
 
 msgstr "\"%1\"的密码错误"
 
-
-msgid "On connection"
-msgstr "连接中"
-
-msgid "Not connected"
+msgid "Not Connected"
 msgstr "未连接"
 
-msgid "VPN Status"
-msgstr "VPN状态"
+msgid "Status"
+msgstr "状态"
 
 msgid "To connect using ”%1”, use the “%1” application."
 msgstr "若要使用“%1”进行连接，请使用“%1”应用程序。"
@@ -3445,6 +3399,21 @@ msgstr "忽略WLAN网络"
 
 msgid "Enter the password for”%1”"
 msgstr "输入”%1”的密码"
+
+msgid "Failed to delete"
+msgstr "删除失败"
+
+msgid "Forget the failure, please make sure the network module is normal."
+msgstr "删除失败,请确保网络模块正常."
+
+msgid "Join failed, please make sure the network equipment and related configuration are normal."
+msgstr "加入失败,请确保网络设备及相关配置正常."
+
+msgid "Save failed"
+msgstr "保存失败"
+
+msgid "Please make sure the configuration information is correct."
+msgstr "请确保配置信息正确."
 
 msgid "Join"
 msgstr "加入"

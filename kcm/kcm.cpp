@@ -217,7 +217,7 @@ KCMNetworkmanagement::KCMNetworkmanagement(QWidget *parent, const QVariantList &
     connect(m_timer, &QTimer::timeout, [this] () {
         m_handler->requestScan();
     });
-    //m_timer->start();
+    m_timer->start();
 }
 
 KCMNetworkmanagement::~KCMNetworkmanagement()

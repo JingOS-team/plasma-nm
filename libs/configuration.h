@@ -1,5 +1,6 @@
 /*
     Copyright 2017 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -33,6 +34,9 @@ class Q_DECL_EXPORT Configuration : public QObject
     Q_PROPERTY(QString hotspotName READ hotspotName WRITE setHotspotName)
     Q_PROPERTY(QString hotspotPassword READ hotspotPassword WRITE setHotspotPassword)
     Q_PROPERTY(QString hotspotConnectionPath READ hotspotConnectionPath WRITE setHotspotConnectionPath)
+    Q_PROPERTY(QString modemConnectionPath READ modemConnectionPath WRITE setModemConnectionPath)
+    Q_PROPERTY(QString modemDevicePath READ modemDevicePath WRITE setModemDevicePath)
+    Q_PROPERTY(QString modemOperatorPath READ modemOperatorPath WRITE setModemOperatorPath)
 
     //Readonly constant property, as this value should only be set by the platform
     Q_PROPERTY(bool showPasswordDialog READ showPasswordDialog CONSTANT)
@@ -55,6 +59,15 @@ public:
 
     static QString hotspotConnectionPath();
     static void setHotspotConnectionPath(const QString &path);
+
+    static QString modemConnectionPath();
+    static void setModemConnectionPath(const QString &path);
+
+    static QString modemDevicePath();
+    static void setModemDevicePath(const QString &path);
+
+    static QString modemOperatorPath();
+    static void setModemOperatorPath(const QString &path);
 
     static bool showPasswordDialog();
 };

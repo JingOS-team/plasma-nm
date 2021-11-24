@@ -1,5 +1,6 @@
 /*
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -26,7 +27,6 @@
 #include <NetworkManagerQt/Connection>
 #include <NetworkManagerQt/ConnectionSettings>
 #include <NetworkManagerQt/Device>
-#include <NetworkManagerQt/Manager>
 #include <NetworkManagerQt/ModemDevice>
 #include <NetworkManagerQt/WiredDevice>
 #include <NetworkManagerQt/WirelessDevice>
@@ -34,7 +34,6 @@
 
 #if WITH_MODEMMANAGER_SUPPORT
 #include <ModemManagerQt/manager.h>
-#include <ModemManagerQt/modem.h>
 #endif
 
 ConnectionIcon::ConnectionIcon(QObject* parent)
@@ -605,7 +604,7 @@ void ConnectionIcon::setWirelessIconForSignalStrength(int strength)
         setConnectionTooltipIcon("network-wireless-connected-100");
     }
 
-    QString icon = QString("network-wireless-%1").arg(iconStrength);
+    QString icon = QString("network-wireless-%1").arg(strength);
 
     setConnectionIcon(icon);
 }

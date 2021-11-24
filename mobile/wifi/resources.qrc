@@ -22,6 +22,7 @@
         <file alias="pwd_confirm.png">image/pwd_confirm.png</file>
         <file alias="pwd_disable.png">image/pwd_disable.png</file>
         <file alias="arrow_left.png">image/arrow_left.png</file>
+        <file alias="arrow_left_dark.png">image/arrow_left_dark.png</file>
         <file alias="arrow_right.png">image/arrow_right.png</file>
         <file alias="wifi_detail.png">image/wifi_detail.png</file>
         <file alias="wifi_icon.png">image/wifi_icon.png</file>
@@ -36,5 +37,10 @@
         <file alias="signal_full.png">image/signal_full.png</file>
         <file alias="pwd_hidden.png">image/pwd_hidden.png</file>
         <file alias="pwd_visible.png">image/pwd_visible.png</file>
+        <file alias="signal_weak_dark.png">image/signal_weak_dark.png</file>
+        <file alias="signal_low_dark.png">image/signal_low_dark.png</file>
+        <file alias="signal_medium_dark.png">image/signal_medium_dark.png</file>
+        <file alias="signal_high_dark.png">image/signal_high_dark.png</file>
+        <file alias="signal_full_dark.png">image/signal_full_dark.png</file>
     </qresource>
 </RCC>

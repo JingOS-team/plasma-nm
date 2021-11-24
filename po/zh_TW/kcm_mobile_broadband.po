@@ -1,0 +1,63 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+#
+# pan93412 <pan93412@gmail.com>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:25+0200\n"
+"PO-Revision-Date: 2019-01-04 20:24+0800\n"
+"Last-Translator: pan93412 <pan93412@gmail.com>\n"
+"Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 18.12.0\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "pan93412"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "pan93412@gmail.com"
+
+#: mobilebroadbandsettings.cpp:40
+#, kde-format
+msgid "Configure mobile broadband"
+msgstr "設定行動數據"
+
+#: mobilebroadbandsettings.cpp:42
+#, kde-format
+msgid "Martin Kacej"
+msgstr "Martin Kacej"
+
+#: package/contents/ui/MobileSettings.qml:34
+#, kde-format
+msgid "Enable mobile data network"
+msgstr "開啟行動數據網路"
+
+#: package/contents/ui/MobileSettings.qml:48
+#, kde-format
+msgid "Enable data roaming"
+msgstr "開啟資料漫遊"
+
+#: package/contents/ui/MobileSettings.qml:66
+#, kde-format
+msgid "Access point name"
+msgstr "存取點名稱"
+
+#: package/contents/ui/MobileSettings.qml:74
+#, kde-format
+msgid "Edit APN"
+msgstr "編輯 APN"
+
+#: package/contents/ui/MobileSettings.qml:79
+#, kde-format
+msgid "Data usage"
+msgstr "數據用量"

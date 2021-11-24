@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import QtQuick.Layouts 1.2
 import QtQuick 2.7
@@ -32,8 +22,10 @@ Item {
     property string hintText: ""
     property bool ipValid: true
 
+    signal textChanged(var text)
+
     width: parent.width
-    height: 45 * appScale
+    height: 45 * appScaleSize
 
     RegExpValidator {
         id: ipValidator
@@ -42,11 +34,12 @@ Item {
 
     Kirigami.Label {
         anchors.left: parent.left
-        anchors.leftMargin: 20 * appScale
+        anchors.leftMargin: 20 * appScaleSize
         anchors.verticalCenter: parent.verticalCenter
 
+        color: majorForeground
         text: titleName
-        font.pixelSize: 14
+        font.pixelSize: 14 * appFontSize
     }
     
     TextField {
@@ -55,7 +48,7 @@ Item {
         anchors {
             right: parent.right
             verticalCenter: parent.verticalCenter
-            rightMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
         }
 
         placeholderText: hintText
@@ -63,10 +56,46 @@ Item {
         text: inputName
         validator: ipValid ? ipValidator : ""
         wrapMode: Text.WordWrap
-        font.pixelSize: 14
+        font.pixelSize: 14 * appFontSize
 
         background: Rectangle {
             color: "transparent"
+        }
+
+        onTextChanged:{
+            root.textChanged(inputName)
+        }
+
+        cursorDelegate: Rectangle {
+            id: cursorBg
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            width: units.devicePixelRatio * 2
+            height: parent.height / 2
+
+            color: "#FF3C4BE8"
+
+            Timer {
+                id: timer
+
+                interval: 700
+                repeat: true
+                running: textField.focus
+
+                onTriggered: {
+                    if (timer.running) {
+                        cursorBg.visible = !cursorBg.visible
+                    } else {
+                        cursorBg.visible = false
+                    }
+                }
+            }
+
+            Connections {
+                target: textField
+                onFocusChanged: cursorBg.visible = focus
+            }
         }
     }
 
@@ -76,12 +105,12 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 20 * appScale
-            rightMargin: 20 * appScale
+            leftMargin: 20 * appScaleSize
+            rightMargin: 20 * appScaleSize
             bottom: parent.bottom
         }
         
         height: 1
-        color: "#FFE5E5EA"
+        color: dividerForeground
     }
 }

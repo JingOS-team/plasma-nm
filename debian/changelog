@@ -1,0 +1,610 @@
+plasma-nm (4:5.20.5) focal; urgency=medium
+
+  * Format version
+
+ -- JingOS CI <jingos@jingos.com>  Wed, 24 Nov 2021 20:18:54 +0800
+
+plasma-nm (4:5.20.4-0neon) focal; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 01 Dec 2020 15:20:14 +0000
+
+plasma-nm (4:5.20.3-0neon) focal; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 10 Nov 2020 21:16:05 +0000
+
+plasma-nm (4:5.20.2-0neon) focal; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 27 Oct 2020 16:30:07 +0000
+
+plasma-nm (4:5.20.1-0neon) focal; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 20 Oct 2020 13:08:15 +0000
+
+plasma-nm (4:5.20.0-0neon) focal; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Mon, 12 Oct 2020 16:42:54 +0000
+
+plasma-nm (4:5.19.5-0neon) focal; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 01 Sep 2020 18:24:11 +0000
+
+plasma-nm (4:5.19.4-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 28 Jul 2020 14:16:52 +0000
+
+plasma-nm (4:5.19.3-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 07 Jul 2020 13:28:07 +0000
+
+plasma-nm (4:5.19.2-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 23 Jun 2020 13:29:40 +0000
+
+plasma-nm (4:5.19.1-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 16 Jun 2020 14:22:00 +0000
+
+plasma-nm (4:5.19.0-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Mon, 08 Jun 2020 11:35:37 +0000
+
+plasma-nm (4:5.18.5-0neon) bionic; urgency=medium
+
+  [ Jonathan Riddell ]
+  * new release
+
+  [ Neon CI ]
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 05 May 2020 16:18:21 +0000
+
+plasma-nm (4:5.18.3-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 10 Mar 2020 14:50:44 +0000
+
+plasma-nm (4:5.18.2-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 25 Feb 2020 17:20:21 +0000
+
+plasma-nm (4:5.18.1-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Wed, 19 Feb 2020 13:08:58 +0000
+
+plasma-nm (4:5.18.0-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Sun, 09 Feb 2020 22:38:40 +0000
+
+plasma-nm (4:5.17.5-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Wed, 08 Jan 2020 13:39:40 +0000
+
+plasma-nm (4:5.17.4-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 03 Dec 2019 15:16:29 +0000
+
+plasma-nm (4:5.17.3-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 12 Nov 2019 13:51:06 +0000
+
+plasma-nm (4:5.17.2-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 29 Oct 2019 22:36:13 +0000
+
+plasma-nm (4:5.17.1-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 22 Oct 2019 21:30:55 +0000
+
+plasma-nm (4:5.17.0-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Mon, 14 Oct 2019 15:45:14 +0000
+
+plasma-nm (4:5.16.5-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 03 Sep 2019 14:45:34 +0000
+
+plasma-nm (4:5.16.4-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 30 Jul 2019 12:26:28 +0000
+
+plasma-nm (4:5.16.3-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 09 Jul 2019 17:13:44 +0000
+
+plasma-nm (4:5.16.2-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 25 Jun 2019 14:13:19 +0000
+
+plasma-nm (4:5.16.1-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 18 Jun 2019 13:28:59 +0000
+
+plasma-nm (4:5.16.0-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Mon, 10 Jun 2019 09:22:14 +0000
+
+plasma-nm (4:5.15.5-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 07 May 2019 12:25:03 +0000
+
+plasma-nm (4:5.15.4-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 02 Apr 2019 13:00:01 +0000
+
+plasma-nm (4:5.15.3-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 12 Mar 2019 12:15:37 +0000
+
+plasma-nm (4:5.15.2-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 26 Feb 2019 16:22:20 +0000
+
+plasma-nm (4:5.15.1-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Wed, 20 Feb 2019 14:44:14 +0000
+
+plasma-nm (4:5.15.0-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Mon, 11 Feb 2019 14:25:05 +0000
+
+plasma-nm (4:5.14.5-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 08 Jan 2019 13:19:42 +0000
+
+plasma-nm (4:5.14.4-0neon) bionic; urgency=medium
+
+  * New release
+
+ -- Neon CI <neon@kde.org>  Tue, 27 Nov 2018 17:29:46 +0000
+
+plasma-nm (4:5.14.3-1) unstable; urgency=medium
+
+  * Update upsteam signing-key
+  * New upstream release (5.14.3).
+  * Update build-deps and deps with the info from cmake
+  * Release to unstable
+
+ -- Maximiliano Curia <maxy@debian.org>  Fri, 23 Nov 2018 08:51:05 -0300
+
+plasma-nm (4:5.13.5-1) unstable; urgency=medium
+
+  * New upstream release (5.13.5).
+  * Release to unstable
+
+ -- Maximiliano Curia <maxy@debian.org>  Thu, 06 Sep 2018 20:40:42 +0200
+
+plasma-nm (4:5.13.4-1) unstable; urgency=medium
+
+  * New upstream release (5.13.4).
+  * Release to unstable
+
+ -- Maximiliano Curia <maxy@debian.org>  Sun, 19 Aug 2018 23:18:17 +0200
+
+plasma-nm (4:5.13.1-1) unstable; urgency=medium
+
+  * New upstream release (5.13.1).
+  * Drop upstream patch
+  * Release to unstable
+
+ -- Maximiliano Curia <maxy@debian.org>  Tue, 26 Jun 2018 13:43:19 +0200
+
+plasma-nm (4:5.12.3-2) unstable; urgency=medium
+
+  * New revision
+  * Upstream patch: Require NM 1.0.0 and newer
+    Thanks to Michael Biebl for the report (Closes: 895438)
+  * Bump build dep to libnm > 1.0.0~
+  * Release to unstable
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 11 Apr 2018 20:12:15 +0200
+
+plasma-nm (4:5.12.3-1) sid; urgency=medium
+
+  * New upstream release (5.12.2).
+  * New upstream release (5.12.3).
+  * Release to sid
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 07 Mar 2018 19:14:11 +0100
+
+plasma-nm (4:5.12.1-1) sid; urgency=medium
+
+  * Use the salsa canonical urls
+  * New upstream release (5.12.1).
+  * Release to sid
+
+ -- Maximiliano Curia <maxy@debian.org>  Tue, 20 Feb 2018 22:09:02 +0100
+
+plasma-nm (4:5.12.0-2) sid; urgency=medium
+
+  * New revision
+  * Release to sid
+
+ -- Maximiliano Curia <maxy@debian.org>  Mon, 12 Feb 2018 16:03:50 +0100
+
+plasma-nm (4:5.12.0-1) experimental; urgency=medium
+
+  * Bump debhelper build-dep and compat to 11.
+  * Build without build_stamp
+  * Add link options as-needed
+  * Add Bhushan Shah upstream signing key
+  * New upstream release (5.12.0).
+  * Bump Standards-Version to 4.1.3.
+  * Update build-deps and deps with the info from cmake
+  * Bump extra-cmake-modules build depends version
+  * Bump libkf5itemmodels-dev build depends version
+  * Use https uri for uscan
+  * Drop unused lintian override
+  * Release to experimental
+
+ -- Maximiliano Curia <maxy@debian.org>  Thu, 08 Feb 2018 15:21:02 +0100
+
+plasma-nm (4:5.11.4-1) experimental; urgency=medium
+
+  * New upstream release (5.11.4).
+  * Bump Standards-Version to 4.1.2.
+  * Release to experimental
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 03 Jan 2018 16:49:14 -0300
+
+plasma-nm (4:5.10.5-2) sid; urgency=medium
+
+  * New revision
+  * Bump Standards-Version to 4.1.0.
+  * Release to sid
+
+ -- Maximiliano Curia <maxy@debian.org>  Sun, 03 Sep 2017 09:55:42 +0200
+
+plasma-nm (4:5.10.5-1) experimental; urgency=medium
+
+  [ Maximiliano Curia ]
+  * New upstream release (5.10.3).
+  * Update build-deps and deps with the info from cmake
+  * Bump Standards-Version to 4.0.0.
+  * Update upstream metadata
+  * New upstream release (5.10.4).
+  * Update build-deps and deps with the info from cmake
+  * New upstream release (5.10.5).
+  * Release to experimental
+
+  [ Jonathan Riddell ]
+  * update watch file to version=4 with pgp signature checking
+
+ -- Maximiliano Curia <maxy@debian.org>  Mon, 28 Aug 2017 15:28:45 +0200
+
+plasma-nm (4:5.8.6-1) unstable; urgency=medium
+
+  * New upstream release (5.8.6)
+
+ -- Maximiliano Curia <maxy@debian.org>  Thu, 16 Mar 2017 14:15:39 +0100
+
+plasma-nm (4:5.8.5-1) experimental; urgency=medium
+
+  * New upstream release (5.8.5).
+
+ -- Maximiliano Curia <maxy@debian.org>  Fri, 30 Dec 2016 18:46:21 +0100
+
+plasma-nm (4:5.8.4-1) unstable; urgency=medium
+
+  * New upstream release (5.8.4)
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 23 Nov 2016 18:38:04 +0100
+
+plasma-nm (4:5.8.2-1) unstable; urgency=medium
+
+  * New upstream release (5.8.2)
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 19 Oct 2016 15:23:42 +0200
+
+plasma-nm (4:5.8.1-1) unstable; urgency=medium
+
+  * Update install files
+
+ -- Maximiliano Curia <maxy@debian.org>  Sun, 16 Oct 2016 22:59:23 +0200
+
+plasma-nm (4:5.8.0-1) unstable; urgency=medium
+
+  * New upstream release (5.8.0)
+
+ -- Maximiliano Curia <maxy@debian.org>  Fri, 07 Oct 2016 14:05:49 +0200
+
+plasma-nm (4:5.7.4-1) unstable; urgency=medium
+
+  * New upstream release (5.7.4)
+
+ -- Maximiliano Curia <maxy@debian.org>  Fri, 26 Aug 2016 15:05:50 +0200
+
+plasma-nm (4:5.7.0-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Maximiliano Curia <maxy@debian.org>  Sat, 09 Jul 2016 22:41:11 +0200
+
+plasma-nm (4:5.6.5-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 22 Jun 2016 21:48:30 +0200
+
+plasma-nm (4:5.6.4-2) unstable; urgency=medium
+
+  * Release to unstable.
+
+ -- Maximiliano Curia <maxy@debian.org>  Tue, 31 May 2016 12:57:53 +0200
+
+plasma-nm (4:5.6.4-1) experimental; urgency=medium
+
+  [ Maximiliano Curia ]
+  * uscan no longer supports this kind of watch files.
+  * New upstream release (5.5.5).
+  * Force installing in debian/tmp
+  * Automatic update with ddeb_migration3.py
+  * Add upstream metadata (DEP-12)
+  * debian/control: Update Vcs-Browser and Vcs-Git fields
+  * Bump network manager build dependency.
+    Thanks to Martin Steigerwald for noticing this (Closes: 824531)
+  * Add new lintian-override for the internal lib
+
+  [ Automatic packaging ]
+  * Bump Standards-Version to 3.9.8
+
+ -- Maximiliano Curia <maxy@debian.org>  Sat, 28 May 2016 02:26:19 +0200
+
+plasma-nm (4:5.5.4-1) experimental; urgency=medium
+
+  * New upstream release (5.5.0).
+  * New upstream release (5.5.1).
+  * New upstream release (5.5.2).
+  * New upstream release (5.5.3).
+  * New upstream release (5.5.4).
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 27 Jan 2016 16:49:03 +0100
+
+plasma-nm (4:5.4.3-1) unstable; urgency=medium
+
+  * New upstream release (5.4.3).
+
+ -- Maximiliano Curia <maxy@debian.org>  Tue, 01 Dec 2015 11:45:54 +0100
+
+plasma-nm (4:5.4.2-1) unstable; urgency=medium
+
+  * New upstream release (5.4.2).
+
+ -- Maximiliano Curia <maxy@debian.org>  Tue, 06 Oct 2015 07:52:12 +0200
+
+plasma-nm (4:5.4.1-1) unstable; urgency=medium
+
+  * New upstream release (5.4.1).
+
+ -- Maximiliano Curia <maxy@debian.org>  Fri, 11 Sep 2015 18:45:21 +0200
+
+plasma-nm (4:5.4.0-1) unstable; urgency=medium
+
+  [ Pino Toscano ]
+  * Make the source as linux-any, as NetworkManager exists only on Linux.
+
+  [ Maximiliano Curia ]
+  * New upstream release (5.4.0).
+
+ -- Maximiliano Curia <maxy@debian.org>  Thu, 03 Sep 2015 18:39:14 +0200
+
+plasma-nm (4:5.3.2-1) unstable; urgency=medium
+
+  * New upstream release (5.3.2).
+
+ -- Maximiliano Curia <maxy@debian.org>  Tue, 30 Jun 2015 23:30:14 +0200
+
+plasma-nm (4:5.3.1-0ubuntu1) wily; urgency=medium
+
+  [ Jonathan Riddell ]
+  * Plasma 5.3 beta
+  * new upstream release
+
+  [ Scarlett Clark ]
+  * Vivid backport
+
+  [ Jonathan Riddell ]
+  * New upstream release
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Fri, 05 Jun 2015 02:41:20 +0200
+
+plasma-nm (4:5.3.1-1) unstable; urgency=medium
+
+  * New upstream release (5.3.0).
+  * Remove upstream patch:
+    upstream_fix_newmodemmanager_framework_integration.patch
+  * New upstream release (5.3.1).
+
+ -- Maximiliano Curia <maxy@debian.org>  Tue, 30 Jun 2015 11:09:11 +0200
+
+plasma-nm (4:5.2.2-2) experimental; urgency=medium
+
+  * Merge with kubuntu changes.
+
+ -- Maximiliano Curia <maxy@debian.org>  Thu, 23 Apr 2015 15:29:20 +0200
+
+plasma-nm (4:5.2.2-1) experimental; urgency=medium
+
+  * New upstream release (5.2.1).
+  * New upstream release (5.2.2).
+
+ -- Maximiliano Curia <maxy@debian.org>  Wed, 25 Mar 2015 23:17:44 +0100
+
+plasma-nm (4:5.2.2-0ubuntu2) vivid; urgency=medium
+
+  * Add upstream patch upstream_fix_newmodemmanager_framework_integration
+  * Fix series file
+
+ -- Scarlett Clark <sgclark@kubuntu.org>  Fri, 10 Apr 2015 14:20:06 -0700
+
+plasma-nm (4:5.2.2-0ubuntu1) vivid; urgency=medium
+
+  * New upstream release
+
+ -- Scarlett Clark <sgclark@kubuntu.org>  Tue, 24 Mar 2015 07:43:02 -0700
+
+plasma-nm (4:5.2.1-0ubuntu1) vivid; urgency=medium
+
+  * New upstream release
+
+ -- Scarlett Clark <sgclark@kubuntu.org>  Mon, 23 Feb 2015 09:47:28 -0800
+
+plasma-nm (4:5.2.0-1) experimental; urgency=medium
+
+  * Prepare initial Debian release.
+  * Add myself as Uploader.
+  * Update build dependencies to build against experimental and to
+    follow cmake.
+  * Update copyright information.
+  * Update watch file.
+
+ -- Maximiliano Curia <maxy@debian.org>  Fri, 13 Feb 2015 13:58:53 +0100
+
+plasma-nm (4:5.2.0-0ubuntu2) vivid; urgency=medium
+
+  * Build with networkmanager-qt 5.6.0-0ubuntu2 for new symbols
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Wed, 28 Jan 2015 13:45:34 +0100
+
+plasma-nm (4:5.2.0-0ubuntu1) vivid; urgency=medium
+
+  * New upstream release
+
+ -- Harald Sitter <sitter@kde.org>  Tue, 27 Jan 2015 14:59:27 +0100
+
+plasma-nm (4:5.1.95-0ubuntu1) vivid; urgency=medium
+
+  * New upstream beta release
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Thu, 15 Jan 2015 01:36:54 +0100
+
+plasma-nm (4:5.1.2-0ubuntu1) vivid; urgency=medium
+
+  * New upstream release
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Mon, 15 Dec 2014 13:27:24 +0100
+
+plasma-nm (4:5.1.1-0ubuntu1) vivid; urgency=medium
+
+  * New upstream release.
+
+  [ Harald Sitter ]
+  * Drop ugly workaround to make a desktop file exectuable
+    + This either should be done upstream or be lintian overridden (former
+      seems more suitable). Upstream has been poked on IRC.
+  * Add lintian overrides
+    + missing manpages: we don't care
+    + package name doesn't match soname: we don't care for internal libraries
+    + shlib-without-versioned-soname: we don't care for internal libraries
+  * Fix copyright short license for LGPL-KDEeV
+
+  [ Scarlett Clark ]
+  * Fix copyright short licence for LGPL-2.1-KDEeV
+
+ -- Scarlett Clark <sgclark@kubuntu.org>  Mon, 10 Nov 2014 19:52:08 +0100
+
+plasma-nm (4:5.0.2-0ubuntu1) utopic; urgency=medium
+
+  * New upstream release
+  * Remove no-human-maintainers lintian-override per ScottK.
+
+  [ Harald Sitter ]
+  * switch to new pkg-kde-tools
+
+ -- Scarlett Clark <sgclark@kubuntu.org>  Thu, 18 Sep 2014 07:32:02 -0700
+
+plasma-nm (4:5.0.0a-0ubuntu1) utopic; urgency=medium
+
+  [ Jonathan Riddell ]
+  * New upstream release
+  * Add epoch to match the rest of Plasma
+
+  [ Scarlett Clark ]
+  * Add Replaces: plasma-nm-data to control to resolve file conflict on install.
+  * Update watch to http://download.kde.org
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Thu, 10 Jul 2014 21:32:48 +0200
+
+plasma-nm (4.98.0-0ubuntu1) utopic; urgency=medium
+
+  * New upstream RC release
+  * Upstream now releasing along with Plasma 5 RC so new version number
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Mon, 07 Jul 2014 14:48:54 +0200
+
+plasma-nm (1.0.0~git20140614-0ubuntu1) utopic; urgency=medium
+
+  [ Scarlett Clark ]
+  * Initial release.
+  * Fix depends
+  * Change section and re-version
+  * Fix build depend
+
+ -- Scarlett Clark <scarlett@scarlettgatelyclark.com>  Thu, 12 Jun 2014 10:24:08 +0100
+ 

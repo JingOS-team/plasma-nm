@@ -1,0 +1,176 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Sergiu Bivol <sergiu@cip.md>, 2009, 2010, 2011.
+# Sergiu Bivol <sergiu@cip.md>, 2009, 2010, 2012, 2013, 2014, 2020.
+# Cristian Oneț <onet.cristian@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: networkmanagement_openvpnui\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-01-23 02:49+0100\n"
+"PO-Revision-Date: 2020-09-06 19:26+0100\n"
+"Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
+"Language-Team: Romanian\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Lokalize 19.12.3\n"
+
+#: contents/ui/ConnectionItem.qml:61
+#, kde-format
+msgid "Connect"
+msgstr "Conectează"
+
+#: contents/ui/ConnectionItem.qml:61
+#, kde-format
+msgid "Disconnect"
+msgstr "Deconectează"
+
+#: contents/ui/ConnectionItem.qml:97
+#, kde-format
+msgid "Show network's QR code"
+msgstr "Arată codul QR al rețelei"
+
+#: contents/ui/ConnectionItem.qml:108
+#, kde-format
+msgid "Configure..."
+msgstr "Configurare..."
+
+#: contents/ui/ConnectionItem.qml:132
+#, kde-format
+msgid "Speed"
+msgstr "Viteză"
+
+#: contents/ui/ConnectionItem.qml:137
+#, kde-format
+msgid "Details"
+msgstr "Detalii"
+
+#: contents/ui/ConnectionItem.qml:275
+#, kde-format
+msgid "Connected, ⬇ %1/s, ⬆ %2/s"
+msgstr "Conectat, ⬇ %1/s, ⬆ %2/s"
+
+#: contents/ui/ConnectionItem.qml:279
+#, kde-format
+msgid "Connected"
+msgstr "Conectat"
+
+#: contents/ui/DetailsText.qml:44
+#, kde-format
+msgid "Copy"
+msgstr "Copiază"
+
+#: contents/ui/main.qml:33
+#, kde-format
+msgid "Networks"
+msgstr "Rețele"
+
+#: contents/ui/main.qml:57
+#, kde-format
+msgid "&Configure Network Connections..."
+msgstr "&Configurare conexiuni de rețea..."
+
+#: contents/ui/main.qml:60
+#, kde-format
+msgid "Open Network Login Page..."
+msgstr "Deschide pagina de autentificare în rețea..."
+
+#: contents/ui/PasswordField.qml:30
+#, kde-format
+msgid "Password..."
+msgstr "Parolă..."
+
+#: contents/ui/PopupDialog.qml:74
+#, kde-format
+msgid "Airplane mode is enabled"
+msgstr "Regim avion activat"
+
+#: contents/ui/PopupDialog.qml:78
+#, kde-format
+msgid "Wireless and mobile networks are deactivated"
+msgstr "Rețelele fără fir și mobile sunt dezactivate"
+
+#: contents/ui/PopupDialog.qml:80
+#, kde-format
+msgid "Wireless is deactivated"
+msgstr "Echipament fără fir dezactivat"
+
+#: contents/ui/PopupDialog.qml:83
+#, kde-format
+msgid "Mobile network is deactivated"
+msgstr "Rețea mobilă dezactivată"
+
+#: contents/ui/PopupDialog.qml:85
+#, kde-format
+msgid "No available connections"
+msgstr "Nicio conexiune disponibilă"
+
+#: contents/ui/Toolbar.qml:80
+#, kde-format
+msgid "Enable Wi-Fi"
+msgstr "Activează Wi-Fi"
+
+#: contents/ui/Toolbar.qml:96
+#, kde-format
+msgid "Enable mobile network"
+msgstr "Activează rețeaua mobilă"
+
+#: contents/ui/Toolbar.qml:131
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Disable airplane mode<nl/><nl/>This will enable Wi-Fi and Bluetooth"
+msgstr ""
+"Dezactivează regimul de avion<nl/><nl/>Aceasta va activa Wi-Fi și Bluetooth"
+
+#: contents/ui/Toolbar.qml:132
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Enable airplane mode<nl/><nl/>This will disable Wi-Fi and Bluetooth"
+msgstr ""
+"Activează regimul de avion<nl/><nl/>Aceasta va dezactiva Wi-Fi și Bluetooth"
+
+#: contents/ui/Toolbar.qml:142
+#, kde-format
+msgid "Hotspot"
+msgstr "Hotspot"
+
+#: contents/ui/Toolbar.qml:163 contents/ui/Toolbar.qml:174
+#, kde-format
+msgid "Disable Hotspot"
+msgstr "Dezactivează Hotspot"
+
+#: contents/ui/Toolbar.qml:168 contents/ui/Toolbar.qml:174
+#, kde-format
+msgid "Create Hotspot"
+msgstr "Creează Hotspot"
+
+#: contents/ui/Toolbar.qml:185
+#, kde-format
+msgctxt "text field placeholder text"
+msgid "Search..."
+msgstr "Căutare..."
+
+#: contents/ui/Toolbar.qml:200
+#, kde-format
+msgid "Configure network connections..."
+msgstr "Configurare conexiuni de rețea..."
+
+#: contents/ui/TrafficMonitor.qml:50 contents/ui/TrafficMonitor.qml:114
+#, kde-format
+msgid "/s"
+msgstr "/s"
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Upload"
+msgstr "Încărcare"
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Download"
+msgstr "Descărcare"

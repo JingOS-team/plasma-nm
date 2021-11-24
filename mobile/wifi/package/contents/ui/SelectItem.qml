@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import QtQuick.Layouts 1.2
 import QtQuick 2.7
@@ -33,20 +23,21 @@ Item {
     property string imgPath: "qrc:/image/arrow_right.png"
 
     width: parent.width
-    height: 45 * appScale
+    height: 45 * appScaleSize
 
     Text {
         anchors.left: parent.left
-        anchors.leftMargin: 20 * appScale
+        anchors.leftMargin: 20 * appScaleSize
         anchors.verticalCenter: parent.verticalCenter
         text: titleName
-        font.pixelSize: 14
+        font.pixelSize: 14 * appFontSize
+        color: majorForeground
     }
 
     Item {
         anchors {
             right: parent.right
-            rightMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
         }
 
         height: parent.height
@@ -61,8 +52,8 @@ Item {
                 verticalCenter: parent.verticalCenter
             }
 
-            sourceSize.width: 22 * appScale
-            sourceSize.height: 22 * appScale
+            width: 22 * appScaleSize
+            height: 22 * appScaleSize
 
             visible: arrowVisible
             source: imgPath
@@ -73,7 +64,8 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
 
             text: selectName
-            font.pixelSize: 14
+            font.pixelSize: 14 * appFontSize
+            color: majorForeground
         }
     }
 
@@ -81,13 +73,13 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 20 * appScale
-            rightMargin: 20 * appScale
+            leftMargin: 20 * appScaleSize
+            rightMargin: 20 * appScaleSize
             bottom: parent.bottom
         }
 
         visible: showBottomLine
         height: 1
-        color: "#FFE5E5EA"
+        color: dividerForeground
     }
 }

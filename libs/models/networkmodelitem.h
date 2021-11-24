@@ -35,7 +35,7 @@
 class Q_DECL_EXPORT NetworkModelItem : public QObject
 {
 
-Q_OBJECT
+    Q_OBJECT
 
 public:
     enum ItemType { UnavailableConnection, AvailableConnection, AvailableAccessPoint };
@@ -127,6 +127,9 @@ public:
 
     QString router() const;
     void setRouter(const QString router);
+
+    QString method() const;
+    void setMethod(const QString method);
     
     QString dnsServer() const;
     void setDnsServer(const QString dnsServer);
@@ -145,6 +148,9 @@ public:
 
     QString password();
     void setPassword(const QString password);
+
+    QString hardwareAddress();
+    void setHardwareAddress(const QString address);
 
     void initPassword();
 
@@ -165,6 +171,7 @@ private:
     QString computeIcon() const;
     void refreshIcon();
     void updateDetails() const;
+    void updateConnectionDetails() const;
 
     QString m_activeConnectionPath;
     QString m_connectionPath;
@@ -195,13 +202,16 @@ private:
     mutable QString m_ipAdress;
     mutable QString m_subnetMask;
     mutable QString m_router;
+    mutable QString m_method;
     mutable QString m_dnsServer;
     mutable QString m_dnsSearch;
     mutable bool m_autoConnect;
     mutable QString m_gateway;
+    mutable bool requestSecrets = false;
     
     Handler *m_handler;
     QString m_password;
+    mutable QString m_hardwareAddress;
     NetworkManager::WirelessSecuritySetting::KeyMgmt m_keyMgmtType;
 };
 

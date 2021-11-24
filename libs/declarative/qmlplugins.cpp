@@ -1,5 +1,6 @@
 /*
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -35,9 +36,11 @@
 #include "networkmodel.h"
 #include "mobileproxymodel.h"
 #include "vpnproxymodel.h"
+#include "gsmproxymodel.h"
 
 #include "handler.h"
 #include "enums.h"
+
 
 void QmlPlugins::registerTypes(const char* uri)
 {
@@ -69,4 +72,7 @@ void QmlPlugins::registerTypes(const char* uri)
     qmlRegisterType<MobileProxyModel>(uri, 0, 2, "MobileProxyModel");
     // @uri org.kde.plasma.networkmanagement.VpnProxyModel
     qmlRegisterType<VpnProxyModel>(uri, 0, 2, "VpnProxyModel");
+    // @uri org.kde.plasma.networkmanagement.GsmProxyModel
+    qmlRegisterType<GsmProxyModel>(uri, 0, 2, "GsmProxyModel");
+
 }

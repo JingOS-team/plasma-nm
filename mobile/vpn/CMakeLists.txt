@@ -7,7 +7,7 @@ set(vpn_SRCS # Specify source files for the library
 )
 
 qt5_add_resources(RESOURCES resources.qrc)
-add_library(kcm_vpn MODULE ${vpn_SRCS} ${RESOURCES} ${RESOURCES})
+add_library(kcm_vpn MODULE ${vpn_SRCS} ${RESOURCES})
 
 target_link_libraries(kcm_vpn
 PUBLIC

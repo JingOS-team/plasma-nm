@@ -4,6 +4,7 @@
     Copyright 2012 Lamarque V. Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013-2014 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -26,16 +27,16 @@
 #define PLASMANM_KDED_SERVICE_H
 
 #include <KDEDModule>
-
+#include <QQmlApplicationEngine>
 #include <QVariant>
 
 class NetworkManagementServicePrivate;
 
 class Q_DECL_EXPORT NetworkManagementService : public KDEDModule
 {
-Q_CLASSINFO("D-Bus Interface", "org.kde.plasmanetworkmanagement")
-Q_OBJECT
-Q_DECLARE_PRIVATE(NetworkManagementService)
+    Q_CLASSINFO("D-Bus Interface", "org.kde.plasmanetworkmanagement")
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(NetworkManagementService)
 public:
     NetworkManagementService(QObject * parent, const QVariantList&);
     ~NetworkManagementService() override;
@@ -48,6 +49,7 @@ Q_SIGNALS:
     void secretsError(const QString &connectionPath, const QString &message);
 
 private:
+    QQmlApplicationEngine engine;
     NetworkManagementServicePrivate * const d_ptr;
 };
 

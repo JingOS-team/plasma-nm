@@ -1,0 +1,65 @@
+# Translation of kcm_mobile_broadband to Norwegian Nynorsk
+#
+# Karl Ove Hufthammer <karl@huftis.org>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:25+0200\n"
+"PO-Revision-Date: 2019-01-05 13:35+0100\n"
+"Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
+"Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
+"Language: nn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 19.03.70\n"
+"X-Environment: kde\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Karl Ove Hufthammer"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "karl@huftis.org"
+
+#: mobilebroadbandsettings.cpp:40
+#, kde-format
+msgid "Configure mobile broadband"
+msgstr "Set opp mobilt breiband"
+
+#: mobilebroadbandsettings.cpp:42
+#, kde-format
+msgid "Martin Kacej"
+msgstr "Martin Kacej"
+
+#: package/contents/ui/MobileSettings.qml:34
+#, kde-format
+msgid "Enable mobile data network"
+msgstr "Slå på bruk av mobilt datanettverk"
+
+#: package/contents/ui/MobileSettings.qml:48
+#, kde-format
+msgid "Enable data roaming"
+msgstr "Slå på databruk ved nettveksling"
+
+#: package/contents/ui/MobileSettings.qml:66
+#, kde-format
+msgid "Access point name"
+msgstr "Namn på tilgangspunkt"
+
+#: package/contents/ui/MobileSettings.qml:74
+#, kde-format
+msgid "Edit APN"
+msgstr "Rediger APN"
+
+#: package/contents/ui/MobileSettings.qml:79
+#, kde-format
+msgid "Data usage"
+msgstr "Databruk"

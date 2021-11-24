@@ -39,6 +39,7 @@
 #include <NetworkManagerQt/WirelessSetting>
 #include <NetworkManagerQt/Ipv4Setting>
 #include <NetworkManagerQt/ConnectionSettings>
+#include <NetworkManagerQt/IpConfig>
 
 #include <KLocalizedString>
 #include <KUser>
@@ -90,7 +91,8 @@ NetworkModelItem::NetworkModelItem(const NetworkModelItem *item, QObject *parent
     , m_rxBytes(0)
     , m_txBytes(0)
     , m_handler(new Handler(this))
-    , m_router("Automatic")
+    , m_router("")
+    , m_method("Automatic")
     , m_autoConnect(true)
 {
 }
@@ -120,6 +122,7 @@ void NetworkModelItem::setConnectionPath(const QString &path)
     if (m_connectionPath != path) {
         m_connectionPath = path;
         m_changedRoles << NetworkModel::ConnectionPathRole << NetworkModel::UniRole;
+        updateConnectionDetails();
     }
 }
 
@@ -517,7 +520,9 @@ void NetworkModelItem::setTxBytes(qulonglong bytes)
 
 QString NetworkModelItem::ipAddress() const
 {
-    updateDetails();
+    if(!requestSecrets){
+        updateDetails();
+    }
     return m_ipAdress;
 }
 
@@ -528,7 +533,9 @@ void NetworkModelItem::setIpAddress(const QString address)
 
 QString NetworkModelItem::subnetMask() const
 {
-    updateDetails();
+    if(!requestSecrets){
+        updateConnectionDetails();
+    }
     return m_subnetMask;
 }
 
@@ -547,9 +554,24 @@ void NetworkModelItem::setRouter(const QString router)
     m_router = router;
 }
 
+QString NetworkModelItem::method() const
+{
+    if(!requestSecrets){
+        updateConnectionDetails();
+    }
+    return m_method;
+}
+
+void NetworkModelItem::setMethod(const QString method)
+{
+    m_method = method;
+}
+
 QString NetworkModelItem::dnsServer() const
 {
-    updateDetails();
+    if(!requestSecrets){
+        updateDetails();
+    }
     return m_dnsServer;
 }
 
@@ -560,7 +582,9 @@ void NetworkModelItem::setDnsServer(const QString dnsServer)
 
 QString NetworkModelItem::dnsSearch() const
 {
-    updateDetails();
+    if(!requestSecrets){
+        updateDetails();
+    }
     return m_dnsSearch;
 }
 
@@ -571,7 +595,9 @@ void NetworkModelItem::setDnsSearch(const QString dnsSearch)
 
 bool NetworkModelItem::autoConnect()
 {
-    updateDetails();
+    if(!requestSecrets){
+        updateDetails();
+    }
     return m_autoConnect;
 }
 
@@ -599,6 +625,17 @@ QString NetworkModelItem::password()
 void NetworkModelItem::setPassword(const QString password)
 {
     m_password = password;
+}
+
+QString NetworkModelItem::hardwareAddress()
+{
+    updateConnectionDetails();
+    return m_hardwareAddress;
+}
+
+void NetworkModelItem::setHardwareAddress(const QString address)
+{
+    m_hardwareAddress = address;
 }
 
 NetworkManager::WirelessSecuritySetting::KeyMgmt NetworkModelItem::keyMgmtType()
@@ -656,8 +693,7 @@ void NetworkModelItem::updateConnection()
     QStringList requiredSecrets = wifiSecurity->needSecrets();
     QVariantMap setting = wifiSecurity->toMap();
     QString settingName = QLatin1String("802-11-wireless-security");
-    bool requestSecrets = false;
-
+    requestSecrets = false;
     for (const QString &secret : requiredSecrets) {
         if (setting.contains(secret + QLatin1String("-flags"))) {
             NetworkManager::Setting::SecretFlagType secretFlag = (NetworkManager::Setting::SecretFlagType)setting.value(secret + QLatin1String("-flags")).toInt();
@@ -869,7 +905,11 @@ void NetworkModelItem::updateDetails() const
     if (device && m_connectionState == NetworkManager::ActiveConnection::Activated) {
         m_details << i18n("Device") << device->interfaceName();
     }
+}
 
+void NetworkModelItem::updateConnectionDetails() const
+{
+    NetworkManager::Device::Ptr device = NetworkManager::findNetworkInterface(m_devicePath);
     NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(m_connectionPath);
     if (connection) {
         NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
@@ -879,18 +919,36 @@ void NetworkModelItem::updateDetails() const
         
         switch (ipv4Setting->method()) {
             case NetworkManager::Ipv4Setting::Automatic:
-                m_router = "Automatic";
+                m_method = "Automatic";
                 break;
             case NetworkManager::Ipv4Setting::Manual:
-                m_router = "Manual";
+                m_method = "Manual";
                 break;
         }
 
         m_dnsSearch = ipv4Setting->dnsSearch().join(",");
-        for (const NetworkManager::IpAddress &addr : ipv4Setting->addresses()) {
-            m_subnetMask = addr.netmask().toString();
+        if(device){
+            NetworkManager::WirelessDevice::Ptr wifiDev = device.objectCast<NetworkManager::WirelessDevice>();
+            if(wifiDev){
+                m_hardwareAddress = wifiDev->hardwareAddress();
+            }
+        }
+         if (device && !device->ipV4Config().addresses().isEmpty()) {
+            QHostAddress mask = device->ipV4Config().addresses().first().netmask();
+            if (!mask.isNull()) {
+                
+                m_subnetMask = mask.toString();
+            }
+        }
+        QList<NetworkManager::IpRoute> routers = ipv4Setting->routes();
+        for (const NetworkManager::IpRoute &route : routers) {
+            m_router = route.ip().toString();
             break;
         }
+        // if(ipv4Setting->routes().length() > 0){
+        //      m_router = ipv4Setting->routes().first().ip().toString();
+        // }
+       
     }
 }
 
@@ -901,7 +959,7 @@ void NetworkModelItem::replyFinished(QDBusPendingCallWatcher *watcher)
 
     if (reply.isValid()) {
         NMVariantMapMap secrets = reply.argumentAt<0>();
-
+        bool requestSecrets = false;
         for (const QString &key : secrets.keys()) {
             if (key == settingName) {
                 NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(m_connectionPath);
@@ -915,7 +973,6 @@ void NetworkModelItem::replyFinished(QDBusPendingCallWatcher *watcher)
                     connectionSettings->setAutoconnect(m_autoConnect);
                     NetworkManager::Ipv4Setting::Ptr m_tmpIpv4Setting = NetworkManager::Ipv4Setting::Ptr(new NetworkManager::Ipv4Setting());
                     NetworkManager::Ipv4Setting::Ptr ipv4Setting = connectionSettings->setting(NetworkManager::Setting::Ipv4).staticCast<NetworkManager::Ipv4Setting>();
-                    
                     m_tmpIpv4Setting->setRouteMetric(ipv4Setting->routeMetric());
                     m_tmpIpv4Setting->setRoutes(ipv4Setting->routes());
                     m_tmpIpv4Setting->setNeverDefault(ipv4Setting->neverDefault());
@@ -924,7 +981,7 @@ void NetworkModelItem::replyFinished(QDBusPendingCallWatcher *watcher)
                     m_tmpIpv4Setting->setDhcpSendHostname(ipv4Setting->dhcpSendHostname());
                     m_tmpIpv4Setting->setDadTimeout(ipv4Setting->dadTimeout());
 
-                    if(m_router == "Automatic") {
+                    if(m_method == "Automatic") {
                         m_tmpIpv4Setting->setMethod(NetworkManager::Ipv4Setting::Automatic);
                     } else {
                         QList<NetworkManager::IpAddress> list;
@@ -939,10 +996,9 @@ void NetworkModelItem::replyFinished(QDBusPendingCallWatcher *watcher)
                         }else{
                             address.setNetmask(QHostAddress("255.255.0.0"));
                         }
-                        if(!m_ipAdress.isEmpty()) {
+                        if(!m_gateway.isEmpty()) {
                             address.setGateway(QHostAddress(m_gateway));
                         }
-                         
                         list << address;
                         m_tmpIpv4Setting->setAddresses(list);
                         QList<QHostAddress> tmpAddrList;
@@ -955,6 +1011,16 @@ void NetworkModelItem::replyFinished(QDBusPendingCallWatcher *watcher)
                         if(!m_dnsSearch.isEmpty()) {
                             m_tmpIpv4Setting->setDnsSearch(m_dnsSearch.split(','));
                         }    
+                        if(!m_router.isEmpty()) {
+                            QList<NetworkManager::IpRoute> list;
+                            NetworkManager::IpRoute route;
+                            route.setIp(QHostAddress(m_router));
+                            route.setNetmask(QHostAddress("0.0.0.0"));
+                             route.setNextHop(QHostAddress("0.0.0.0"));
+                             route.setMetric(0);
+                            list<<route;
+                            m_tmpIpv4Setting->setRoutes(list);
+                        }
                     }
 
                     NMVariantMapMap csMapMap = connectionSettings->toMap();

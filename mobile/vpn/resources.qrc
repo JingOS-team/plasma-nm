@@ -5,6 +5,7 @@
         <file alias="VPNDetails.qml">package/contents/ui/VPNDetails.qml</file>
         <file alias="AddConfig.qml">package/contents/ui/AddConfig.qml</file>
         <file alias="EditConfig.qml">package/contents/ui/EditConfig.qml</file>
+        <file alias="CTextField.qml">package/contents/ui/CTextField.qml</file>
         
     </qresource>
     <qresource prefix="/package/contents/image">

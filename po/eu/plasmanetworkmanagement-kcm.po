@@ -1,0 +1,147 @@
+# Translation of plasmanetworkmanagement-kcm.po to Euskara/Basque (eu).
+# Copyright (C) 2017-2018, Free Software Foundation.
+# Copyright (C) 2019-2020, This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+# KDE euskaratzeko proiektuaren arduraduna <xalba@euskalnet.net>
+#
+# Translators:
+# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2017, 2018, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-03-10 03:49+0100\n"
+"PO-Revision-Date: 2020-01-19 20:43+0100\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@euskalnet.net>\n"
+"Language-Team: Basque <kde-i18n-eu@kde.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.12.1\n"
+
+#: kcm.cpp:362
+#, kde-format
+msgid "my_shared_connection"
+msgstr "nere_konexio_partekatua"
+
+#: kcm.cpp:424
+#, kde-format
+msgid "Export VPN Connection"
+msgstr "Esportatu VPN konexioa"
+
+#: kcm.cpp:444
+#, kde-format
+msgid "Do you want to save changes made to the connection '%1'?"
+msgstr "'%1' konexioari eginiko aldaketak gorde nahi dituzu?"
+
+#: kcm.cpp:444
+#, kde-format
+msgctxt "@title:window"
+msgid "Save Changes"
+msgstr "Gorde aldaketak"
+
+#: kcm.cpp:533
+#, kde-format
+msgid "Import VPN Connection"
+msgstr "Inportatu VPN konexioa"
+
+#: qml/AddConnectionDialog.qml:31
+msgctxt "@title:window"
+msgid "Choose a Connection Type"
+msgstr "Hautatu konexio mota bat"
+
+#: qml/AddConnectionDialog.qml:174
+msgid "Create"
+msgstr "Sortu"
+
+#: qml/AddConnectionDialog.qml:184 qml/ConfigurationDialog.qml:130
+msgid "Cancel"
+msgstr "Utzi"
+
+#: qml/ConfigurationDialog.qml:30
+msgctxt "@title:window"
+msgid "Configuration"
+msgstr "Konfigurazioa"
+
+#: qml/ConfigurationDialog.qml:55
+msgid "General"
+msgstr "Orokorra"
+
+#: qml/ConfigurationDialog.qml:60
+msgid "Ask for PIN on modem detection"
+msgstr "Eskatu PINa modem bat antzematean"
+
+#: qml/ConfigurationDialog.qml:67
+msgid "Show virtual connections"
+msgstr "Erakutsi alegiazko konexioak"
+
+#: qml/ConfigurationDialog.qml:75
+msgid "Hotspot"
+msgstr "Berogunea"
+
+#: qml/ConfigurationDialog.qml:81
+msgid "Hotspot name:"
+msgstr "Berogunearen izena:"
+
+#: qml/ConfigurationDialog.qml:91
+msgid "Hotspot password:"
+msgstr "Berogunearen pasahitza:"
+
+#: qml/ConfigurationDialog.qml:121
+msgid "Ok"
+msgstr "Ados"
+
+#: qml/ConnectionItem.qml:112
+msgid "Connect"
+msgstr "Konektatu"
+
+#: qml/ConnectionItem.qml:112
+msgid "Disconnect"
+msgstr "Deskonektatu"
+
+#: qml/ConnectionItem.qml:125
+msgid "Delete"
+msgstr "Ezabatu"
+
+#: qml/ConnectionItem.qml:135
+msgid "Export"
+msgstr "Esportatu"
+
+#: qml/ConnectionItem.qml:160
+msgid "Connected"
+msgstr "Konektatuta"
+
+#: qml/ConnectionItem.qml:162
+msgid "Connecting"
+msgstr "Konektatzen"
+
+#: qml/main.qml:75
+msgid "Search..."
+msgstr "Bilatu..."
+
+#: qml/main.qml:154
+msgid "Add new connection"
+msgstr "Gehitu konexio berria"
+
+#: qml/main.qml:168
+msgid "Remove selected connection"
+msgstr "Kendu hautatutako konexioa"
+
+#: qml/main.qml:184
+msgid "Export selected connection"
+msgstr "Esportatu hautatutako konexioa"
+
+#: qml/main.qml:208
+msgid "Configuration"
+msgstr "Konfigurazioa"
+
+#: qml/main.qml:236
+msgctxt "@title:window"
+msgid "Remove Connection"
+msgstr "Kendu konexioa"
+
+#: qml/main.qml:237
+msgid "Do you want to remove the connection '%1'?"
+msgstr "'%1' konexioa kendu nahi duzu?"

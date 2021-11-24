@@ -25,6 +25,9 @@
 #include "uiutils.h"
 #include "debug.h"
 
+#include "qofono-qt5/qofonomodem.h"
+#include "qofono-qt5/qofonomanager.h"
+
 #include <NetworkManagerQt/Manager>
 #include <NetworkManagerQt/AccessPoint>
 #include <NetworkManagerQt/WiredDevice>
@@ -60,12 +63,13 @@
 #include <KServiceTypeTrader>
 #include <KWindowSystem>
 #include <KWallet>
+#include <QProcess>
 
 #define AGENT_SERVICE "org.kde.kded5"
 #define AGENT_PATH "/modules/networkmanagement"
 #define AGENT_IFACE "org.kde.plasmanetworkmanagement"
 
-#define NM_REQUESTSCAN_LIMIT_RATE 5000
+#define NM_REQUESTSCAN_LIMIT_RATE 10000
 
 Handler::Handler(QObject *parent)
     : QObject(parent)
@@ -73,6 +77,8 @@ Handler::Handler(QObject *parent)
     , m_tmpWwanEnabled(NetworkManager::isWwanEnabled())
     , m_isScanning(false)
 {
+    qDBusRegisterMetaType< QMap<QDBusObjectPath, NMVariantMapMap > >();
+
     QDBusConnection::sessionBus().connect(QStringLiteral(AGENT_SERVICE),
                                             QStringLiteral(AGENT_PATH),
                                             QStringLiteral(AGENT_IFACE),
@@ -80,6 +86,7 @@ Handler::Handler(QObject *parent)
                                             this, SLOT(secretAgentError(QString, QString)));
 
 
+#if 0 //cancel hotspot in V1.0
     if (!Configuration::hotspotConnectionPath().isEmpty()) {
         NetworkManager::ActiveConnection::Ptr hotspot = NetworkManager::findActiveConnection(Configuration::hotspotConnectionPath());
         if (!hotspot) {
@@ -92,6 +99,16 @@ Handler::Handler(QObject *parent)
     if (NetworkManager::checkVersion(1, 16, 0)) {
         connect(NetworkManager::notifier(), &NetworkManager::Notifier::primaryConnectionTypeChanged, this, &Handler::primaryConnectionTypeChanged);
     }
+#endif
+
+    connect(NetworkManager::notifier(), &NetworkManager::Notifier::statusChanged, this, &Handler::statusChanged, Qt::UniqueConnection);
+}
+
+void Handler::statusChanged(NetworkManager::Status status)
+{
+    if(status == NetworkManager::Connected){
+        manualOperation = false;
+    }
 }
 
 Handler::~Handler()
@@ -100,6 +117,7 @@ Handler::~Handler()
 
 void Handler::activateConnection(const QString& connection, const QString& device, const QString& specificObject)
 {
+    manualOperation = true;
     NetworkManager::Connection::Ptr con = NetworkManager::findConnection(connection);
 
     if (!con) {
@@ -135,7 +153,8 @@ void Handler::activateConnection(const QString& connection, const QString& devic
                 notification->setTitle(con->name());
                 notification->setText(i18n("Missing VPN plugin"));
                 notification->setIconName(QStringLiteral("dialog-warning"));
-                notification->sendEvent();
+                // notification->sendEvent();
+                Q_EMIT replyFinishedError("ActivateVPN",con->name(),"Missing VPN plugin");
                 return;
             }
         }
@@ -225,8 +244,38 @@ QString Handler::wifiCode(const QString& connectionPath, const QString& ssid, in
     return ret + QLatin1Char(';');
 }
 
+void Handler::onRootConnectionAdded(const QString &path)
+{
+     if(isRootConnected){
+          rootConnectionPath = path;
+     }
+}
+
+void Handler::onRootActiveConnectionAdded(const QString &path)
+{
+    if(isRootConnected){
+        rootActiveConnectionPath = path;
+    }
+}
+void Handler::onRootActiveConnectionRemoved(const QString &path)
+{
+    
+    if(isRootConnected && !rootConnectionPath.isEmpty() && rootActiveConnectionPath == path){
+        NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(rootConnectionPath);
+        if(connection){
+            NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
+
+            secretAgentError(rootConnectionPath,"");
+
+            isRootConnected = false;
+            rootConnectionPath = "";
+            rootActiveConnectionPath = "";
+        }
+    }
+}
 void Handler::addAndActivateConnection(const QString& device, const QString& specificObject, const QString& password)
 {
+    manualOperation = true;
     NetworkManager::AccessPoint::Ptr ap;
     NetworkManager::WirelessDevice::Ptr wifiDev;
     for (const NetworkManager::Device::Ptr &dev : NetworkManager::networkInterfaces()) {
@@ -241,6 +290,35 @@ void Handler::addAndActivateConnection(const QString& device, const QString& spe
 
     if (!ap) {
         return;
+    }
+
+    QProcess process;
+    process.start("whoami", QStringList());
+    process.waitForFinished();
+    QString userName = QString::fromLocal8Bit(process.readAllStandardOutput()).trimmed();
+    if(userName == "root") {
+        isRootConnected = true;
+        QString cmd = "nmcli device wifi connect ";
+        cmd.append("\"");
+        cmd.append(ap->ssid());
+        cmd.append("\"");
+
+        if (!password.isEmpty()) {
+            cmd.append(" password ");
+            cmd.append("\"");
+            cmd.append(password);
+            cmd.append("\"");
+        }
+
+        qWarning()<<"[settings-wifi][userguide] userName "<<userName<<" cmd "<<cmd;
+        QProcess::startDetached(cmd);
+
+        connect(NetworkManager::settingsNotifier(), &NetworkManager::SettingsNotifier::connectionAdded, this, &Handler::onRootConnectionAdded, Qt::UniqueConnection);
+        connect(NetworkManager::notifier(), &NetworkManager::Notifier::activeConnectionAdded, this, &Handler::onRootActiveConnectionAdded, Qt::UniqueConnection);
+        connect(NetworkManager::notifier(), &NetworkManager::Notifier::activeConnectionRemoved, this, &Handler::onRootActiveConnectionRemoved, Qt::UniqueConnection);
+        return;
+    } else {
+        isRootConnected = false;
     }
 
     NetworkManager::ConnectionSettings::Ptr settings = NetworkManager::ConnectionSettings::Ptr(new NetworkManager::ConnectionSettings(NetworkManager::ConnectionSettings::Wireless));
@@ -327,6 +405,7 @@ void Handler::addAndActivateConnection(const QString& device, const QString& spe
 
 void Handler::addConnection(const NMVariantMapMap& map)
 {
+    manualOperation = true;
     QDBusPendingReply<QDBusObjectPath> reply = NetworkManager::addConnection(map);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
     watcher->setProperty("action", AddConnection);
@@ -372,82 +451,22 @@ void Handler::disconnectAll()
 
 void Handler::enableAirplaneMode(bool enable)
 {
-    if (enable) {
-        m_tmpWirelessEnabled = NetworkManager::isWirelessEnabled();
-        m_tmpWwanEnabled = NetworkManager::isWwanEnabled();
-        enableBluetooth(false);
-        enableWireless(false);
-        enableWwan(false);
-    } else {
-        enableBluetooth(true);
-        if (m_tmpWirelessEnabled) {
-            enableWireless(true);
-        }
-        if (m_tmpWwanEnabled) {
-            enableWwan(true);
-        }
-    }
+    enableBluetooth(!enable);
+    enableWireless(!enable);
+
+    QDBusInterface managerIface("org.kde.plasmanetworkmanagement", "/org/kde/plasmanetworkmanagement", "org.kde.plasmanetworkmanagement", QDBusConnection::sessionBus(), this);
+    managerIface.asyncCall("enableFlightMode", enable);
 }
 
-template<typename T>
-void makeDBusCall(const QDBusMessage &message, QObject *context, std::function<void(QDBusPendingReply<T>)> func)
-{
-    QDBusPendingReply<T> reply = QDBusConnection::systemBus().asyncCall(message);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, context);
-    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, context, [func] (QDBusPendingCallWatcher *watcher) {
-        const QDBusPendingReply<T> reply = *watcher;
-        if (!reply.isValid()) {
-            qCWarning(PLASMA_NM) << reply.error().message();
-            return;
-        }
-        func(reply);
-        watcher->deleteLater();
-    });
-}
 
-void setBluetoothEnabled(QString path, bool enabled)
-{
-    QDBusMessage message = QDBusMessage::createMethodCall("org.bluez", path, "org.freedesktop.DBus.Properties", "Set");
-    QList<QVariant> arguments;
-    arguments << QLatin1String("org.bluez.Adapter1");
-    arguments << QLatin1String("Powered");
-    arguments << QVariant::fromValue(QDBusVariant(QVariant(enabled)));
-    message.setArguments(arguments);
-    QDBusConnection::systemBus().asyncCall(message);
-}
 
 void Handler::enableBluetooth(bool enable)
 {
-    qDBusRegisterMetaType< QMap<QDBusObjectPath, NMVariantMapMap > >();
+    QDBusInterface managerIface("org.kde.plasmanetworkmanagement", "/org/kde/plasmanetworkmanagement", "org.kde.plasmanetworkmanagement", QDBusConnection::sessionBus(), this);
+    managerIface.asyncCall("enableBluetooth", enable);
 
-    const QDBusMessage getObjects = QDBusMessage::createMethodCall("org.bluez", "/", "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
+    return;
 
-    makeDBusCall<QMap<QDBusObjectPath, NMVariantMapMap>>(getObjects, this, [enable, this](const auto reply) {
-        for (const QDBusObjectPath &path : reply.value().keys()) {
-            const QString objPath = path.path();
-            qCDebug(PLASMA_NM) << "inspecting path" << objPath;
-            const QStringList interfaces = reply.value().value(path).keys();
-            qCDebug(PLASMA_NM) << "interfaces:" << interfaces;
-
-            if (!interfaces.contains("org.bluez.Adapter1")) {
-                continue;
-            }
-
-            // We need to check previous state first
-            if (!enable) {
-                QDBusMessage getPowered = QDBusMessage::createMethodCall("org.bluez", objPath, "org.freedesktop.DBus.Properties", "Get");
-                const QList<QVariant> arguments { QLatin1String("org.bluez.Adapter1"), QLatin1String("Powered") };
-                getPowered.setArguments(arguments);
-
-                makeDBusCall<QVariant>(getPowered, this, [objPath, this](const auto reply){
-                    m_bluetoothAdapters.insert(objPath, reply.value().toBool());
-                    setBluetoothEnabled(objPath, false);
-                });
-            } else if (m_bluetoothAdapters.value(objPath)) {
-                setBluetoothEnabled(objPath, true);
-            }
-        }
-    });
 }
 
 void Handler::enableNetworking(bool enable)
@@ -457,7 +476,8 @@ void Handler::enableNetworking(bool enable)
 
 void Handler::enableWireless(bool enable)
 {
-    NetworkManager::setWirelessEnabled(enable);
+    QDBusInterface managerIface("org.kde.plasmanetworkmanagement", "/org/kde/plasmanetworkmanagement", "org.kde.plasmanetworkmanagement", QDBusConnection::sessionBus(), this);
+    managerIface.asyncCall("enableWireless", enable);
 }
 
 void Handler::enableWwan(bool enable)
@@ -499,7 +519,7 @@ void Handler::updateConnection(const NetworkManager::Connection::Ptr& connection
 }
 
 void Handler::requestScan(const QString &interface)
-{   
+{
     for (NetworkManager::Device::Ptr device : NetworkManager::networkInterfaces()) {
         if (device->type() == NetworkManager::Device::Wifi) {
             NetworkManager::WirelessDevice::Ptr wifiDevice = device.objectCast<NetworkManager::WirelessDevice>();
@@ -508,7 +528,7 @@ void Handler::requestScan(const QString &interface)
                 if (!interface.isEmpty() && interface != wifiDevice->interfaceName()) {
                     continue;
                 }
-
+                /*cancel schedule scan
                 if (!checkRequestScanRateLimit(wifiDevice)) {
                     QDateTime now = QDateTime::currentDateTime();
                     // for NM < 1.12, lastScan is not available
@@ -532,6 +552,7 @@ void Handler::requestScan(const QString &interface)
                     m_wirelessScanRetryTimer.value(interface)->stop();
                     delete m_wirelessScanRetryTimer.take(interface);
                 }
+				*/
                 m_isScanning = true;
                 Q_EMIT scanningStateChanged(m_isScanning);
                 qCDebug(PLASMA_NM) << "Requesting wifi scan on device" << wifiDevice->interfaceName();
@@ -632,7 +653,6 @@ void Handler::createHotspot()
 void Handler::stopHotspot()
 {
     const QString activeConnectionPath = Configuration::hotspotConnectionPath();
-
     if (activeConnectionPath.isEmpty()) {
         return;
     }
@@ -688,11 +708,9 @@ bool Handler::checkHotspotSupported()
         if (!wifiFound) {
             return false;
         }
-
         if (unusedWifiFound) {
             return true;
         }
-
         // Check if the primary connection which is used for internet connectivity is not using WiFi
         if (NetworkManager::primaryConnectionType() != NetworkManager::ConnectionSettings::Wireless) {
             return true;
@@ -730,17 +748,26 @@ void Handler::scheduleRequestScan(const QString &interface, int timeout)
 
 void Handler::scanRequestFailed(const QString &interface)
 {
-    scheduleRequestScan(interface, 2000);
+    //cancel schedule scan
+    //scheduleRequestScan(interface, 2000);
 }
 
 void Handler::secretAgentError(const QString &connectionPath, const QString &message)
 {
+    qDebug()<<"secretAgentError  manualOperation: "<<manualOperation;
     NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(connectionPath);
-    
-    if (connection) {
+    if (connection && manualOperation) {
+        manualOperation = false;
         NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
         QString id = connectionSettings->id();
-        Q_EMIT passwordErrorChanged(id,connectionPath);
+        QTimer *timer = new QTimer();
+        auto retryAction = [this, id,connectionPath]() {
+            Q_EMIT passwordErrorChanged(id,connectionPath);
+        };
+        connect(timer, &QTimer::timeout, this, retryAction);
+        timer->setSingleShot(true);
+        timer->setInterval(1200);
+        timer->start();
     }
 }
 
@@ -748,7 +775,7 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
 {
     QDBusPendingReply<> reply = *watcher;
     if (reply.isError() || !reply.isValid()) {
-        
+
         KNotification *notification = nullptr;
         QString error = reply.error().message();
         Handler::HandlerAction action = (Handler::HandlerAction)watcher->property("action").toUInt();
@@ -756,27 +783,34 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
             case Handler::ActivateConnection:
                 notification = new KNotification("FailedToActivateConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to activate %1", watcher->property("connection").toString()));
+                Q_EMIT activateConnectionFailed(watcher->property("connection").toString());
+                Q_EMIT replyFinishedError("ActivateConnection",watcher->property("connection").toString(),error);
                 break;
-            case Handler::AddAndActivateConnection:  
+            case Handler::AddAndActivateConnection:
                 notification = new KNotification("FailedToAddConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to add %1", watcher->property("connection").toString()));
-                Q_EMIT addConnectionFailed(watcher->property("connection").toString()); 
+                // Q_EMIT addConnectionFailed(watcher->property("connection").toString());
+                Q_EMIT replyFinishedError("AddAndActivateConnection",watcher->property("connection").toString(),error);
                 break;
             case Handler::AddConnection:
                 notification = new KNotification("FailedToAddConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to add connection %1", watcher->property("connection").toString()));
+                Q_EMIT replyFinishedError("AddConnection",watcher->property("connection").toString(),error);
                 break;
             case Handler::DeactivateConnection:
                 notification = new KNotification("FailedToDeactivateConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to deactivate %1", watcher->property("connection").toString()));
+                Q_EMIT replyFinishedError("DeactivateConnection",watcher->property("connection").toString(),error);
                 break;
             case Handler::RemoveConnection:
                 notification = new KNotification("FailedToRemoveConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to remove %1", watcher->property("connection").toString()));
+                Q_EMIT replyFinishedError("RemoveConnection",watcher->property("connection").toString(),error);
                 break;
             case Handler::UpdateConnection:
                 notification = new KNotification("FailedToUpdateConnection", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to update connection %1", watcher->property("connection").toString()));
+                Q_EMIT replyFinishedError("UpdateConnection",watcher->property("connection").toString(),error);
                 break;
             case Handler::RequestScan:
             {
@@ -790,6 +824,7 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
             case Handler::CreateHotspot:
                 notification = new KNotification("FailedToCreateHotspot", KNotification::CloseOnTimeout, this);
                 notification->setTitle(i18n("Failed to create hotspot %1", watcher->property("connection").toString()));
+                Q_EMIT replyFinishedError("CreateHotspot",watcher->property("connection").toString(),error);
                 break;
             default:
                 break;
@@ -799,7 +834,8 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
             notification->setComponentName("networkmanagement");
             notification->setText(error);
             notification->setIconName(QStringLiteral("dialog-warning"));
-            notification->sendEvent();
+            // notification->sendEvent();
+            qDebug()<<"Hander: replyFinished: action:"<<action<<"  error:"<<error;
         }
     } else {
         KNotification *notification = nullptr;
@@ -823,7 +859,7 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
                  Q_EMIT scanningStateChanged(m_isScanning);
                 qCDebug(PLASMA_NM) << "Wireless scan on" << watcher->property("interface").toString() << "succeeded";
                 break;
-                case Handler::ActivateConnection:
+            case Handler::ActivateConnection:
                 break;
             default:
                 break;
@@ -833,7 +869,7 @@ void Handler::replyFinished(QDBusPendingCallWatcher * watcher)
             notification->setComponentName("networkmanagement");
             notification->setTitle(watcher->property("connection").toString());
             notification->setIconName(QStringLiteral("dialog-information"));
-            notification->sendEvent();
+            // notification->sendEvent();
         }
     }
 
@@ -846,7 +882,6 @@ void Handler::hotspotCreated(QDBusPendingCallWatcher *watcher)
 
     if (!reply.isError() && reply.isValid()) {
         const QString activeConnectionPath = reply.argumentAt(1).value<QDBusObjectPath>().path();
-
         if (activeConnectionPath.isEmpty()) {
             return;
         }
@@ -858,13 +893,12 @@ void Handler::hotspotCreated(QDBusPendingCallWatcher *watcher)
         if (!hotspot) {
             return;
         }
-
-        connect(hotspot.data(), &NetworkManager::ActiveConnection::stateChanged, [=] (NetworkManager::ActiveConnection::State state) {
+        /*connect(hotspot.data(), &NetworkManager::ActiveConnection::stateChanged, [=] (NetworkManager::ActiveConnection::State state) {
             if (state > NetworkManager::ActiveConnection::Activated) {
                 Configuration::setHotspotConnectionPath(QString());
                 Q_EMIT hotspotDisabled();
             }
-        });
+        });*/
 
         Q_EMIT hotspotCreated();
     }
@@ -888,4 +922,5 @@ void Handler::unlockRequiredChanged(MMModemLock modemLock)
 
 void Handler::passwordError(const QString msg)
 {
+    qDebug()<<"passwordError msg "<<msg;
 }

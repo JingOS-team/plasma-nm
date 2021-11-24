@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import org.kde.kcm 1.2 as KCM
 import QtQuick 2.7
@@ -23,22 +13,22 @@ import org.kde.kirigami 2.15 as Kirigami
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
-
+import jingos.display 1.0
 Rectangle {
     id: root
 
     property int defaultFontSize: theme.defaultFont.pointSize
-    property int preferWidth: root.width - 40 * appScale
-    property int preferHeigh: 34 * appScale
+    property int preferWidth: root.width - 40 * appScaleSize
+    property int preferHeigh: 34 * appScaleSize
     property int selectIndex: 0
     property bool isConfigChanged: false
 
-    color: "#FFF6F9FF"
+    color: settingMinorBackground
 
     Component.onCompleted: {
-        if (currentModel.Router == "Automatic") {
+        if (currentModel.Method == "Automatic") {
             selectIndex = 0
-        } else if (currentModel.Router == "Manual") {
+        } else if (currentModel.Method == "Manual") {
             selectIndex = 1
         }
     }
@@ -48,88 +38,81 @@ Rectangle {
 
         anchors {
             left: parent.left
-            top: parent.top
+            leftMargin: 20 * appScaleSize
             right: parent.right
-            leftMargin: 14 * appScale
-            topMargin: 48 * appScale
+            rightMargin: 20 * appScaleSize
+            top: parent.top
+            topMargin: JDisplay.statusBarHeight
         }
+        height: 62 * appScaleSize
 
-        height: 20 * appScale
-        width: parent.width
-
-        Image {
-            id: backIcon
-
-            anchors.left: parent.left
+        Item {
+            width: parent.width
+            height: backIcon.height
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 6 * appScaleSize
 
-            width: 22 * appScale
-            height: 22 * appScale
+            Kirigami.JIconButton {
+                id: backIcon
 
-            source: "qrc:/image/arrow_left.png"
+                width: (22 + 8) * appScaleSize
+                height: (22 + 8) * appScaleSize
 
-            MouseArea {
-                anchors.fill: parent
-
+                source: isDarkTheme ? "qrc:/image/arrow_left_dark.png" : "qrc:/image/arrow_left.png"
                 onClicked: {
                     wifi_root.popView()
                 }
             }
-        }
 
-        Kirigami.Label {
-            id: title
+            Kirigami.Label {
+                id: title
 
-            anchors {
-                left: backIcon.right
-                leftMargin: 10 * appScale
-                verticalCenter: parent.verticalCenter
+                anchors {
+                    left: backIcon.right
+                    leftMargin: 10 * appScaleSize
+                    verticalCenter: parent.verticalCenter
+                }
+
+                color: majorForeground
+                font.pixelSize: 20 * appFontSize
+                font.bold: true
+                text: currentModel.Name +" "+ i18n("Configure IPv4")
             }
 
-            font.pixelSize: 20
-            font.bold: true
-            text: currentModel.Name +" "+ i18n(" Confiaure IPv4")
-        }
+            Kirigami.JButton {
+                id: confirmIcon
 
-        Kirigami.JIconButton {
-            id: confirmIcon
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
 
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.rightMargin: 31 * appScale
-
-            width: 40 * appScale + 10
-            height: 22 * appScale + 10
-
-            enabled: isConfigChanged
-
-            Text{
-                anchors.centerIn: parent
-                
-                font.pixelSize: 17
+                backgroundColor:"transparent"
+                enabled: isConfigChanged
+                fontColor: confirmIcon.enabled ? Kirigami.JTheme.highlightColor : Kirigami.JTheme.disableForeground
+                font.pixelSize: 17 * appFontSize
                 text: i18n("Save")
-                color: confirmIcon.enabled ? "#FF3C4BE8" : "#2E000000"
-            }
-            //source: "qrc:/image/pwd_confirm.png"
-
-            MouseArea {
-                anchors.fill: parent
-
                 onClicked: {
                     if (defaultIpv4Method === "Automatic") {
-                        currentModel.Router = "Automatic"
+                        currentModel.Method = "Automatic"
                         currentModel.UpdateConnect = "update"
+                        currentMethod = "Automatic"
                     } else if (defaultIpv4Method === "Manual") {
-                        currentModel.Router = "Manual"
+                        currentMethod = "Manual"
+                        currentModel.Method = "Manual"
                         currentModel.IpAddress = ipAddress.inputName
                         currentModel.SubnetMask = netMask.inputName
                         currentModel.GateWay = gateWay.inputName
+                        currentModel.Router = router.inputName
                         currentModel.UpdateConnect = "update"
+                        currentIpAddress = ipAddress.inputName
+                        currentSubnetMask = netMask.inputName
+
                     }
                     wifi_root.popView()
                 }
             }
         }
+
+
     }
 
     Rectangle {
@@ -137,15 +120,15 @@ Rectangle {
 
         anchors {
             top: topItem.bottom
-            topMargin: 31 * appScale
+            topMargin: 31 * appScaleSize
             horizontalCenter: parent.horizontalCenter
         }
 
         width: preferWidth
         height: listView.height
 
-        radius: 10 * appScale
-        color: "white"
+        radius: 10 * appScaleSize
+        color: cardBackground
 
         ListView {
             id: listView
@@ -154,10 +137,11 @@ Rectangle {
             height: childrenRect.height
 
             model: listMode
+            interactive: false
 
             delegate: SelectItem {
                 anchors.horizontalCenter: parent.horizontalCenter
-                    
+
                 width: parent.width
 
                 imgPath: "qrc:/image/select_blue.png"
@@ -172,6 +156,7 @@ Rectangle {
                         isConfigChanged = true
                         selectIndex = index
                         wifi_root.selectIpv4Method(model.displayName)
+                        wifi_root.selectDnsMethod(model.displayName)
                     }
                 }
             }
@@ -180,11 +165,11 @@ Rectangle {
         SwitchItem {
             anchors {
                 top: listView.bottom
-                topMargin: 24 * appScale
+                topMargin: 24 * appScaleSize
             }
 
-            radius: 10 * appScale
-            color: "white"
+            radius: 10 * appScaleSize
+            color: cardBackground
             visible: false
             switchVisible: false
             titleName: "Client ID "
@@ -206,61 +191,99 @@ Rectangle {
         }
     }
 
-    Column {
-        id: columnSetting
-
+    Rectangle{
         anchors {
             top: routerSetting.bottom
             left: routerSetting.left
             right: routerSetting.right
-            topMargin: 24 * appScale
+            topMargin: 24 * appScaleSize
         }
 
-        spacing: 10 * appScale
-        visible: defaultIpv4Method === "Manual"
+        width: preferWidth
+        height: childrenRect.height
+        color: cardBackground
 
-        Text {
-            anchors {
-                left: parent.left
-                leftMargin: 20 * appScale
+        radius: 10 * appScaleSize
+        visible: selectIndex == 1
+
+        Column {
+            id: columnSetting
+
+            width: preferWidth
+
+            spacing: 10 * appScaleSize
+
+            Text {
+                anchors {
+                    left: parent.left
+                    leftMargin: 20 * appScaleSize
+                }
+
+                height: 22 * appScaleSize
+
+                verticalAlignment:Text.AlignBottom
+                font.pixelSize: 12 * appFontSize
+                color:minorForeground
+                text: i18n("Manual IP")
             }
-            font.pixelSize: 14
-            text: i18n("Manual IP")
-        }
 
-        Rectangle {
-            width: parent.width
-            height: childrenRect.height
-
-            radius: 10 * appScale
-            color: "white"
-
-            Column {
+            Item {
                 width: parent.width
+                height: childrenRect.height
 
-                InputItem {
-                    id: ipAddress
+                Column {
+                    width: parent.width
 
-                    titleName: i18n("IpAddress")
-                    hintText: "0.0.0.0"
-                    inputName: currentModel.IpAddress
-                }
+                    InputItem {
+                        id: ipAddress
 
-                InputItem {
-                    id: netMask
+                        titleName: i18n("IpAddress")
+                        hintText: "0.0.0.0"
+                        inputName: currentModel.IpAddress
+                        onTextChanged:{
+                            if(text != currentModel.IpAddress)
+                            isConfigChanged = true
+                        }
+                    }
 
-                    titleName: i18n("NetMask")
-                    hintText: "255.255.0.0"
-                    inputName: currentModel.SubnetMask
-                }
+                    InputItem {
+                        id: netMask
 
-                InputItem {
-                    id: gateWay
-                    
-                    titleName: i18n("GateWay")
-                    hintText: "0.0.0.0"
-                    inputName: currentModel.GateWay
-                    showBottomLine: false
+                        titleName: i18n("NetMask")
+                        hintText: "255.255.0.0"
+                        inputName: currentModel.SubnetMask
+                        onTextChanged:{
+                            if(text != currentModel.SubnetMask)
+                            isConfigChanged = true
+                        }
+                    }
+
+                    InputItem {
+                        id: gateWay
+
+                        titleName: i18n("GateWay")
+                        hintText: "0.0.0.0"
+                        inputName: currentModel.GateWay
+                        showBottomLine: true
+                        onTextChanged:{
+                            if(text != currentModel.GateWay)
+                            isConfigChanged = true
+                        }
+                    }
+
+                    InputItem {
+                        id: router
+
+                        titleName: i18n("Router")
+                        hintText: "0.0.0.0"
+                        inputName: currentModel.Router
+                        showBottomLine: false
+
+                        onTextChanged:{
+                            if(text != currentModel.Router)
+                            isConfigChanged = true
+                        }
+                    }
                 }
             }
         }

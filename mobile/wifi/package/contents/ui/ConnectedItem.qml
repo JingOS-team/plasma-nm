@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import org.kde.kcm 1.2 as KCM
 import QtQuick 2.7
@@ -24,20 +14,22 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import jingos.display 1.0
 
 Rectangle {
     id: root
 
     property int defaultFontSize: theme.defaultFont.pointSize
-    property int preferWidth: root.width - 40 * appScale
-    property int preferHeigh: 45 * appScale
+    property int preferWidth: root.width - 40 * appScaleSize
+    property int preferHeigh: 45 * appScaleSize
     property bool isConnected: currentModel.ConnectionState == PlasmaNM.Enums.Activated
     property var currentName: currentModel.Name
     property bool isOperator: false
     property bool isConnecttingFailed: false
     property bool isConnectting: networkStatus.networkStatus == "Connecting"
-                                 & editorProxyModel.currentConnectedName != currentName
-    property bool isConnectedSuccess: isOperator & editorProxyModel.currentConnectedName
+                                  && editorProxyModel.currentConnectedName != currentName
+                                  && isOperator
+    property bool isConnectedSuccess: isOperator && editorProxyModel.currentConnectedName
                                       == currentName
     property bool nameEquals: editorProxyModel.currentConnectedName == currentName
     property var currentItemType: currentModel.ItemType
@@ -46,8 +38,28 @@ Rectangle {
     property var connectiontedPath: editorProxyModel.currentConnectedPath
     property var specificPath: currentModel.SpecificPath
     property var wifiName: currentModel.Name
+    property var mSsid: currentModel.Ssid
 
-    color: "#FFF6F9FF"
+    color: settingMinorBackground
+
+    Connections {
+        target:networkStatus
+
+        onNetworkStatusChanged:{
+            if(status == "Connected" && editorProxyModel.currentConnectedName == currentName){
+                wifi_root.popView()
+            }
+        }
+    }
+
+    Connections {
+        target: handler
+
+        onPasswordErrorChanged:{
+            isOperator = false
+            isConnecttingFailed = true
+        }
+    }
 
     onIsConnecttingChanged: {
         if (!isConnectting) {
@@ -56,58 +68,57 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        defaultIpv4Method = currentModel.Router
-        defaultDnsMethod = currentModel.Router
+        defaultIpv4Method = currentModel.Method ? currentModel.Method : "Automatic"
+        defaultDnsMethod = currentModel.Method ? currentModel.Method : "Automatic"
+        currentMethod = currentModel.Method ? currentModel.Method : "Automatic"
         isOperator = false
         isConnecttingFailed = false
     }
 
     Item {
         id: topItem
-
         anchors {
             left: parent.left
+            leftMargin: 20 * appScaleSize
+            right: parent.right
+            rightMargin: 20 * appScaleSize
             top: parent.top
-            leftMargin: 14 * appScale
-            topMargin: 48 * appScale
+            topMargin:  JDisplay.statusBarHeight
         }
 
-        width: childrenRect.width
-        height: 20 * appScale
-
-        Image {
-            id: backIcon
-
-            anchors.left: parent.left
+        height: 62 * appScaleSize
+        Item {
+            width: parent.width
+            height: backIcon.height
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 6 * appScaleSize
 
-            width: 22 * appScale
-            height: 22 * appScale
+            Kirigami.JIconButton {
+                id: backIcon
+                width: (22 + 8) * appScaleSize
+                height: (22 + 8) * appScaleSize
 
-            source: "qrc:/image/arrow_left.png"
-
-            MouseArea {
-                anchors.fill: parent
-
+                source: isDarkTheme ? "qrc:/image/arrow_left_dark.png" : "qrc:/image/arrow_left.png"
                 onClicked: {
                     currenProxyModel.sourceModel.sourceModel.isAllowUpdate = true
                     wifi_root.popView()
                 }
             }
-        }
 
-        Kirigami.Label {
-            id: title
+            Kirigami.Label {
+                id: title
 
-            anchors {
-                left: backIcon.right
-                leftMargin: 11 * appScale
-                verticalCenter: parent.verticalCenter
+                anchors {
+                    left: backIcon.right
+                    leftMargin: 10 * appScaleSize
+                    verticalCenter: parent.verticalCenter
+                }
+
+                color: majorForeground
+                font.pixelSize: 20 * appFontSize
+                font.bold: true
+                text: wifiName
             }
-
-            font.pixelSize: 20
-            font.bold: true
-            text: wifiName
         }
     }
 
@@ -117,8 +128,8 @@ Rectangle {
         anchors {
             top: topItem.bottom
             bottom: root.bottom
-            topMargin: 31 * appScale
-            bottomMargin: 20 * appScale
+            topMargin: 11 * appScaleSize
+            bottomMargin: 20 * appScaleSize
             horizontalCenter: root.horizontalCenter
         }
 
@@ -128,7 +139,7 @@ Rectangle {
         ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
         Column {
-            spacing: 24 * appScale
+            spacing: 24 * appScaleSize
 
             Row {
                 width: preferWidth
@@ -141,15 +152,15 @@ Rectangle {
 
                     anchors.fill: parent
 
-                    radius: 10 * appScale
-                    color: "white"
+                    radius: 10 * appScaleSize
+                    color: cardBackground
 
                     SwitchItem {
                         id: connectItem
 
                         titleName: (!isConnectedSuccess
                                     & isConnectting) ? i18n("On Connection") : i18n("Connect")
-                        titleColor: isConnectedSuccess ? "#FF3C4BE8" : isConnectting ? "#FFA8A8AC" : "#FF3C4BE8"
+                        titleColor: isConnectedSuccess ? highlightColor : isConnectting ? "#FFA8A8AC" : highlightColor
                         isConnecting: isConnectedSuccess ? false : isConnectting
                         switchVisible: false
 
@@ -158,6 +169,7 @@ Rectangle {
 
                             onClicked: {
                                 isOperator = true
+                                isConnecttingFailed = false
                                 handler.activateConnection(connectionPath,
                                                            devicePath,
                                                            specificPath)
@@ -178,14 +190,14 @@ Rectangle {
 
                     anchors.fill: parent
 
-                    radius: 10 * appScale
-                    color: "white"
+                    radius: 10 * appScaleSize
+                    color: cardBackground
 
                     SwitchItem {
                         id: networkStateItem
 
                         titleName: isConnectedSuccess ? i18n("Forget This Network") : (currentModel.ItemType == 1) | isConnected ? i18n("Forget This Network") : i18n("Join This Network")
-                        titleColor: "#FF3C4BE8"
+                        titleColor: highlightColor
                         switchVisible: false
 
                         MouseArea {
@@ -196,17 +208,20 @@ Rectangle {
                                 if (networkStateItem.titleName == i18n("Forget This Network")) {
                                     deleteDialog.visible = true
                                 } else if (networkStateItem.titleName == i18n("Join This Network")) {
-
                                     isOperator = true
+                                    passwordPop.ssid = mSsid
+                                    passwordPop.inputText = ""
                                     passwordPop.devicePath = devicePath
                                     passwordPop.specificPath = specificPath
                                     passwordPop.text = i18n("Enter the password for”%1”",currentName);
                                     isConnecttingFailed = false
-                                    if(currentModel.SecurityType == -1 | currentModel.SecurityType == 0){
-                                        kcm.addNoSecurityConnection(connectionPath,
-                                                        devicePath,
-                                                        specificPath)
-                                                       return;
+                                    if(currentModel && currentModel.SecurityType){
+                                        if(currentModel.SecurityType == -1 | currentModel.SecurityType == 0){
+                                            kcm.addNoSecurityConnection(connectionPath,
+                                                            devicePath,
+                                                            specificPath)
+                                                        return;
+                                        }
                                     }
                                     passwordPop.visible = true
                                 }
@@ -225,8 +240,8 @@ Rectangle {
                 Rectangle {
                     anchors.fill: parent
 
-                    radius: 10 * appScale
-                    color: "white"
+                    radius: 10 * appScaleSize
+                    color: cardBackground
 
                     SwitchItem {
                         titleName: i18n("Auto-Join")
@@ -244,15 +259,15 @@ Rectangle {
             Column {
                 width: preferWidth
 
-                spacing: 4 * appScale
+                spacing: 4 * appScaleSize
                 visible: false
                 
                 Rectangle {
                     width: preferWidth
                     height: preferHeigh
                     
-                    radius: 10 * appScale
-                    color: "white"
+                    radius: 10 * appScaleSize
+                    color: cardBackground
 
                     SwitchItem {
                         titleName: i18n("Low Kata Mode ")
@@ -263,95 +278,115 @@ Rectangle {
                 Kirigami.Label {
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    width: 563 * appScale
+                    width: 563 * appScaleSize
 
                     wrapMode: Text.WordWrap
-                    font.pixelSize: 12
-                    color: "#4D000000"
+                    font.pixelSize: 12 * appFontSize
+                    color: minorForeground
                     text: i18n("Low Data Mode helps reduce your pad data usage over your cellular network or specific WLAN networks you select.When Low Data Mode is turned on,automatic updates and background tasks,such as Photos syncing,are paused.")
                 }
             }
-
-            Column {
+            Rectangle{
                 width: preferWidth
+                height: childrenRect.height
 
-                spacing: 10 * appScale
-                visible: isConnected
-
-                Text {
-                    id: mLable
-
-                    anchors {
-                        left: parent.left
-                        leftMargin: 20 * appScale
-                    }
-
-                    text: i18n("IPV4 Address")
-                    color: "#4D000000"
-                    font.pixelSize: 12
-                }
-
-                Rectangle {
+                radius: 10 * appScaleSize
+                color: cardBackground
+                //visible: isConnected
+                
+                Column {
                     width: preferWidth
-                    height: childrenRect.height
 
-                    radius: 10 * appScale
+                    Text {
+                        id: mLable
 
-                    SwitchItem {
-                        id: ipTitle
+                        anchors {
+                            left: parent.left
+                            leftMargin: 20 * appScaleSize
+                        }
 
-                        anchors.top: parent.top
+                        height: 22 * appScaleSize
 
+                        verticalAlignment:Text.AlignBottom
+                        text: i18n("IPV4 Address")
+                        color: minorForeground
+                        font.pixelSize: 12 * appFontSize
+                    }
+
+                    Item {
                         width: preferWidth
+                        height: currentItemType == 1 ? childrenRect.height : preferHeigh
 
-                        titleName: i18n("Configure IP")
-                        switchVisible: false
-                        showBottomLine: true
-                    }
+                        SelectItem {
+                            id: ipTitle
 
-                    SelectItem {
-                        id: ipAddress
-                        
-                        anchors.top: ipTitle.bottom
+                            anchors.top: parent.top
 
-                        width: parent.width
+                            width: preferWidth
 
-                        titleName: i18n("IP Address")
-                        selectName: currentModel.IpAddress
-                        arrowVisible: false
-                    }
+                            titleName: i18n("Configure IP")
+                            //showBottomLine: true
+                            //visible: isConnected == 1
+                            arrowVisible: true
+                            showBottomLine: currentItemType == 1 
+                            selectName: i18n(currentMethod)
 
-                    SelectItem {
-                        id: subnetMask
+                            MouseArea {
+                                anchors.fill: parent
 
-                        anchors.top: ipAddress.bottom
-                            
-                        width: parent.width
-
-                        titleName: i18n("Subnet Mask")
-                        selectName: currentModel.SubnetMask
-                        arrowVisible: false
-                    }
-
-                    SelectItem {
-                        id: router
-
-                        anchors.top: subnetMask.bottom
-                            
-                        width: parent.width
-
-                        titleName: i18n("Router")
-                        selectName: i18n(defaultIpv4Method)
-                        arrowVisible: true
-                        showBottomLine: false
-
-                        MouseArea {
-                            anchors.fill: parent
-
-                            onClicked: {
-                                wifi_root.gotoPage("ipv4_view")
+                                onClicked: {
+                                    wifi_root.gotoPage("ipv4_view")
+                                }
                             }
                         }
+
+                        SelectItem {
+                            id: ipAddress
+                            
+                            anchors.top: ipTitle.bottom
+
+                            width: parent.width
+
+                            titleName: i18n("IP Address")
+                            selectName: currentIpAddress
+                            arrowVisible: false
+                            visible: currentItemType == 1
+                        }
+
+                        SelectItem {
+                            id: subnetMask
+
+                            anchors.top: ipAddress.bottom
+                                
+                            width: parent.width
+
+                            titleName: i18n("Subnet Mask")
+                            selectName: currentSubnetMask
+                            arrowVisible: false
+                            visible: currentItemType == 1
+                            showBottomLine: false
+                        }
+
+                        /*SelectItem {
+                            id: router
+                            visible:false
+                            anchors.top: isConnected? subnetMask.bottom : parent.top
+                                
+                            width: parent.height
+
+                            titleName: i18n("Router")
+                            selectName: i18n(currentMethod)
+                            arrowVisible: true
+                            showBottomLine: false
+
+                            MouseArea {
+                                anchors.fill: parent
+
+                                onClicked: {
+                                    wifi_root.gotoPage("ipv4_view")
+                                }
+                            }
+                        }*/
                     }
                 }
             }
@@ -365,12 +400,12 @@ Rectangle {
                 Rectangle {
                     anchors.fill: parent
 
-                    radius: 10 * appScale
-                    color: "white"
+                    radius: 10 * appScaleSize
+                    color: cardBackground
 
                     SwitchItem {
                         titleName: i18n("Renew Lease")
-                        titleColor: "#FF3C4BE8"
+                        titleColor: highlightColor
                         switchVisible: false
 
                         MouseArea {
@@ -388,39 +423,49 @@ Rectangle {
                 }
             }
 
-            Column {
+            Rectangle{
                 width: preferWidth
-                spacing: 4 * appScale
+                height: childrenRect.height
 
-                Text {
-                    anchors {
-                        left: parent.left
-                        leftMargin: 20 * appScale
-                    }
+                radius: 10 * appScaleSize
+                color: cardBackground
 
-                    text: i18n("DNS")
-                    color: "#4D000000"
-                    font.pixelSize: 12
-                }
-
-                Rectangle {
+                Column {
                     width: preferWidth
-                    height: preferHeigh
+                    spacing: 4 * appScaleSize
 
-                    radius: 10 * appScale
+                    Text {
+                        anchors {
+                            left: parent.left
+                            leftMargin: 20 * appScaleSize
+                        }
+                        
+                        height: 22 * appScaleSize
 
-                    SelectItem {
-                        titleName: i18n("Configure DNS")
-                        selectName: i18n(wifi_root.defaultDnsMethod)
-                        arrowVisible: true
-                        showBottomLine: false
+                        verticalAlignment:Text.AlignBottom
+                        text: i18n("DNS")
+                        color: minorForeground
+                        font.pixelSize: 12 * appFontSize
                     }
 
-                    MouseArea {
-                        anchors.fill: parent
+                    Item {
+                        width: preferWidth
+                        height: preferHeigh
 
-                        onClicked: {
-                            wifi_root.gotoPage("dns_view")
+
+                        SelectItem {
+                            titleName: i18n("Configure DNS")
+                            selectName: i18n(currentMethod)
+                            arrowVisible: true
+                            showBottomLine: false
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+
+                            onClicked: {
+                                wifi_root.gotoPage("dns_view")
+                            }
                         }
                     }
                 }
@@ -429,26 +474,26 @@ Rectangle {
             Column {
                 width: preferWidth
 
-                spacing: 4 * appScale
+                spacing: 4 * appScaleSize
                 visible: false
                 
                 Text {
 
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                     }
 
                     text: i18n("Http Proxy")
-                    color: "#4D000000"
-                    font.pixelSize: 12
+                    color: minorForeground
+                    font.pixelSize: 12 * appFontSize
                 }
 
                 Rectangle {
                     width: preferWidth
                     height: preferHeigh
 
-                    radius: 10 * appScale
+                    radius: 10 * appScaleSize
 
                     SelectItem {
                         titleName: i18n("Configure Proxy")
@@ -469,7 +514,7 @@ Rectangle {
         text: i18n("Your device will no longer join this WLAN network.")
         leftButtonText: i18n("Cancel")
         rightButtonText: i18n("Forget")
-        rightButtonTextColor: "#FF3C4BE8"
+        rightButtonTextColor: highlightColor
 
         onRightButtonClicked: {
             if (nameEquals) {

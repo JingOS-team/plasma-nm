@@ -3,6 +3,7 @@
     Copyright 2009 Will Stephenson <wstephenson@kde.org>
     Copyright 2011-2012 Lamarque V. Souza <lamarque@kde.org>
     Copyright 2013-2014 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -25,16 +26,25 @@
 
 #include <KPluginFactory>
 
+#include "connectivitymonitor.h"
 #include "secretagent.h"
 #include "notification.h"
 #include "monitor.h"
-#include "portalmonitor.h"
 
 #include <QDBusMetaType>
 #include <QDBusServiceWatcher>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusReply>
+
+#include <QQmlApplicationEngine>
+#include <KLocalizedContext>
+#include <KLocalizedString>
+#include <QUrl>
+#include <QQmlContext>
+#include <QDebug>
+#include "cellularmonitor.h"
+#include "networkservice.h"
 
 K_PLUGIN_CLASS_WITH_JSON(NetworkManagementService, "networkmanagement.json")
 
@@ -44,7 +54,8 @@ class NetworkManagementServicePrivate
     SecretAgent *agent = nullptr;
     Notification *notification = nullptr;
     Monitor *monitor = nullptr;
-    PortalMonitor *portalMonitor = nullptr;
+    ConnectivityMonitor *connectivityMonitor = nullptr;
+    NetworkService *networkservice = nullptr;
 };
 
 NetworkManagementService::NetworkManagementService(QObject * parent, const QVariantList&)
@@ -75,9 +86,18 @@ void NetworkManagementService::init()
         d->monitor = new Monitor(this);
     }
 
-    if (!d->portalMonitor) {
-        d->portalMonitor = new PortalMonitor(this);
+    if (!d->connectivityMonitor) {
+        d->connectivityMonitor = new ConnectivityMonitor(this);
     }
+
+    if (!d->networkservice) {
+        d->networkservice = new NetworkService(this);
+    }
+
+    qmlRegisterType<CellularMonitor>("org.kde.jingos.kded", 0, 2, "CellularMonitor");
+    
+    engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
+    engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
 }
 
 #include "service.moc"

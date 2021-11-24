@@ -37,6 +37,12 @@ Item {
 
     property var currentType: "L2TP"
     property var selsectType
+    property bool isSelectable: true
+
+     RegExpValidator {
+        id: ipValidator
+        regExp: /^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$/
+    }
 
     Connections {
         target: kcm
@@ -72,10 +78,10 @@ Item {
         id: type_area
 
         width: parent.width
-        height: 45 * appScale
+        height: 45 * appScaleSize
 
-        color: "white"
-        radius: 10 * appScale
+        color: cardBackground
+        radius: 10 * appScaleSize
 
         Rectangle {
             id: typeRect
@@ -94,35 +100,36 @@ Item {
 
                 anchors {
                     left: parent.left
-                    leftMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
                     verticalCenter: parent.verticalCenter
                 }
 
-                height: 22 * appScale
+                height: 22 * appScaleSize
 
                 text: i18n("Type")
-                font.pixelSize: 14
+                font.pixelSize: 14 * appFontSize
+                color: majorForeground
             }
 
             Item {
                 anchors {
                     right: parent.right
-                    rightMargin: 8 * appScale
+                    rightMargin: 8 * appScaleSize
                     verticalCenter: parent.verticalCenter
                 }
 
                 width: childrenRect.width
-                height: 40 * appScale
+                height: 40 * appScaleSize
 
                 Text {
                     anchors {
-                        right: icon_down.left
-                        rightMargin: 2 * appScale
+                        right: isSelectable ? icon_down.left : parent.right
+                        rightMargin: isSelectable ? 2 * appScaleSize : 12 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#99000000"
+                    font.pixelSize: 14 * appFontSize
+                    color: isDarkTheme ? "#8CF7F7F7" : "#99000000"
                     text: currentType
                 }
 
@@ -134,9 +141,10 @@ Item {
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 22 * appScale
-                    height: 22 * appScale
+                    width: 22 * appScaleSize
+                    height: 22 * appScaleSize
 
+                    visible: isSelectable
                     source: "../image/icon_right.png"
                 }
 
@@ -144,10 +152,12 @@ Item {
                     anchors.fill: parent
 
                     onClicked: {
-                        typeList.parent = icon_down
-                        typeList.x = -(typeList.width) + icon_down.width + 13 * appScale
-                        typeList.y = icon_down.height
-                        typeList.visible = true
+                        if(isSelectable){
+                            typeList.parent = icon_down
+                            typeList.x = -(typeList.width) + icon_down.width + 13 * appScaleSize
+                            typeList.y = icon_down.height
+                            typeList.visible = true
+                        }
                     }
                 }
             }
@@ -160,14 +170,14 @@ Item {
         anchors {
             left: parent.left
             top: type_area.bottom
-            topMargin: 24 * appScale
+            topMargin: 24 * appScaleSize
         }
 
         width: parent.width
         height: column.height
 
-        radius: 15 * appScale
-        color: "white"
+        radius: 15 * appScaleSize
+        color: cardBackground
 
         Column {
             id: column
@@ -186,40 +196,40 @@ Item {
                 anchors {
                     left: parent.left
                     top: content_area.top
-                    topMargin: 24 * appScale
+                    topMargin: 24 * appScaleSize
                 }
 
                 width: column.width
-                height: 45 * appScale
+                height: 45 * appScaleSize
 
-                color: "white"
-                radius: 10 * appScale
+                color: cardBackground
+                radius: 10 * appScaleSize
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("Description")
                 }
 
-                TextField {
+                CTextField {
                     id: tf_des
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         right: parent.right
-                        rightMargin: 20 * appScale
+                        rightMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     placeholderText: i18n("Required")
 
                     background: Rectangle {
@@ -232,50 +242,51 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: gateWayRect
 
                 width: column.width
-                height: 45 * appScale
+                height: 45 * appScaleSize
 
-                color: "white"
-                radius: 10 * appScale
+                color: cardBackground
+                radius: 10 * appScaleSize
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("Gateway")
                 }
-                TextField {
+                CTextField {
                     id: tf_gateWay
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         verticalCenter: parent.verticalCenter
                         right: parent.right
-                        rightMargin: 20 * appScale
+                        rightMargin: 20 * appScaleSize
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     placeholderText: i18n("Required")
+                    validator: ipValidator
 
                     background: Rectangle {
                         color: "transparent"
@@ -287,50 +298,51 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
                 visible: domainRect.visible
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: domainRect
                 width: column.width
-                height: 45 * appScale
-                color: "white"
-                radius: 10 * appScale
+                height: domainRect.visible ? 45 * appScaleSize : 0
+                color: cardBackground
+                radius: 10 * appScaleSize
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("NT Domain")
                 }
 
-                TextField {
+                CTextField {
                     id: tf_domain
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         verticalCenter: parent.verticalCenter
                         right: parent.right
-                        rightMargin: 20 * appScale
+                        rightMargin: 20 * appScaleSize
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     placeholderText: i18n("Not Required")
+                    validator: ipValidator
 
                     background: Rectangle {
                         color: "transparent"
@@ -346,14 +358,14 @@ Item {
         anchors {
             left: parent.left
             top: content_area.bottom
-            topMargin: 24 * appScale
+            topMargin: 24 * appScaleSize
         }
 
         width: parent.width
-        height: column.height
+        height: authen_column.height
 
-        radius: 10 * appScale
-        color: "white"
+        radius: 10 * appScaleSize
+        color: cardBackground
 
         Column {
             id: authen_column
@@ -370,71 +382,21 @@ Item {
                 anchors {
                     left: parent.left
                     top: authen_area.top
-                    topMargin: 13 * appScale
-                    leftMargin: 20 * appScale
+                    topMargin: 13 * appScaleSize
+                    leftMargin: 20 * appScaleSize
                 }
 
                 width: authen_area.width
-                height: 36 * appScale
+                height: 36 * appScaleSize
+
+                color:  "transparent"
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
 
-                    font.pixelSize: 12
+                    font.pixelSize: 12 * appFontSize
                     text: i18n("Authentication")
-                    color: "#4D000000"
-                }
-            }
-
-            Rectangle {
-                anchors {
-                    left: parent.left
-                }
-
-                width: authen_column.width
-                height: 45 * appScale
-
-                visible: false
-                color: "transparent"
-
-                Text {
-                    anchors {
-                        left: parent.left
-                        leftMargin: 20 * appScale
-                        verticalCenter: parent.verticalCenter
-                    }
-
-                    height: 26 * appScale
-
-                    text: i18n("User Authentication")
-                    font.pixelSize: 14
-                }
-
-                Text {
-                    anchors {
-                        right: icon_right.left
-                        rightMargin: 2 * appScale
-                        verticalCenter: parent.verticalCenter
-                    }
-
-                    font.pixelSize: 14
-                    color: "#99000000"
-                    text: i18n("Username")
-                }
-
-                Image {
-                    id: icon_right
-
-                    anchors {
-                        right: parent.right
-                        rightMargin: 13 * appScale
-                        verticalCenter: parent.verticalCenter
-                    }
-
-                    width: 22 * appScale
-                    height: 22 * appScale
-
-                    source: "../image/icon_right.png"
+                    color: minorForeground
                 }
             }
 
@@ -442,35 +404,35 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
-                visible: false
-                color: "#FFE5E5EA"
+                visible: caRect.visible
+                color: dividerForeground
             }
 
             Rectangle {
                 id: caRect
 
                 width: authen_column.width
-                height: 45 * appScale
+                height: caRect.visible ? 45 * appScaleSize : 0
 
                 visible: false
-                color: "white"
+                color: "transparent"
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("CA Certificate")
                 }
 
@@ -479,14 +441,15 @@ Item {
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         right: selectFileImage1.right
-                        rightMargin: 40 * appScale
+                        rightMargin: 40 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    wrapMode:Text.WrapAnywhere
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                 }
 
                 Image {
@@ -494,12 +457,12 @@ Item {
 
                     anchors {
                         right: parent.right
-                        rightMargin: 30
+                        rightMargin: 30 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 23
-                    height: 23
+                    width: 23 * appScaleSize
+                    height: 23 * appScaleSize
 
                     source: "../image/folder-black.png"
 
@@ -508,7 +471,8 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             selsectType = "ca"
-                            fileDialog.visible = true
+                            //fileDialog.visible = true
+                            showFileDialog()
                         }
                     }
                 }
@@ -518,35 +482,35 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
                 visible: certRect.visible
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: certRect
 
                 width: authen_column.width
-                height: 45 * appScale
+                height: certRect.visible ? 45 * appScaleSize : 0
 
                 visible: false
-                color: "white"
+                color: "transparent"
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("User Certificate")
                 }
 
@@ -555,14 +519,15 @@ Item {
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         right: selectFileImage2.right
-                        rightMargin: 40 * appScale
+                        rightMargin: 40 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    wrapMode:Text.WrapAnywhere
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                 }
 
                 Image {
@@ -570,12 +535,12 @@ Item {
 
                     anchors {
                         right: parent.right
-                        rightMargin: 30
+                        rightMargin: 30 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 23
-                    height: 23
+                    width: 23 * appScaleSize
+                    height: 23 * appScaleSize
 
                     source: "../image/folder-black.png"
 
@@ -583,7 +548,8 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             selsectType = "cert"
-                            fileDialog.visible = true
+                            //fileDialog.visible = true
+                            showFileDialog()
                         }
                     }
                 }
@@ -593,51 +559,52 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
                 visible: keyRect.visible
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: keyRect
 
                 width: authen_column.width
-                height: 45 * appScale
+                height: keyRect.visible ? 45 * appScaleSize : 0
 
                 visible: false
-                color: "white"
+                color: "transparent"
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("Private Key")
                 }
-                Text {
 
+                Text {
                     id: tf_key
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         right: selectFileImage3.right
-                        rightMargin: 40 * appScale
+                        rightMargin: 40 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    wrapMode:Text.WrapAnywhere
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                 }
 
                 Image {
@@ -645,12 +612,12 @@ Item {
 
                     anchors {
                         right: parent.right
-                        rightMargin: 30
+                        rightMargin: 30 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 23
-                    height: 23
+                    width: 23 * appScaleSize
+                    height: 23 * appScaleSize
 
                     source: "../image/folder-black.png"
 
@@ -658,7 +625,8 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             selsectType = "key"
-                            fileDialog.visible = true
+                            //fileDialog.visible = true
+                            showFileDialog()
                         }
                     }
                 }
@@ -668,35 +636,36 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
                 visible: authRect.visible
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: authRect
 
                 width: authen_column.width
-                height: 45 * appScale
+                height: authRect.visible ? 45 * appScaleSize : 0
+                
 
                 visible: false
-                color: "white"
+                color: "transparent"
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("Static Key")
                 }
                 Text {
@@ -704,14 +673,15 @@ Item {
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         right: selectFileImage4.right
-                        rightMargin: 40 * appScale
+                        rightMargin: 40 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    wrapMode:Text.WrapAnywhere
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                 }
 
                 Image {
@@ -719,12 +689,12 @@ Item {
 
                     anchors {
                         right: parent.right
-                        rightMargin: 30
+                        rightMargin: 30 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 23
-                    height: 23
+                    width: 23 * appScaleSize
+                    height: 23 * appScaleSize
 
                     source: "../image/folder-black.png"
 
@@ -732,7 +702,8 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             selsectType = "auth"
-                            fileDialog.visible = true
+                            //fileDialog.visible = true
+                            showFileDialog()
                         }
                     }
                 }
@@ -742,51 +713,50 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
                 visible: userNameRect.visible
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: userNameRect
 
                 width: authen_column.width
-                height: 45 * appScale
+                height: userNameRect.visible ? 45 * appScaleSize : 0
 
-                color: "white"
-                radius: 10 * appScale
+                color: "transparent"
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("Username")
                 }
 
-                TextField {
+                CTextField {
                     id: tf_userName
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         right: parent.right
-                        rightMargin: 20 * appScale
+                        rightMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     placeholderText: i18n("Required")
 
                     background: Rectangle {
@@ -799,35 +769,34 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
 
                 visible: passwordRect.visible
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: passwordRect
 
                 width: authen_column.width
-                height: 45 * appScale
+                height: passwordRect.visible ? 45 * appScaleSize : 0
 
-                color: "white"
-                radius: 10 * appScale
+                color: "transparent"
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("Password")
                 }
 
@@ -836,12 +805,12 @@ Item {
 
                     anchors {
                         right: img_clear.left
-                        rightMargin: 8 * appScale
+                        rightMargin: 8 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 22
-                    height: 22
+                    width: 22 * appScaleSize
+                    height: 22 * appScaleSize
 
                     source: tf_passWord.echoMode == TextInput.Password ? "../image/pwd_hidden.png" : "../image/pwd_visible.png"
                     
@@ -851,8 +820,10 @@ Item {
                         onClicked: {
                             if (tf_passWord.echoMode == TextInput.Password) {
                                 tf_passWord.echoMode = TextInput.Normal
+                                tf_passWord.passwordMaskDelay = 0
                             } else {
                                 tf_passWord.echoMode = TextInput.Password
+                                tf_passWord.passwordMaskDelay = 500
                             }
                         }
                     }
@@ -863,12 +834,12 @@ Item {
 
                     anchors {
                         right: parent.right
-                        rightMargin: 17 * appScale
+                        rightMargin: 17 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 22
-                    height: 22
+                    width: 22 * appScaleSize
+                    height: 22 * appScaleSize
 
                     visible: tf_passWord.text.length > 0
                     source: "../image/icon_clear.png"
@@ -882,21 +853,24 @@ Item {
                     }
                 }
 
-                TextField {
+                CTextField {
                     id: tf_passWord
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         right: img_pwd.left
                         verticalCenter: parent.verticalCenter
-                        rightMargin: 20 * appScale
+                        rightMargin: 20 * appScaleSize
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     echoMode: TextInput.Password
+                    passwordCharacter:  String.fromCharCode(0x2022, 16)
+                    passwordMaskDelay: 500
                     placeholderText: i18n("Ask Every Time")
+                    validator: RegExpValidator {regExp: /^[\u4e00-\u9fa5 -~]+$/ }
 
                     background: Rectangle {
                         color: "transparent"
@@ -908,51 +882,53 @@ Item {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 20 * appScale
-                    rightMargin: 20 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                 }
 
                 width: column.width
                 height: 1
                 
                 visible: preKeyRect.visible
-                color: "#FFE5E5EA"
+                color: dividerForeground
             }
 
             Rectangle {
                 id: preKeyRect
 
                 width: authen_column.width
-                height: 45 * appScale
+                height: preKeyRect.visible ? 45 * appScaleSize : 0
 
-                color: "white"
+                color: "transparent"
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
-
-                    font.pixelSize: 14
-                    color: "black"
+                    width: 116*appScaleSize
+                    wrapMode:Text.WrapAnywhere
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     text: i18n("Pre-shared key")
                 }
 
-                TextField {
+                CTextField {
                     id: tf_prekey
 
                     anchors {
                         left: parent.left
-                        leftMargin: 136 * appScale
+                        leftMargin: 136 * appScaleSize
                         verticalCenter: parent.verticalCenter
                         right: parent.right
-                        rightMargin: 20 * appScale
+                        rightMargin: 20 * appScaleSize
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF000000"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                     placeholderText: i18n("Required")
+                    validator: RegExpValidator {regExp: /^[\u4e00-\u9fa5 -~]+$/ }
 
                     background: Rectangle {
                         color: "transparent"
@@ -978,33 +954,52 @@ Item {
         }
     }
 
-    FileDialog {
-        id: fileDialog
+    function showFileDialog(){
+        fileDialogLoader.active = true
+    }
 
-        visible: false
-        title: "Please choose a file"
-        folder: shortcuts.home
+    function hideFileDialog(){
+        fileDialogLoader.active = false
+    }
 
-        onAccepted: {
-            var urlText = fileDialog.fileUrl.toString()
-            if (urlText.indexOf("file://") != -1) {
-                urlText = urlText.substr(urlText.indexOf("file://") + 7,
-                                         urlText.length - 1)
+    Loader{
+        id:fileDialogLoader
+        active:false
+        //width: parent.width
+        sourceComponent: fileDialogComponent
+    }
+
+    Component{
+        id:fileDialogComponent
+
+        FileDialog {
+            id: fileDialog
+
+            visible:true
+            title: "Please choose a file"
+            folder: shortcuts.home
+
+            onAccepted: {
+                var urlText = fileDialog.fileUrl.toString()
+                if (urlText.indexOf("file://") != -1) {
+                    urlText = urlText.substr(urlText.indexOf("file://") + 7,
+                                            urlText.length - 1)
+                }
+                if (selsectType == "ca") {
+                    tf_ca.text = urlText
+                } else if (selsectType == "cert") {
+                    tf_cert.text = urlText
+                } else if (selsectType == "key") {
+                    tf_key.text = urlText
+                } else if (selsectType == "auth") {
+                    tf_auth.text = urlText
+                }
+                hideFileDialog()
             }
-            if (selsectType == "ca") {
-                tf_ca.text = urlText
-            } else if (selsectType == "cert") {
-                tf_cert.text = urlText
-            } else if (selsectType == "key") {
-                tf_key.text = urlText
-            } else if (selsectType == "auth") {
-                tf_auth.text = urlText
-            }
-            Qt.quit()
-        }
 
-        onRejected: {
-            Qt.quit()
+            onRejected: {
+                hideFileDialog()
+            }
         }
     }
 
@@ -1012,7 +1007,6 @@ Item {
         desRect.visible = true
         gateWayRect.visible = true
         domainRect.visible = true
-        domainRect.height = 45 * appScale
         caRect.visible = false
         certRect.visible = false
         keyRect.visible = false
@@ -1020,6 +1014,7 @@ Item {
         passwordRect.visible = true
         preKeyRect.visible = true
         authRect.visible = false
+        authen_area.height = 36 * appScaleSize + 45 * appScaleSize * 3
         tf_passWord.echoMode = TextInput.Password
     }
 
@@ -1027,7 +1022,6 @@ Item {
         desRect.visible = true
         gateWayRect.visible = true
         domainRect.visible = true
-        domainRect.height = 45 * appScale
         caRect.visible = false
         certRect.visible = false
         keyRect.visible = false
@@ -1035,6 +1029,7 @@ Item {
         passwordRect.visible = true
         preKeyRect.visible = false
         authRect.visible = false
+        authen_area.height = 36 * appScaleSize + 45 * appScaleSize * 2
         tf_passWord.echoMode = TextInput.Password
     }
 
@@ -1042,7 +1037,6 @@ Item {
         desRect.visible = true
         gateWayRect.visible = true
         domainRect.visible = false
-        domainRect.height = 0
         caRect.visible = true
         certRect.visible = true
         keyRect.visible = true
@@ -1050,6 +1044,7 @@ Item {
         passwordRect.visible = true
         preKeyRect.visible = false
         authRect.visible = true
+        authen_area.height = 36 * appScaleSize + 45 * appScaleSize * 5
         tf_passWord.echoMode = TextInput.Password
     }
 

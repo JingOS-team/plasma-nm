@@ -58,9 +58,14 @@ bool MobileProxyModel::filterAcceptsRow(int source_row, const QModelIndex& sourc
         return false;
     }
 
+    const NetworkManager::ConnectionSettings::ConnectionType type = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();
+    if (type != NetworkManager::ConnectionSettings::Wireless) {
+        return false;
+    }
+
     NetworkModelItem::ItemType itemType = (NetworkModelItem::ItemType)sourceModel()->data(index, NetworkModel::ItemTypeRole).toUInt();
 
-     if (itemType != NetworkModelItem::AvailableConnection &&
+    if (itemType != NetworkModelItem::AvailableConnection &&
         itemType != NetworkModelItem::AvailableAccessPoint) {
             QString connectionPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
             NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(connectionPath);
@@ -75,6 +80,14 @@ bool MobileProxyModel::filterAcceptsRow(int source_row, const QModelIndex& sourc
         return false;
     }
 
+    // if (itemType != NetworkModelItem::AvailableAccessPoint) {
+    //     return false;
+    // }
+
+    if(sourceModel()->data(index, NetworkModel::SignalRole).toInt() < 20){
+        return false;
+    }
+
     return sourceModel()->data(index, NetworkModel::ItemUniqueNameRole).toString().contains(filterRegExp());
 }
 
@@ -84,17 +97,14 @@ bool MobileProxyModel::lessThan(const QModelIndex& left, const QModelIndex& righ
     const bool leftConnected = sourceModel()->data(left, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated;
     const int leftConnectionState = sourceModel()->data(left, NetworkModel::ConnectionStateRole).toUInt();
     const QString leftName = sourceModel()->data(left, NetworkModel::NameRole).toString();
-    const QString leftUuid = sourceModel()->data(left, NetworkModel::UuidRole).toString();
     const int leftSignal = sourceModel()->data(left, NetworkModel::SignalRole).toInt();
-    const QDateTime leftDate = sourceModel()->data(left, NetworkModel::TimeStampRole).toDateTime();
 
     const bool rightAvailable = (NetworkModelItem::ItemType)sourceModel()->data(right, NetworkModel::ItemTypeRole).toUInt() != NetworkModelItem::UnavailableConnection;
     const bool rightConnected = sourceModel()->data(right, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated;
     const int rightConnectionState = sourceModel()->data(right, NetworkModel::ConnectionStateRole).toUInt();
+
     const QString rightName = sourceModel()->data(right, NetworkModel::NameRole).toString();
-    const QString rightUuid = sourceModel()->data(right, NetworkModel::UuidRole).toString();
     const int rightSignal = sourceModel()->data(right, NetworkModel::SignalRole).toInt();
-    const QDateTime rightDate = sourceModel()->data(right, NetworkModel::TimeStampRole).toDateTime();
 
     if (leftAvailable < rightAvailable) {
         return true;
@@ -112,18 +122,6 @@ bool MobileProxyModel::lessThan(const QModelIndex& left, const QModelIndex& righ
         return true;
     } else if (leftConnectionState < rightConnectionState) {
         return false;
-    }
-
-    if (leftUuid.isEmpty() && !rightUuid.isEmpty()) {
-        return true;
-    } else if (!leftUuid.isEmpty() && rightUuid.isEmpty()) {
-        return false;
-    }
-
-    if (leftDate > rightDate) {
-        return false;
-    } else if (leftDate < rightDate) {
-        return true;
     }
 
     if (leftSignal < rightSignal) {

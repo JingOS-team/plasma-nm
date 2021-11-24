@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import QtQuick.Layouts 1.2
 import QtQuick 2.7
@@ -29,13 +19,13 @@ Rectangle {
     property bool showBottomLine: false
     property bool switchVisible: true
     property bool switchChecked: true
-    property var titleColor: "#FF000000"
+    property var titleColor: majorForeground
     property bool isConnecting: false
 
     signal autoConnectChecked(bool checked)
 
     width: parent.width
-    height: 45 * appScale
+    height: 45 * appScaleSize
 
     color: "transparent"
 
@@ -44,12 +34,12 @@ Rectangle {
 
         anchors {
             left: parent.left
-            leftMargin: 20 * appScale
+            leftMargin: 20 * appScaleSize
             verticalCenter: parent.verticalCenter
         }
 
-        width: 22 * appScale
-        height: 22 * appScale
+        width: 22 * appScaleSize
+        height: 22 * appScaleSize
 
         visible: isConnecting
         source: "qrc:/image/loading.png"
@@ -68,11 +58,11 @@ Rectangle {
 
     Kirigami.Label {
         anchors.left: isConnecting ? loadingState.right : parent.left
-        anchors.leftMargin: isConnecting ? 10 * appScale : 20 * appScale
+        anchors.leftMargin: isConnecting ? 10 * appScaleSize : 20 * appScaleSize
         anchors.verticalCenter: parent.verticalCenter
 
         text: titleName
-        font.pixelSize: 14
+        font.pixelSize: 14 * appFontSize
         color: titleColor
     }
 
@@ -80,11 +70,11 @@ Rectangle {
         id: mSwitch
 
         anchors.right: parent.right
-        anchors.rightMargin: 20 * appScale
+        anchors.rightMargin: 20 * appScaleSize
         anchors.verticalCenter: parent.verticalCenter
 
-        width: 43 * appScale
-        height: 20 * appScale
+        width: 43 * appScaleSize
+        height: 26 * appScaleSize
 
         visible: switchVisible
         checked: switchChecked
@@ -98,13 +88,13 @@ Rectangle {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 20 * appScale
-            rightMargin: 20 * appScale
+            leftMargin: 20 * appScaleSize
+            rightMargin: 20 * appScaleSize
             bottom: parent.bottom
         }
 
         visible: showBottomLine
-        color: "#FFE5E5EA"
+        color: dividerForeground
         height: 1
     }
 }

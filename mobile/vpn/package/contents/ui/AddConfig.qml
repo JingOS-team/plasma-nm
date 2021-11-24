@@ -23,6 +23,7 @@ import QtQuick 2.7
 import org.kde.kirigami 2.15 as Kirigami
 import QtQuick.Controls 2.10
 import QtQuick.Dialogs 1.0
+import jingos.display 1.0
 
 Item {
     id: addConfig_root
@@ -33,74 +34,67 @@ Item {
         id: title
 
         anchors {
-            top: parent.top
             left: parent.left
+            leftMargin: 20 * appScaleSize
             right: parent.right
-            topMargin: 48 * appScale
-            leftMargin: 14 * appScale
-            rightMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
+            top: parent.top
+            topMargin: JDisplay.statusBarHeight
         }
+        height: 62 * appScaleSize
 
-        width: parent.width
-        height: 22 * appScale
+        Item {
+            width: parent.width
+            height: icon_back.height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 6 * appScaleSize
 
-        Image {
-            id: icon_back
+            Kirigami.JIconButton {
+                id: icon_back
 
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
+                width: (22 + 8) * appScaleSize
+                height: (22 + 8) * appScaleSize
+
+                source: isDarkTheme ? Qt.resolvedUrl("../image/icon_back_dark.png") : Qt.resolvedUrl("../image/icon_back.png")
+                onClicked: {
+                    popView()
+                }
             }
 
-            width: 22 * appScale
-            height: 22 * appScale
+            Text {
+                anchors.left: icon_back.right
+                anchors.leftMargin: 10 * appScaleSize
+                anchors.verticalCenter: parent.verticalCenter
 
-            source: "../image/icon_back.png"
+                color: majorForeground
+                font.bold: true
+                font.pixelSize: 20 * appFontSize
+                text: i18n("Add Configuration")
+            }
 
-            MouseArea {
-                anchors.fill: parent
+            Kirigami.JButton {
+                id: img_confirm
+
+                anchors {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                }
+                backgroundColor:"transparent"
+
+                enabled: editConfig.addEnable
+
+                fontColor: img_confirm.enabled ? Kirigami.JTheme.highlightColor : Kirigami.JTheme.disableForeground
+                font.pixelSize: 17 * appFontSize
+                text: i18n("Done")
+
                 onClicked: {
+                    editConfig.addVPNConfig()
                     popView()
                 }
             }
         }
 
-        Text {
-            anchors.left: icon_back.right
-            anchors.leftMargin: 10 * appScale
-            anchors.verticalCenter: parent.verticalCenter
 
-            font.bold: true
-            font.pixelSize: 20
-            text: i18n("Add Configuration")
-        }
-
-        Kirigami.JIconButton {
-            id: img_confirm
-
-            anchors {
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-            }
-
-            width: 53 * appScale + 10
-            height: 21 * appScale + 10
-
-            enabled: editConfig.addEnable
-
-            Text {
-                anchors.centerIn: parent
-
-                text: i18n("Done")
-                color: img_confirm.enabled ? "#FF3C4BE8" : "#2E000000"
-                font.pixelSize: 17
-            }
-
-            onClicked: {
-                editConfig.addVPNConfig()
-                popView()
-            }
-        }
     }
 
     EditConfig {
@@ -109,10 +103,12 @@ Item {
         anchors {
             left: parent.left
             top: title.bottom
-            leftMargin: 20 * appScale
-            topMargin: 18 * appScale
+            leftMargin: 20 * appScaleSize
+            topMargin: 11 * appScaleSize
         }
         
-        width: parent.width - 40 * appScale
+        width: parent.width - 40 * appScaleSize
+
+        isSelectable: true
     }
 }

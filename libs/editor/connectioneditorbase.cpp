@@ -140,6 +140,7 @@ NMVariantMapMap ConnectionEditorBase::setting() const
     if (connectionSettings->connectionType() == NetworkManager::ConnectionSettings::Wireless) {
         NetworkManager::WirelessSecuritySetting::Ptr securitySetting = connectionSettings->setting(NetworkManager::Setting::WirelessSecurity).staticCast<NetworkManager::WirelessSecuritySetting>();
         NetworkManager::WirelessSetting::Ptr wirelessSetting = connectionSettings->setting(NetworkManager::Setting::Wireless).staticCast<NetworkManager::WirelessSetting>();
+
         if (securitySetting && wirelessSetting) {
             if (securitySetting->keyMgmt() != NetworkManager::WirelessSecuritySetting::WirelessSecuritySetting::Unknown) {
                 wirelessSetting->setSecurity("802-11-wireless-security");

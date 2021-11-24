@@ -23,34 +23,25 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.15
 
-Popup {
+Kirigami.JArrowPopup {
     id: popup
 
     property int selectIndex: 0
     signal itemSelect(int index, var displayName)
 
-    height: listView.height
-    width: 240 * appScale
+    height: listView.height + topPadding + bottomPadding
+    width: 240 * appScaleSize
 
-    padding: 0
+    leftPadding:0
+    rightPadding:0
 
-    background: Rectangle {
-        color: "transparent"
-    }
+    blurBackground.arrowX: width * 0.8
+    blurBackground.arrowWidth: 16 * appScaleSize
+    blurBackground.arrowHeight: 11 * appScaleSize
+    blurBackground.arrowPos: Kirigami.JRoundRectangle.ARROW_TOP
 
-    contentItem: Rectangle {
-        anchors.fill: parent
-
-        radius: 10 * appScale
-        layer.enabled: true
-        layer.effect: DropShadow {
-            horizontalOffset: 0
-            radius: 15
-            samples: 25
-            color: "#1A000000"
-            verticalOffset: 0
-            spread: 0
-        }
+    
+    contentItem: Item {
 
         ListView {
             id: listView
@@ -59,33 +50,34 @@ Popup {
             height: childrenRect.height
 
             model: typeMode
+            interactive: false
 
             delegate: Item {
 
                 width: parent.width
-                height: 45 * appScale
+                height: 45 * appScaleSize
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
                     text: model.displayName
-                    font.pixelSize: 14
-                    color: "black"
+                    font.pixelSize: 14 * appFontSize
+                    color: majorForeground
                 }
 
                 Image {
                     anchors {
                         right: parent.right
-                        rightMargin: 17 * appScale
+                        rightMargin: 17 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    width: 22 * appScale
-                    height: 22 * appScale
+                    width: 22 * appScaleSize
+                    height: 22 * appScaleSize
 
                     visible: index == selectIndex
                     source: "../image/icon_confirm.png"
@@ -95,15 +87,15 @@ Popup {
                     anchors {
                         left: parent.left
                         right: parent.right
-                        leftMargin: 20 * appScale
-                        rightMargin: 17 * appScale
+                        leftMargin: 20 * appScaleSize
+                        rightMargin: 17 * appScaleSize
                         bottom: parent.bottom
                     }
 
                     height: 1
 
                     visible: index != listView.count - 1
-                    color: "#FFE5E5EA"
+                    color: dividerForeground
                 }
 
                 MouseArea {

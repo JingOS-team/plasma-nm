@@ -32,7 +32,6 @@
 
 #include <KServiceTypeTrader>
 #include <KLocalizedString>
-#include <KIconLoader>
 
 #include <QIcon>
 #include <QPushButton>
@@ -40,7 +39,7 @@
 using namespace NetworkManager;
 
 PasswordDialog::PasswordDialog(const NetworkManager::ConnectionSettings::Ptr &connectionSettings, SecretAgent::GetSecretsFlags flags,
-                               const QString &setting_name, QWidget *parent) :
+                               const QString &setting_name, const QStringList &hints, QWidget *parent) :
     QDialog(parent),
     m_ui(nullptr),
     m_hasError(false),
@@ -48,7 +47,8 @@ PasswordDialog::PasswordDialog(const NetworkManager::ConnectionSettings::Ptr &co
     m_connectionSettings(connectionSettings),
     m_error(SecretAgent::NoSecrets),
     m_flags(flags),
-    m_vpnWidget(nullptr)
+    m_vpnWidget(nullptr),
+    m_hints(hints)
 {
     setWindowIcon(QIcon::fromTheme(QStringLiteral("dialog-password")));
 
@@ -65,7 +65,7 @@ void PasswordDialog::initializeUi()
     m_ui = new Ui::PasswordDialog;
     m_ui->setupUi(this);
     // TODO fix this for high DPI
-    m_ui->labelIcon->setPixmap(QIcon::fromTheme(QStringLiteral("dialog-password")).pixmap(KIconLoader::SizeHuge));
+    m_ui->labelIcon->setPixmap(QIcon::fromTheme(QStringLiteral("dialog-password")).pixmap(64));
     m_ui->labelHeadline->setText(i18n("Authenticate %1", m_connectionSettings->id()));
 
     connect(m_ui->buttonBox, &QDialogButtonBox::accepted, this, &PasswordDialog::accept);
@@ -135,6 +135,13 @@ void PasswordDialog::initializeUi()
                                                                                    this, QVariantList(), &error);
             if (vpnUiPlugin && error.isEmpty()) {
                 const QString shortName = serviceType.section('.', -1);
+                NMStringMap data = vpnSetting->data();
+                // If we have hints, make the user have them through the widget
+                if (!m_hints.isEmpty() && m_hints.size() == 2) {
+                    data.insert("hint", m_hints[0]);
+                    data.insert("hint-msg", m_hints[1]);
+                    vpnSetting->setData(data);
+                }
                 m_vpnWidget = vpnUiPlugin->askUser(vpnSetting, this);
                 QVBoxLayout *layout = new QVBoxLayout();
                 layout->addWidget(m_vpnWidget);
@@ -152,6 +159,13 @@ void PasswordDialog::initializeUi()
 
                 setFocusProxy(m_vpnWidget);
                 m_vpnWidget->setFocus(Qt::OtherFocusReason);
+
+                // Delete hins from vpnSetting
+                if (!m_hints.isEmpty()) {
+                    data.remove("hint");
+                    data.remove("hint-msg");
+                    vpnSetting->setData(data);
+                }
             } else {
                 qCWarning(PLASMA_NM) << error << ", serviceType == " << serviceType;
                 m_hasError = true;

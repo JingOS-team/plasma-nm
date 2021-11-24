@@ -1,5 +1,6 @@
 /*
     Copyright 2013-2017 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -54,7 +55,7 @@ Item {
 
     Component.onCompleted: {
         if (kcmAuthorized) {
-            plasmoid.setAction("openKCM", i18n("&Configure Network Connections..."), "preferences-system-network");
+            plasmoid.setAction("openKCM", i18n("&Configure Network Connections..."), "configure");
         }
         plasmoid.removeAction("configure");
         plasmoid.setAction("showPortal", i18n("Open Network Login Page..."), "internet-services");
@@ -78,7 +79,7 @@ Item {
     Timer {
         id: scanTimer
         interval: 10200
-        repeat: true
+        repeat: false
         running: plasmoid.expanded && !connectionIconProvider.airplaneMode
 
         onTriggered: handler.requestScan()

@@ -27,7 +27,6 @@
 #include "passwordfield.h"
 
 #include <QDialog>
-#include <QString>
 #include <QLabel>
 #include <QEventLoop>
 #include <QFormLayout>
@@ -43,7 +42,6 @@
 #include <QTimer>
 #include <QPointer>
 
-#include <KIconLoader>
 #include <KLocalizedString>
 
 #include "nm-openconnect-service.h"
@@ -219,6 +217,10 @@ void OpenconnectAuthWidget::readConfig()
     if (!dataMap[NM_OPENCONNECT_KEY_PROTOCOL].isEmpty()) {
         const QString protocol = dataMap[NM_OPENCONNECT_KEY_PROTOCOL];
         openconnect_set_protocol(d->vpninfo, OC3DUP(protocol == "juniper" ? "nc" : protocol.toUtf8().data()));
+    }
+    if (!dataMap[NM_OPENCONNECT_KEY_REPORTED_OS].isEmpty()) {
+        const QString reportedOs = dataMap[NM_OPENCONNECT_KEY_REPORTED_OS];
+        openconnect_set_reported_os(d->vpninfo, reportedOs.toUtf8().data());
     }
 
     d->tokenMode = dataMap[NM_OPENCONNECT_KEY_TOKEN_MODE].toUtf8();
@@ -498,7 +500,8 @@ void OpenconnectAuthWidget::addFormInfo(const QString &iconName, const QString &
     text->setWordWrap(true);
     layout->addWidget(text);
 
-    icon->setPixmap(QIcon::fromTheme(iconName).pixmap(KIconLoader::SizeSmall));
+    const int iconSize = icon->style()->pixelMetric(QStyle::PixelMetric::PM_SmallIconSize);
+    icon->setPixmap(QIcon::fromTheme(iconName).pixmap(iconSize));
     text->setText(message);
 
     d->ui.loginBoxLayout->addLayout(layout);
@@ -639,7 +642,8 @@ void OpenconnectAuthWidget::validatePeerCert(const QString &fingerprint,
 
         verticalLayout->addWidget(certificate);
 
-        icon->setPixmap(QIcon::fromTheme("dialog-information").pixmap(KIconLoader::SizeLarge));
+        const int iconSize = icon->style()->pixelMetric(QStyle::PixelMetric::PM_LargeIconSize);
+        icon->setPixmap(QIcon::fromTheme("dialog-information").pixmap(iconSize));
         infoText->setText(i18n("Check failed for certificate from VPN server \"%1\".\n"
                                "Reason: %2\nAccept it anyway?", openconnect_get_hostname(d->vpninfo),reason));
         infoText->setWordWrap(true);

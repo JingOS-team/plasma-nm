@@ -37,9 +37,9 @@
 
 class Q_DECL_EXPORT NetworkModel : public QAbstractListModel
 {
-Q_OBJECT
+    Q_OBJECT
 
-Q_PROPERTY(bool isAllowUpdate READ isAllowUpdate WRITE setAllowUpdate NOTIFY updateItemChanged);
+    Q_PROPERTY(bool isAllowUpdate READ isAllowUpdate WRITE setAllowUpdate NOTIFY updateItemChanged);
 
 public:
     bool isAllowUpdate() const { return m_isAllowUpdate; };
@@ -80,6 +80,7 @@ public:
         IpAddressRole,
         SubnetMaskRole,
         RouterRole,
+        MethodRole,
         NameServerRole,
         DNSSearchRole,
         AutoconnectRole,
@@ -89,7 +90,8 @@ public:
         SaveAndActivedRole,
         KeyMgmtTypeRole,
         UpdateItemRole,
-        SavedCountRole
+        SavedCountRole,
+        HardwareAddressRole
     };
     Q_ENUMS(ItemRole)
 
@@ -98,6 +100,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     QHash<int, QByteArray> roleNames() const override;
     Q_INVOKABLE int getSavedCount() const;
+    Q_INVOKABLE QString getAccessPointBySsid(const QString &ssid, const QString &specificPath);
 
 Q_SIGNALS:
     void updateItemChanged(bool state) const;

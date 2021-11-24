@@ -33,10 +33,6 @@ ColumnLayout {
     readonly property var displayWwanMessage: !wwanSwitchButton.checked && wwanSwitchButton.visible
     readonly property var displayplaneModeMessage: planeModeSwitchButton.checked && planeModeSwitchButton.visible
 
-    function closeSearch() {
-        searchToggleButton.checked = false
-    }
-
     PlasmaCore.Svg {
         id: lineSvg
         imagePath: "widgets/line"
@@ -67,7 +63,7 @@ ColumnLayout {
     }
 
     RowLayout {
-        spacing: units.smallSpacing
+        spacing: units.smallSpacing * 3
 
         PlasmaComponents3.CheckBox {
             id: wifiSwitchButton
@@ -99,11 +95,6 @@ ColumnLayout {
             PlasmaComponents3.ToolTip {
                 text: i18n("Enable mobile network")
             }
-        }
-
-        // Add some extra spacing between the wifi and airplane mode toggles
-        Item {
-            Layout.preferredWidth: units.smallSpacing * 2
         }
 
         PlasmaComponents3.CheckBox {
@@ -142,10 +133,6 @@ ColumnLayout {
             }
         }
 
-        Item {
-            Layout.fillWidth: true
-        }
-
         PlasmaComponents3.ToolButton {
             id: hotspotButton
 
@@ -171,12 +158,12 @@ ColumnLayout {
 
             Connections {
                 target: handler
-                onHotspotCreated: {
+                function onHotspotCreated() {
                     hotspotButton.checked = true
                     tooltip.text = i18n("Disable Hotspot")
                 }
 
-                onHotspotDisabled: {
+                function onHotspotDisabled() {
                     hotspotButton.checked = false
                     tooltip.text = i18n("Create Hotspot")
                 }
@@ -188,22 +175,24 @@ ColumnLayout {
             }
         }
 
-        PlasmaComponents3.ToolButton {
-            id: searchToggleButton
+        PlasmaComponents3.TextField {
+            id: searchTextField
 
-            checkable: true
+            Layout.fillWidth: true
 
-            icon.name: "system-search"
+            focus: true
+            clearButtonShown: true
+            placeholderText: i18nc("text field placeholder text", "Search...")
 
-            PlasmaComponents3.ToolTip {
-                text: i18ndc("plasma-nm", "button tooltip", "Search the connections")
+            onTextChanged: {
+                appletProxyModel.setFilterRegExp(text)
             }
         }
 
         PlasmaComponents3.ToolButton {
             id: openEditorButton
 
-            visible: mainWindow.kcmAuthorized
+            visible: mainWindow.kcmAuthorized && !(plasmoid.containmentDisplayHints & PlasmaCore.Types.ContainmentDrawsPlasmoidHeading)
 
             icon.name: "configure"
 
@@ -217,42 +206,7 @@ ColumnLayout {
         }
     }
 
-   PlasmaComponents3.TextField {
-        id: searchTextField
-
-        Layout.fillWidth: true
-        Layout.leftMargin: units.smallSpacing
-        Layout.rightMargin: units.smallSpacing
-        Layout.topMargin: units.smallSpacing
-        Layout.bottomMargin: units.smallSpacing
-
-        focus: true
-        clearButtonShown: true
-        placeholderText: i18ndc("plasma-nm", "text field placeholder text", "Search...")
-
-        visible: searchToggleButton.checked
-        onVisibleChanged: {
-            if (visible) {
-                searchTextField.forceActiveFocus()
-            } else {
-                text = ""
-            }
-        }
-        Keys.onEscapePressed: {
-            //Check if the searchbar is actually visible before accepting the escape key. Otherwise, the escape key cannot dismiss the applet until one interacts with some other element.
-            if (searchToggleButton.checked) {
-                searchToggleButton.checked = false;
-            } else {
-                event.accepted = false;
-            }
-        }
-
-        onTextChanged: {
-            // Show search field when starting to type directly
-            if (text.length && !searchToggleButton.checked) {
-                searchToggleButton.checked = true
-            }
-            appletProxyModel.setFilterRegExp(text)
-        }
+    Component.onCompleted: {
+        searchTextField.forceActiveFocus()
     }
 }

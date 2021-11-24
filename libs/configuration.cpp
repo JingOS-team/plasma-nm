@@ -1,5 +1,6 @@
 /*
     Copyright 2017 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -91,14 +92,15 @@ bool Configuration::airplaneModeEnabled()
     KConfigGroup grp(config, QLatin1String("General"));
 
     if (grp.isValid()) {
-        if (grp.readEntry(QLatin1String("AirplaneModeEnabled"), false)) {
+        // if (grp.readEntry(QLatin1String("AirplaneModeEnabled"), false)) {
             // We can assume that airplane mode is still activated after resume
-            if (isWifiDisabled && isWwanDisabled)
-                return true;
-            else {
-                setAirplaneModeEnabled(false);
-            }
-        }
+            // if (isWifiDisabled && isWwanDisabled)
+            //     return true;
+            // else {
+            //     setAirplaneModeEnabled(false);
+            // }
+        // }
+        return grp.readEntry(QLatin1String("AirplaneModeEnabled"), false);
     }
 
     return false;
@@ -180,6 +182,72 @@ void Configuration::setHotspotConnectionPath(const QString &path)
 
     if (grp.isValid()) {
         grp.writeEntry(QLatin1String("HotspotConnectionPath"), path);
+    }
+}
+
+QString Configuration::modemConnectionPath()
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(QLatin1String("plasma-nm"));
+    KConfigGroup grp(config, QLatin1String("General"));
+
+    if (grp.isValid()) {
+        return grp.readEntry(QLatin1String("ModemConnectionPath"), QString());
+    }
+
+    return QString();
+}
+
+void Configuration::setModemConnectionPath(const QString &path)
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(QLatin1String("plasma-nm"));
+    KConfigGroup grp(config, QLatin1String("General"));
+
+    if (grp.isValid()) {
+        grp.writeEntry(QLatin1String("ModemConnectionPath"), path);
+    }
+}
+
+QString Configuration::modemDevicePath()
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(QLatin1String("plasma-nm"));
+    KConfigGroup grp(config, QLatin1String("General"));
+
+    if (grp.isValid()) {
+        return grp.readEntry(QLatin1String("ModemDevicePath"), QString());
+    }
+
+    return QString();
+}
+
+void Configuration::setModemDevicePath(const QString &path)
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(QLatin1String("plasma-nm"));
+    KConfigGroup grp(config, QLatin1String("General"));
+
+    if (grp.isValid()) {
+        grp.writeEntry(QLatin1String("ModemDevicePath"), path);
+    }
+}
+
+QString Configuration::modemOperatorPath()
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(QLatin1String("plasma-nm"));
+    KConfigGroup grp(config, QLatin1String("General"));
+
+    if (grp.isValid()) {
+        return grp.readEntry(QLatin1String("ModemOperatorPath"), QString());
+    }
+
+    return QString();
+}
+
+void Configuration::setModemOperatorPath(const QString &path)
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(QLatin1String("plasma-nm"));
+    KConfigGroup grp(config, QLatin1String("General"));
+
+    if (grp.isValid()) {
+        grp.writeEntry(QLatin1String("ModemOperatorPath"), path);
     }
 }
 

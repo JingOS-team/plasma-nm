@@ -2,6 +2,7 @@
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013 by Daniel Nicoletti <dantti12@gmail.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -97,7 +98,7 @@ private:
      * normally if it failed to open
      * @return true if the item was processed
      */
-    bool processGetSecrets(SecretsRequest &request) ;
+    bool processGetSecrets(SecretsRequest &request);
     bool processSaveSecrets(SecretsRequest &request) const;
     bool processDeleteSecrets(SecretsRequest &request) const;
     /**

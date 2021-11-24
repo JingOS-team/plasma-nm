@@ -1,5 +1,6 @@
 /*
  * Copyright 2020  Dimitris Kardarakos <dimkard@posteo.net>
+ * Copyright 2021  Liu Bangguo <liubangguo@jingos.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -66,12 +67,14 @@ Q_SIGNALS:
     void vpnConnectedFaild(NetworkManager::VpnConnection::State state);
     void vpnConnectedSuccess(NetworkManager::VpnConnection::State state);
     void passwordReplyFinished(const QString pwd);
+    void activateVpnConnectionFailed(const QString name);
     
 private Q_SLOTS:
     void replyFinished(QDBusPendingCallWatcher *watcher);
     void addActiveConnection(const QString & path);
     void addActiveConnection(const NetworkManager::ActiveConnection::Ptr & ac);
     void onVpnConnectionStateChanged(NetworkManager::VpnConnection::State state, NetworkManager::VpnConnection::StateChangeReason reason); 
+    void activateConnectionFailed(const QString name);
 
 private:
     Handler *m_handler;

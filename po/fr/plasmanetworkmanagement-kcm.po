@@ -1,0 +1,144 @@
+# Vincent Pinon <vpinon@kde.org>, 2017.
+# Simon Depiets <sdepiets@gmail.com>, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasmanetworkmanagement-kcm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-03-10 03:49+0100\n"
+"PO-Revision-Date: 2020-01-31 15:09+0800\n"
+"Last-Translator: Simon Depiets <sdepiets@gmail.com>\n"
+"Language-Team: French <kde-francophone@kde.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 19.07.70\n"
+"X-Environment: kde\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+
+#: kcm.cpp:362
+#, kde-format
+msgid "my_shared_connection"
+msgstr "ma_connexion_partagée"
+
+#: kcm.cpp:424
+#, kde-format
+msgid "Export VPN Connection"
+msgstr "Exporter une connexion VPN"
+
+#: kcm.cpp:444
+#, kde-format
+msgid "Do you want to save changes made to the connection '%1'?"
+msgstr "Voulez-vous enregistrer les changements pour la connexion « %1 » ?"
+
+#: kcm.cpp:444
+#, kde-format
+msgctxt "@title:window"
+msgid "Save Changes"
+msgstr "Enregistrer les changements"
+
+#: kcm.cpp:533
+#, kde-format
+msgid "Import VPN Connection"
+msgstr "Importer une connexion VPN"
+
+#: qml/AddConnectionDialog.qml:31
+msgctxt "@title:window"
+msgid "Choose a Connection Type"
+msgstr "Choisir un type de connexion"
+
+#: qml/AddConnectionDialog.qml:174
+msgid "Create"
+msgstr "Créer"
+
+#: qml/AddConnectionDialog.qml:184 qml/ConfigurationDialog.qml:130
+msgid "Cancel"
+msgstr "Annuler"
+
+#: qml/ConfigurationDialog.qml:30
+msgctxt "@title:window"
+msgid "Configuration"
+msgstr "Configuration"
+
+#: qml/ConfigurationDialog.qml:55
+msgid "General"
+msgstr "Général"
+
+#: qml/ConfigurationDialog.qml:60
+msgid "Ask for PIN on modem detection"
+msgstr "Demander le code PIN lors de la détection du modem"
+
+#: qml/ConfigurationDialog.qml:67
+msgid "Show virtual connections"
+msgstr "Afficher les connexions virtuelles"
+
+#: qml/ConfigurationDialog.qml:75
+msgid "Hotspot"
+msgstr "Point d'accès"
+
+#: qml/ConfigurationDialog.qml:81
+msgid "Hotspot name:"
+msgstr "Nom du point d'accès :"
+
+#: qml/ConfigurationDialog.qml:91
+msgid "Hotspot password:"
+msgstr "Mot de passe du point d'accès :"
+
+#: qml/ConfigurationDialog.qml:121
+msgid "Ok"
+msgstr "Ok"
+
+#: qml/ConnectionItem.qml:112
+msgid "Connect"
+msgstr "Connecter"
+
+#: qml/ConnectionItem.qml:112
+msgid "Disconnect"
+msgstr "Déconnecter"
+
+#: qml/ConnectionItem.qml:125
+msgid "Delete"
+msgstr "Supprimer"
+
+#: qml/ConnectionItem.qml:135
+msgid "Export"
+msgstr "Exporter"
+
+#: qml/ConnectionItem.qml:160
+msgid "Connected"
+msgstr "Connecté"
+
+#: qml/ConnectionItem.qml:162
+msgid "Connecting"
+msgstr "Connexion en cours"
+
+#: qml/main.qml:75
+msgid "Search..."
+msgstr "Chercher…"
+
+#: qml/main.qml:154
+msgid "Add new connection"
+msgstr "Ajouter une nouvelle connexion"
+
+#: qml/main.qml:168
+msgid "Remove selected connection"
+msgstr "Supprimer la connexion sélectionnée"
+
+#: qml/main.qml:184
+msgid "Export selected connection"
+msgstr "Exporter la connexion sélectionnée"
+
+#: qml/main.qml:208
+msgid "Configuration"
+msgstr "Configuration"
+
+#: qml/main.qml:236
+msgctxt "@title:window"
+msgid "Remove Connection"
+msgstr "Supprimer la connexion"
+
+#: qml/main.qml:237
+msgid "Do you want to remove the connection '%1'?"
+msgstr "Voulez-vous supprimer la connexion « %1 » ?"

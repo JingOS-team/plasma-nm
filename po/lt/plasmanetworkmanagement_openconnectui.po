@@ -1,0 +1,303 @@
+# Lithuanian translations for l package.
+# Copyright (C) 2014 This_file_is_part_of_KDE
+# This file is distributed under the same license as the l package.
+#
+# Automatically generated, 2014.
+# Liudas Ališauskas <liudas@aksioma.lt>, 2014, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: l 10n\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-01-21 02:51+0100\n"
+"PO-Revision-Date: 2021-01-31 22:33+0200\n"
+"Last-Translator: Moo\n"
+"Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
+"%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
+"X-Generator: Poedit 2.4.1\n"
+
+#: openconnectauth.cpp:310
+#, kde-format
+msgid "Failed to initialize software token: %1"
+msgstr "Nepavyko inicijuoti programinės įrangos prieigos rakto: %1"
+
+#: openconnectauth.cpp:363
+#, kde-format
+msgid "Contacting host, please wait..."
+msgstr "Susisiekiama su mazgu, palaukite..."
+
+#: openconnectauth.cpp:589
+#, kde-format
+msgctxt "Verb, to proceed with login"
+msgid "Login"
+msgstr "Prisijungti"
+
+#: openconnectauth.cpp:647
+#, kde-format
+msgid ""
+"Check failed for certificate from VPN server \"%1\".\n"
+"Reason: %2\n"
+"Accept it anyway?"
+msgstr ""
+"Liudijimo iš VPN serverio \"%1\" patikrinimas patyrė nesėkmę.\n"
+"Priežastis: %2\n"
+"Vis tiek priimti?"
+
+#: openconnectauth.cpp:746
+#, kde-format
+msgid "Connection attempt was unsuccessful."
+msgstr "Bandymas prisijungti buvo nesėkmingas."
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, OpenconnectAuth)
+#: openconnectauth.ui:26
+#, kde-format
+msgid "OpenConnect VPN Authentication"
+msgstr "OpenConnect VPN tapatybės nustatymas"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: openconnectauth.ui:55
+#, kde-format
+msgid "VPN Host"
+msgstr "VPN mazgas"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, btnConnect)
+#: openconnectauth.ui:81
+#, kde-format
+msgid "Connect"
+msgstr "Prisijungti"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chkAutoconnect)
+#: openconnectauth.ui:102
+#, kde-format
+msgid "Automatically start connecting next time"
+msgstr "Kitą kartą pradėti jungtis automatiškai"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chkStorePasswords)
+#: openconnectauth.ui:109
+#, kde-format
+msgid "Store passwords"
+msgstr "Saugoti slaptažodžius"
+
+#. i18n: ectx: property (text), widget (QCheckBox, viewServerLog)
+#: openconnectauth.ui:153
+#, kde-format
+msgid "View Log"
+msgstr "Rodyti žurnalą"
+
+#. i18n: ectx: property (text), widget (QLabel, lblLogLevel)
+#: openconnectauth.ui:163
+#, kde-format
+msgid "Log Level:"
+msgstr "Registravimo lygis:"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbLogLevel)
+#: openconnectauth.ui:174
+#, kde-format
+msgid "Error"
+msgstr "Klaida"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbLogLevel)
+#: openconnectauth.ui:179
+#, kde-format
+msgid "Info"
+msgstr "Informacija"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbLogLevel)
+#: openconnectauth.ui:184
+#, kde-format
+msgctxt "like in Debug log level"
+msgid "Debug"
+msgstr "Derinti"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbLogLevel)
+#: openconnectauth.ui:189
+#, kde-format
+msgid "Trace"
+msgstr "Sekti"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, OpenconnectProp)
+#: openconnectprop.ui:20
+#, kde-format
+msgid "OpenConnect Settings"
+msgstr "OpenConnect nuostatos"
+
+#. i18n: ectx: property (title), widget (QGroupBox, grp_general)
+#: openconnectprop.ui:26
+#, kde-format
+msgctxt "like in General settings"
+msgid "General"
+msgstr "Bendri"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: openconnectprop.ui:38
+#, kde-format
+msgid "Gateway:"
+msgstr "Tinklų sietuvas:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: openconnectprop.ui:51
+#, kde-format
+msgid "CA Certificate:"
+msgstr "LĮ liudijimas:"
+
+#. i18n: ectx: property (filter), widget (KUrlRequester, leCaCertificate)
+#. i18n: ectx: property (filter), widget (KUrlRequester, leUserCert)
+#. i18n: ectx: property (filter), widget (KUrlRequester, leUserPrivateKey)
+#: openconnectprop.ui:61 openconnectprop.ui:212 openconnectprop.ui:229
+#, kde-format
+msgid "*.pem *.crt *.key"
+msgstr "*.pem *.crt *.key"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: openconnectprop.ui:68
+#, kde-format
+msgid "Proxy:"
+msgstr "Įgaliotasis serveris:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: openconnectprop.ui:81
+#, kde-format
+msgid "CSD Wrapper Script:"
+msgstr "CSD Wrapper scenarijus:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chkAllowTrojan)
+#: openconnectprop.ui:91
+#, kde-format
+msgid "Allow Cisco Secure Desktop trojan"
+msgstr "Leisti Cisco Secure Desktop trojaną"
+
+#. i18n: ectx: property (text), widget (QLabel, label_7)
+#: openconnectprop.ui:101
+#, kde-format
+msgid "VPN Protocol:"
+msgstr "VPN protokolas:"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbProtocol)
+#: openconnectprop.ui:118
+#, kde-format
+msgid "Cisco AnyConnect"
+msgstr "Cisco AnyConnect"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbProtocol)
+#: openconnectprop.ui:123
+#, kde-format
+msgid "Juniper Network Connect"
+msgstr "Juniper Network Connect"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbProtocol)
+#: openconnectprop.ui:128
+#, kde-format
+msgid "PAN Global Protect"
+msgstr "PAN Global Protect"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbProtocol)
+#: openconnectprop.ui:133
+#, kde-format
+msgid "Pulse Connect Secure"
+msgstr "Pulse Connect Secure"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: openconnectprop.ui:141
+#, kde-format
+msgid "Reported OS:"
+msgstr "Perduodama OS:"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbReportedOs)
+#: openconnectprop.ui:160
+#, kde-format
+msgid "GNU/Linux"
+msgstr "GNU/Linux"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbReportedOs)
+#: openconnectprop.ui:165
+#, kde-format
+msgid "GNU/Linux 64-bit"
+msgstr "GNU/Linux 64-bitų"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbReportedOs)
+#: openconnectprop.ui:170
+#, kde-format
+msgid "Windows"
+msgstr "Windows"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbReportedOs)
+#: openconnectprop.ui:175
+#, kde-format
+msgid "Mac OS X"
+msgstr "Mac OS X"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbReportedOs)
+#: openconnectprop.ui:180
+#, kde-format
+msgid "Android"
+msgstr "Android"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbReportedOs)
+#: openconnectprop.ui:185
+#, kde-format
+msgid "Apple iOS"
+msgstr "Apple iOS"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: openconnectprop.ui:196
+#, kde-format
+msgid "Certificate Authentication"
+msgstr "Liudijimo tapatybės nustatymas"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: openconnectprop.ui:202
+#, kde-format
+msgid "User Certificate:"
+msgstr "Naudotojo liudijimas:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: openconnectprop.ui:219
+#, kde-format
+msgid "Private Key:"
+msgstr "Privatusis raktas:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chkUseFsid)
+#: openconnectprop.ui:236
+#, kde-format
+msgid "Use FSID for key passphrase"
+msgstr "Naudoti FSID rakto slaptafrazei"
+
+#. i18n: ectx: property (text), widget (QCheckBox, preventInvalidCert)
+#: openconnectprop.ui:243
+#, kde-format
+msgid "Prevent user from manually accepting invalid certificates"
+msgstr "Neleisti naudotojui rankiniu būdu priimti negaliojančių liudijimų"
+
+#. i18n: ectx: property (text), widget (QPushButton, buTokens)
+#: openconnectprop.ui:269
+#, kde-format
+msgid "Token Authentication"
+msgstr "Prieigos rakto tapatybės nustatymas"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, OpenConnectToken)
+#: openconnecttoken.ui:14
+#, kde-format
+msgid "OpenConnect OTP Tokens"
+msgstr "OpenConnect OTP prieigos raktai"
+
+#. i18n: ectx: property (title), widget (QGroupBox, gbToken)
+#: openconnecttoken.ui:20
+#, kde-format
+msgid "Software Token Authentication"
+msgstr "Programinės įrangos prieigos rakto tapatybės nustatymas"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: openconnecttoken.ui:26
+#, kde-format
+msgid "Token Mode:"
+msgstr "Prieigos rakto veiksena:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_9)
+#: openconnecttoken.ui:43
+#, kde-format
+msgid "Token Secret:"
+msgstr "Prieigos rakto paslaptis:"

@@ -224,6 +224,12 @@ void VPN::updateVPNConnection(const QString type, const QString dec, const QStri
 void VPN::activateVPNConnection(const QString &connection, const QString &device, const QString &specificParameter)
 {
     m_handler->activateConnection(connection,device,specificParameter);
+    connect(m_handler,&Handler::activateConnectionFailed,this,&VPN::activateConnectionFailed);
+}
+
+void VPN::activateConnectionFailed(const QString name)
+{
+    Q_EMIT activateVpnConnectionFailed(name);
 }
 
 void VPN::removeVPNConnection(const QString & connection)

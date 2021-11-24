@@ -3,6 +3,7 @@
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013-2014 Jan Grulich <jgrulich@redhat.com>
     Copyright 2015 David Rosca <nowrep@gmail.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -36,6 +37,9 @@
 BluetoothMonitor::BluetoothMonitor(QObject * parent)
     : QObject(parent)
 {
+    m_isBusy = false;
+
+    connect(this,&BluetoothMonitor::enableEnd,this,&BluetoothMonitor::checkEnableList);
 }
 
 BluetoothMonitor::~BluetoothMonitor()
@@ -144,3 +148,81 @@ void BluetoothMonitor::addBluetoothConnection(const QString &bdAddr, const QStri
     }
 #endif
 }
+
+void BluetoothMonitor::appendEnable(const bool enable)
+{
+    m_enableList.append(enable);
+
+    if(m_isBusy) return;
+    bool tEnable = m_enableList.last();
+    m_enableList.clear();
+    startEnableBluetooth(tEnable);
+}
+
+
+template<typename T>
+void makeDBusCall(const QDBusMessage &message, QObject *context, std::function<void(QDBusPendingReply<T>)> func)
+{
+    QDBusPendingReply<T> reply = QDBusConnection::systemBus().asyncCall(message);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, context);
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, context, [func] (QDBusPendingCallWatcher *watcher) {
+        const QDBusPendingReply<T> reply = *watcher;
+        if (!reply.isValid()) {
+            qCWarning(PLASMA_NM) << reply.error().message();
+            return;
+        }
+        func(reply);
+        watcher->deleteLater();
+    });
+}
+
+void setEnabled(QString path, bool enabled)
+{
+    QDBusMessage message = QDBusMessage::createMethodCall("org.bluez", path, "org.freedesktop.DBus.Properties", "Set");
+    QList<QVariant> arguments;
+    arguments << QLatin1String("org.bluez.Adapter1");
+    arguments << QLatin1String("Powered");
+    arguments << QVariant::fromValue(QDBusVariant(QVariant(enabled)));
+    message.setArguments(arguments);
+    QDBusConnection::systemBus().asyncCall(message);
+}
+
+
+void BluetoothMonitor::startEnableBluetooth(bool enable)
+{
+    m_isBusy = true;
+
+    const QDBusMessage getObjects = QDBusMessage::createMethodCall("org.bluez", "/", "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
+
+    makeDBusCall<QMap<QDBusObjectPath, NMVariantMapMap>>(getObjects, this, [enable, this](const auto reply) {
+        for (const QDBusObjectPath &path : reply.value().keys()) {
+            const QString objPath = path.path();
+            const QStringList interfaces = reply.value().value(path).keys();
+
+            if (!interfaces.contains("org.bluez.Adapter1")) {
+                continue;
+            }
+
+            setEnabled(objPath, enable);
+            m_isBusy = false;
+            emit this->enableEnd();
+        }
+    });
+}
+
+
+void BluetoothMonitor::checkEnableList()
+{
+    if(m_enableList.count()==0)
+    {
+        return;
+    }
+
+    bool enable = m_enableList.last();
+    m_enableList.clear();
+    startEnableBluetooth(enable);
+}
+
+
+
+

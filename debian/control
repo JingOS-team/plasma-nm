@@ -1,0 +1,86 @@
+Source: plasma-nm
+Section: kde
+Priority: optional
+Maintainer: Debian/Kubuntu Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
+Uploaders: Maximiliano Curia <maxy@debian.org>
+Build-Depends: cmake (>= 3.0~),
+               debhelper (>= 11~),
+               extra-cmake-modules (>= 5.50.0~),
+               gettext,
+               kinit-dev,
+               kirigami2-dev,
+               libkf5completion-dev (>= 5.50.0~),
+               libkf5configwidgets-dev (>= 5.50.0~),
+               libkf5coreaddons-dev (>= 5.50.0~),
+               libkf5dbusaddons-dev (>= 5.50.0~),
+               libkf5declarative-dev (>= 5.50.0~),
+               libkf5i18n-dev (>= 5.50.0~),
+               libkf5iconthemes-dev (>= 5.50.0~),
+               libkf5itemmodels-dev (>= 5.42.0~),
+               libkf5itemviews-dev,
+               libkf5kdelibs4support-dev (>= 5.37.0~),
+               libkf5kio-dev (>= 5.50.0~),
+               libkf5networkmanagerqt-dev (>= 5.50.0~),
+               libkf5notifications-dev (>= 5.50.0~),
+               libkf5plasma-dev (>= 5.50.0~),
+               libkf5prison-dev,
+               libkf5service-dev (>= 5.50.0~),
+               libkf5solid-dev (>= 5.50.0~),
+               libkf5wallet-dev (>= 5.50.0~),
+               libkf5widgetsaddons-dev (>= 5.50.0~),
+               libkf5windowsystem-dev (>= 5.50.0~),
+               libkf5xmlgui-dev,
+               libnm-dev (>= 1.4.0~),
+               libopenconnect-dev (>= 3.99~),
+               libqca-qt5-2-dev (>= 2.1.0~),
+               mobile-broadband-provider-info,
+               modemmanager-dev (>= 1.0.0~),
+               modemmanager-qt-dev (>= 5.50.0~),
+               pkg-config,
+               pkg-kde-tools (>= 0.15.15ubuntu1~),
+               qtbase5-dev (>= 5.11.0~),
+               qtdeclarative5-dev (>= 5.11.0~),
+               qttools5-dev (>= 5.4.0~),
+               libqofono-dev
+Standards-Version: 4.1.3
+Homepage: https://projects.kde.org/projects/kde/workspace/plasma-nm
+Vcs-Browser: https://salsa.debian.org/qt-kde-team/kde/plasma-nm
+Vcs-Git: https://salsa.debian.org/qt-kde-team/kde/plasma-nm.git
+
+Package: plasma-nm
+Architecture: linux-any
+Depends: mobile-broadband-provider-info,
+         network-manager,
+         network-manager-l2tp,
+         network-manager-openvpn,
+         plasma-framework,
+         qml-module-org-kde-kcoreaddons,
+         qml-module-org-kde-kirigami2,
+         qml-module-org-kde-prison,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: libkf5wallet-bin
+Suggests: network-manager-openconnect,
+          network-manager-openvpn,
+          network-manager-pptp,
+          network-manager-vpnc
+Replaces: plasma-nm-data
+Description: Plasma5 networkmanager library.
+ Plasma desktop network manager.
+ .
+ This package is part of the KDE Plasma.
+
+Package: kde-config-mobile-networking
+Architecture: linux-any
+Breaks: plasma-nm (<< 4:5.15.0)
+Replaces: plasma-nm (<< 4:5.15.0)
+Depends: plasma-nm,
+         qml-module-org-kde-kirigami2,
+         qml-module-qtquick-controls2,
+         qml-module-qtquick-layouts,
+         qml-module-qtquick2,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: Plasma networkmanager config tools
+ Configuration KCM tools for mobile devicies to setup broadband and
+ wifi.

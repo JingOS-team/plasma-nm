@@ -3,6 +3,7 @@
     Copyright 2013 by Daniel Nicoletti <dantti12@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -109,8 +110,7 @@ void Notification::stateChanged(NetworkManager::Device::State newstate, NetworkM
     case NetworkManager::Device::NoSecretsReason:
         text = i18nc("@info:status Notification when the device failed due to NoSecretsReason",
                      "No secrets were provided");
-        return;
-        // break;
+        break;
     case NetworkManager::Device::AuthSupplicantDisconnectReason:
         text = i18nc("@info:status Notification when the device failed due to AuthSupplicantDisconnectReason",
                      "Authorization supplicant disconnected");
@@ -331,7 +331,7 @@ void Notification::stateChanged(NetworkManager::Device::State newstate, NetworkM
     if (m_notifications.contains(device->uni())) {
         KNotification *notify = m_notifications.value(device->uni());
         notify->setText(text.toHtmlEscaped());
-        notify->update();
+        //notify->update();
     } else {
         KNotification *notify = new KNotification(QStringLiteral("DeviceFailed"), KNotification::CloseOnTimeout);
         connect(notify, &KNotification::closed, this, &Notification::notificationClosed);
@@ -341,7 +341,8 @@ void Notification::stateChanged(NetworkManager::Device::State newstate, NetworkM
         notify->setTitle(identifier);
         notify->setText(text.toHtmlEscaped());
         m_notifications[device->uni()] = notify;
-        notify->sendEvent();
+        qDebug()<<"[plasma-nm]:  network notification text: "<<text;
+        // notify->sendEvent();
     }
 }
 
@@ -455,7 +456,8 @@ void Notification::onActiveConnectionStateChanged(NetworkManager::ActiveConnecti
     }
     notify->setTitle(acName);
     notify->setText(text.toHtmlEscaped());
-    notify->sendEvent();
+    // notify->sendEvent();
+    qDebug()<<"[plasma-nm]:  network notification text: "<<text;
 }
 
 void Notification::onVpnConnectionStateChanged(NetworkManager::VpnConnection::State state, NetworkManager::VpnConnection::StateChangeReason reason)
@@ -471,10 +473,10 @@ void Notification::onVpnConnectionStateChanged(NetworkManager::VpnConnection::St
         text = i18n("VPN connection '%1' activated.", vpnName);
     } else if (state == NetworkManager::VpnConnection::Failed) {
         eventId = QStringLiteral("FailedToActivateConnection");
-        text = i18n("VPN connection '%1' failed.", vpnName);
+        text = i18n("VPN connection '%1' failed to activate.", vpnName);
     } else if (state == NetworkManager::VpnConnection::Disconnected) {
         eventId = QStringLiteral("ConnectionDeactivated");
-        text = i18n("VPN connection '%1' disconnected.", vpnName);
+        text = i18n("VPN connection '%1' deactivated.", vpnName);
     } else {
         qCWarning(PLASMA_NM) << "Unhandled VPN connection state change: " << state;
         return;
@@ -482,34 +484,34 @@ void Notification::onVpnConnectionStateChanged(NetworkManager::VpnConnection::St
 
     switch (reason) {
     case NetworkManager::VpnConnection::UserDisconnectedReason:
-        text = i18n("The VPN connection changed state because the user disconnected it.");
+        text = i18n("VPN connection '%1' deactivated.", vpnName);
         break;
     case NetworkManager::VpnConnection::DeviceDisconnectedReason:
-        text = i18n("The VPN connection changed state because the device it was using was disconnected.");
+        text = i18n("VPN connection '%1' was deactivated because the device it was using was disconnected.", vpnName);
         break;
     case NetworkManager::VpnConnection::ServiceStoppedReason:
-        text = i18n("The service providing the VPN connection was stopped.");
+        text = i18n("The service providing the VPN connection '%1' was stopped.", vpnName);
         break;
     case NetworkManager::VpnConnection::IpConfigInvalidReason:
-        text = i18n("The IP config of the VPN connection was invalid.");
+        text = i18n("The IP config of the VPN connection '%1', was invalid.", vpnName);
         break;
     case NetworkManager::VpnConnection::ConnectTimeoutReason:
         text = i18n("The connection attempt to the VPN service timed out.");
         break;
     case NetworkManager::VpnConnection::ServiceStartTimeoutReason:
-        text = i18n("A timeout occurred while starting the service providing the VPN connection.");
+        text = i18n("A timeout occurred while starting the service providing the VPN connection '%1'.", vpnName);
         break;
     case NetworkManager::VpnConnection::ServiceStartFailedReason:
-        text = i18n("Starting the service providing the VPN connection failed.");
+        text = i18n("Starting the service providing the VPN connection '%1' failed.", vpnName);
         break;
     case NetworkManager::VpnConnection::NoSecretsReason:
-        text = i18n("Necessary secrets for the VPN connection were not provided.");
+        text = i18n("Necessary secrets for the VPN connection '%1' were not provided.", vpnName);
         break;
     case NetworkManager::VpnConnection::LoginFailedReason:
         text = i18n("Authentication to the VPN server failed.");
         break;
     case NetworkManager::VpnConnection::ConnectionRemovedReason:
-        text = i18n("The connection was deleted from settings.");
+        text = i18n("The connection was deleted.");
         break;
     default:
     case NetworkManager::VpnConnection::UnknownReason:
@@ -529,7 +531,8 @@ void Notification::onVpnConnectionStateChanged(NetworkManager::VpnConnection::St
     notify->setTitle(vpnName);
     notify->setText(text.toHtmlEscaped());
     m_notifications[connectionId] = notify;
-    notify->sendEvent();
+    qDebug()<<"[plasma-nm]:  network notification text: "<<text;
+    // notify->sendEvent();
 }
 
 void Notification::notificationClosed()
@@ -595,5 +598,6 @@ void Notification::onCheckActiveConnectionOnResume()
     notify->setTitle(i18n("No Network Connection"));
     notify->setText(i18n("You are no longer connected to a network."));
     m_notifications[uni] = notify;
-    notify->sendEvent();
+    // notify->sendEvent();
+    qDebug()<<"[plasma-nm]:  network notification text: "<<i18n("You are no longer connected to a network.");
 }

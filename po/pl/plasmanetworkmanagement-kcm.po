@@ -1,0 +1,144 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>, 2017, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-03-10 03:49+0100\n"
+"PO-Revision-Date: 2020-10-10 03:39+0200\n"
+"Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
+"Language-Team: Polish <kde-i18n-doc@kde.org>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 20.08.1\n"
+
+#: kcm.cpp:362
+#, kde-format
+msgid "my_shared_connection"
+msgstr "moje_wspoldzielone_polaczenie"
+
+#: kcm.cpp:424
+#, kde-format
+msgid "Export VPN Connection"
+msgstr "Eksportuj połączenie VPN"
+
+#: kcm.cpp:444
+#, kde-format
+msgid "Do you want to save changes made to the connection '%1'?"
+msgstr "Czy chcesz zachować zmiany dokonane w połączeniu '%1'?"
+
+#: kcm.cpp:444
+#, kde-format
+msgctxt "@title:window"
+msgid "Save Changes"
+msgstr "Zapisz zmiany"
+
+#: kcm.cpp:533
+#, kde-format
+msgid "Import VPN Connection"
+msgstr "Importuj połączenie VPN"
+
+#: qml/AddConnectionDialog.qml:31
+msgctxt "@title:window"
+msgid "Choose a Connection Type"
+msgstr "Wybierz rodzaj połączenia"
+
+#: qml/AddConnectionDialog.qml:174
+msgid "Create"
+msgstr "Utwórz"
+
+#: qml/AddConnectionDialog.qml:184 qml/ConfigurationDialog.qml:130
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: qml/ConfigurationDialog.qml:30
+msgctxt "@title:window"
+msgid "Configuration"
+msgstr "Ustawienia"
+
+#: qml/ConfigurationDialog.qml:55
+msgid "General"
+msgstr "Ogólne"
+
+#: qml/ConfigurationDialog.qml:60
+msgid "Ask for PIN on modem detection"
+msgstr "Zapytaj o numer PIN po wykryciu modemu"
+
+#: qml/ConfigurationDialog.qml:67
+msgid "Show virtual connections"
+msgstr "Pokaż połączenia wirtualne"
+
+#: qml/ConfigurationDialog.qml:75
+msgid "Hotspot"
+msgstr "Hotspot"
+
+#: qml/ConfigurationDialog.qml:81
+msgid "Hotspot name:"
+msgstr "Nazwa hotspotu:"
+
+#: qml/ConfigurationDialog.qml:91
+msgid "Hotspot password:"
+msgstr "Hasło hotspotu:"
+
+#: qml/ConfigurationDialog.qml:121
+msgid "Ok"
+msgstr "Ok"
+
+#: qml/ConnectionItem.qml:112
+msgid "Connect"
+msgstr "Połącz"
+
+#: qml/ConnectionItem.qml:112
+msgid "Disconnect"
+msgstr "Rozłącz"
+
+#: qml/ConnectionItem.qml:125
+msgid "Delete"
+msgstr "Usuń"
+
+#: qml/ConnectionItem.qml:135
+msgid "Export"
+msgstr "Eksportuj"
+
+#: qml/ConnectionItem.qml:160
+msgid "Connected"
+msgstr "Połączony"
+
+#: qml/ConnectionItem.qml:162
+msgid "Connecting"
+msgstr "Łączenie"
+
+#: qml/main.qml:75
+msgid "Search..."
+msgstr "Znajdź..."
+
+#: qml/main.qml:154
+msgid "Add new connection"
+msgstr "Dodaj nowe połączenie"
+
+#: qml/main.qml:168
+msgid "Remove selected connection"
+msgstr "Usuń wybrane połączenie"
+
+#: qml/main.qml:184
+msgid "Export selected connection"
+msgstr "Eksportuj wybrane połączenie"
+
+#: qml/main.qml:208
+msgid "Configuration"
+msgstr "Ustawienia"
+
+#: qml/main.qml:236
+msgctxt "@title:window"
+msgid "Remove Connection"
+msgstr "Usuń połączenie"
+
+#: qml/main.qml:237
+msgid "Do you want to remove the connection '%1'?"
+msgstr "Czy chcesz usunąć połączenie '%1?"

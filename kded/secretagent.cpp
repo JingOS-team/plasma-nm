@@ -2,7 +2,7 @@
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013 by Daniel Nicoletti <dantti12@gmail.com>
-    Copyright 2021 Wang Rui <wangrui@jingos.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -49,10 +49,9 @@
 #include <KConfig>
 #include <KConfigGroup>
 #include <KWallet>
-#include <KNotification>
 
 SecretAgent::SecretAgent(QObject* parent)
-    : NetworkManager::SecretAgent("org.kde.plasma.networkmanagement", parent)
+    : NetworkManager::SecretAgent("org.kde.plasma.networkmanagement", NetworkManager::SecretAgent::Capability::VpnHints, parent)
     , m_openWalletFailed(false)
     , m_wallet(nullptr)
     , m_dialog(nullptr)
@@ -97,6 +96,7 @@ NMVariantMapMap SecretAgent::GetSecrets(const NMVariantMapMap &connection, const
     m_calls << request;
 
     processNext();
+
     return NMVariantMapMap();
 }
 
@@ -434,7 +434,8 @@ bool SecretAgent::processGetSecrets(SecretsRequest &request)
         sendSecrets(result, request.message);
         return true;
     } else if (requestNew || (allowInteraction && !setting->needSecrets(requestNew).isEmpty()) || (allowInteraction && userRequested) || (isVpn && allowInteraction)) {
-        m_dialog = new PasswordDialog(connectionSettings, request.flags, request.setting_name);
+
+        m_dialog = new PasswordDialog(connectionSettings, request.flags, request.setting_name, request.hints);
         connect(m_dialog, &PasswordDialog::accepted, this, &SecretAgent::dialogAccepted);
         connect(m_dialog, &PasswordDialog::rejected, this, &SecretAgent::dialogRejected);
 
@@ -449,20 +450,10 @@ bool SecretAgent::processGetSecrets(SecretsRequest &request)
             request.dialog = m_dialog;
             request.saveSecretsWithoutReply = !connectionSettings->permissions().isEmpty();
             //m_dialog->show();
-            
-            KWindowSystem::setState(m_dialog->winId(), NET::KeepAbove);
-            KWindowSystem::forceActiveWindow(m_dialog->winId());
-
-            KNotification *notification = new KNotification("FailedToGetSecrets", KNotification::CloseOnTimeout);
-            notification->setComponentName("networkmanagement");
-            notification->setTitle(i18n("Failed to join"));
-            notification->setText(i18n("Incorrect password for %1",connectionSettings->id()));
-            notification->setIconName(QStringLiteral("dialog-warning"));
-            notification->sendEvent();
-            
             emit secretsError(request.connection_path.path(), i18n("Authentication to %1 failed. Wrong password?", request.connection.value("connection").value("id").toString()));
             dialogRejected();
-
+            // KWindowSystem::setState(m_dialog->winId(), NET::KeepAbove);
+            // KWindowSystem::forceActiveWindow(m_dialog->winId());
             return false;
         }
     } else if (isVpn && userRequested) { // just return what we have

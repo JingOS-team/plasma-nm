@@ -1,0 +1,65 @@
+# Lithuanian translations for plasma-nm package.
+# Copyright (C) 2019 This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+# Automatically generated, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:25+0200\n"
+"PO-Revision-Date: 2019-06-01 19:23+0000\n"
+"Last-Translator: Moo\n"
+"Language-Team: lt\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
+"%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
+"X-Generator: Poedit 2.0.6\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Moo"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "<>"
+
+#: mobilebroadbandsettings.cpp:40
+#, kde-format
+msgid "Configure mobile broadband"
+msgstr "Konfigūruoti mobilųjį plačiajuostį ryšį"
+
+#: mobilebroadbandsettings.cpp:42
+#, kde-format
+msgid "Martin Kacej"
+msgstr "Martin Kacej"
+
+#: package/contents/ui/MobileSettings.qml:34
+#, kde-format
+msgid "Enable mobile data network"
+msgstr "Įjungti mobiliųjų duomenų tinklą"
+
+#: package/contents/ui/MobileSettings.qml:48
+#, kde-format
+msgid "Enable data roaming"
+msgstr "Įjungti tarptinklinį duomenų ryšį"
+
+#: package/contents/ui/MobileSettings.qml:66
+#, kde-format
+msgid "Access point name"
+msgstr "Prieigos taško pavadinimas"
+
+#: package/contents/ui/MobileSettings.qml:74
+#, kde-format
+msgid "Edit APN"
+msgstr "Taisyti APN"
+
+#: package/contents/ui/MobileSettings.qml:79
+#, kde-format
+msgid "Data usage"
+msgstr "Duomenų naudojimas"

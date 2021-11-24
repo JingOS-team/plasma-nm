@@ -36,7 +36,7 @@
 class Q_DECL_EXPORT Handler : public QObject
 {
 
-Q_OBJECT
+    Q_OBJECT
 
 public:
     enum HandlerAction {
@@ -137,6 +137,10 @@ private Q_SLOTS:
     void replyFinished(QDBusPendingCallWatcher *watcher);
     void hotspotCreated(QDBusPendingCallWatcher *watcher);
     void primaryConnectionTypeChanged(NetworkManager::ConnectionSettings::ConnectionType type);
+    void onRootConnectionAdded(const QString &path);
+    void onRootActiveConnectionAdded(const QString &path);
+    void onRootActiveConnectionRemoved(const QString &path);
+    void statusChanged(NetworkManager::Status status);
 #if WITH_MODEMMANAGER_SUPPORT
     void unlockRequiredChanged(MMModemLock modemLock);
 #endif
@@ -150,6 +154,8 @@ Q_SIGNALS:
     void passwordErrorChanged(QString name,QString connectionPath);
     void sendNotificationToQml(const  QString msg);
     void addConnectionFailed(const QString ssid);
+    void activateConnectionFailed(const QString name);
+    void replyFinishedError(const QString &type, const QString &name, const QString errorMsg);
 
 private:
     bool m_hotspotSupported;
@@ -165,12 +171,18 @@ private:
     QMap<QString, QTimer*> m_wirelessScanRetryTimer;
 
     void enableBluetooth(bool enable);
+
     void scanRequestFailed(const QString &interface);
     bool checkRequestScanRateLimit(const NetworkManager::WirelessDevice::Ptr &wifiDevice);
     bool checkHotspotSupported();
     void scheduleRequestScan(const QString &interface, int timeout);
     bool m_isScanning;
     QString m_passwordError;
+    bool isRootConnected = false;
+    QString rootConnectName;
+    QString rootConnectionPath;
+    QString rootActiveConnectionPath;
+    bool manualOperation = false;
 };
 
 #endif // PLASMA_NM_HANDLER_H

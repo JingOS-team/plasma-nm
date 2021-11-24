@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasmanetworkmanagement_sshui\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:25+0200\n"
+"PO-Revision-Date: 2020-06-27 03:51+0000\n"
+"Last-Translator: transxx.py program <null@kde.org>\n"
+"Language-Team: KDE Test Language <kde-i18n-doc@kde.org>\n"
+"Language: x-test\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_useCustomGatewayPort)
+#: sshadvanced.ui:19
+#, kde-format
+msgid "Use custom gateway port:"
+msgstr "xxUse custom gateway port:xx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_useCustomTunnelMtu)
+#: sshadvanced.ui:46
+#, kde-format
+msgid "Use custom tunnel Maximum Transmission Unit (MTU):"
+msgstr "xxUse custom tunnel Maximum Transmission Unit (MTU):xx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_extraSshOptions)
+#: sshadvanced.ui:70
+#, kde-format
+msgid "Extra SSH options:"
+msgstr "xxExtra SSH options:xx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_remoteDeviceNumber)
+#: sshadvanced.ui:88
+#, kde-format
+msgid "Remote device number:"
+msgstr "xxRemote device number:xx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_useTapDevice)
+#: sshadvanced.ui:107
+#, kde-format
+msgid "Use a TAP device"
+msgstr "xxUse a TAP devicexx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_remoteUsername)
+#: sshadvanced.ui:116
+#, kde-format
+msgid "Remote username"
+msgstr "xxRemote usernamexx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_doNotReplaceDefaultRoute)
+#: sshadvanced.ui:132
+#, kde-format
+msgid "Do not replace default route"
+msgstr "xxDo not replace default routexx"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, SshAuth)
+#: sshauth.ui:14
+#, kde-format
+msgid "SSH VPN"
+msgstr "xxSSH VPNxx"
+
+#. i18n: ectx: property (text), widget (QLabel, passwordLabel)
+#: sshauth.ui:32
+#, kde-format
+msgid "Password: "
+msgstr "xxPassword: xx"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: sshwidget.ui:47
+#, kde-format
+msgid "General"
+msgstr "xxGeneralxx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_gateway)
+#: sshwidget.ui:55
+#, kde-format
+msgid "Gateway:"
+msgstr "xxGateway:xx"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: sshwidget.ui:73
+#, kde-format
+msgid "Network Settings"
+msgstr "xxNetwork Settingsxx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_remoteIp)
+#. i18n: ectx: property (text), widget (QLabel, lbl_remoteIpv6)
+#: sshwidget.ui:79 sshwidget.ui:134
+#, kde-format
+msgid "Remote IP Address:"
+msgstr "xxRemote IP Address:xx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_localIp)
+#. i18n: ectx: property (text), widget (QLabel, lbl_localIpv6)
+#: sshwidget.ui:92 sshwidget.ui:151
+#, kde-format
+msgid "Local IP Address:"
+msgstr "xxLocal IP Address:xx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_netmask)
+#: sshwidget.ui:105
+#, kde-format
+msgid "Netmask:"
+msgstr "xxNetmask:xx"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_3)
+#: sshwidget.ui:121
+#, kde-format
+msgid "IPv6 Network Settings"
+msgstr "xxIPv6 Network Settingsxx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, chk_useIpv6)
+#: sshwidget.ui:127
+#, kde-format
+msgid "Use IPv6"
+msgstr "xxUse IPv6xx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_netmaskIpv6)
+#: sshwidget.ui:168
+#, kde-format
+msgid "Prefix:"
+msgstr "xxPrefix:xx"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_4)
+#: sshwidget.ui:188
+#, kde-format
+msgid "Authentication"
+msgstr "xxAuthenticationxx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_password)
+#: sshwidget.ui:204
+#, kde-format
+msgid "Password:"
+msgstr "xxPassword:xx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_sshKeyFile)
+#: sshwidget.ui:222
+#, kde-format
+msgid "SSH Key File:"
+msgstr "xxSSH Key File:xx"
+
+#. i18n: ectx: property (text), widget (QLabel, lbl_authType)
+#: sshwidget.ui:238
+#, kde-format
+msgid "Type:"
+msgstr "xxType:xx"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmb_authType)
+#: sshwidget.ui:249
+#, kde-format
+msgid "SSH Agent"
+msgstr "xxSSH Agentxx"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmb_authType)
+#: sshwidget.ui:254
+#, kde-format
+msgid "Password"
+msgstr "xxPasswordxx"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, cmb_authType)
+#: sshwidget.ui:259
+#, kde-format
+msgid "Key authentication"
+msgstr "xxKey authenticationxx"
+
+#. i18n: ectx: property (text), widget (QPushButton, btn_advancedOption)
+#: sshwidget.ui:300
+#, kde-format
+msgid "Advanced..."
+msgstr "xxAdvanced...xx"

@@ -1,0 +1,144 @@
+# Tomohiro Hyakutake <tomhioo@outlook.jp>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasmanetworkmanagement-kcm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-03-10 03:49+0100\n"
+"PO-Revision-Date: 2019-10-20 10:19+0900\n"
+"Last-Translator: Tomohiro Hyakutake <tomhioo@outlook.jp>\n"
+"Language-Team: Japanese <kde-jp@kde.org>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+"X-Generator: Lokalize 19.08.2\n"
+
+#: kcm.cpp:362
+#, kde-format
+msgid "my_shared_connection"
+msgstr ""
+
+#: kcm.cpp:424
+#, kde-format
+msgid "Export VPN Connection"
+msgstr "VPN 接続をエクスポート"
+
+#: kcm.cpp:444
+#, kde-format
+msgid "Do you want to save changes made to the connection '%1'?"
+msgstr "接続 '%1' への変更を保存しますか？"
+
+#: kcm.cpp:444
+#, kde-format
+msgctxt "@title:window"
+msgid "Save Changes"
+msgstr "変更を保存"
+
+#: kcm.cpp:533
+#, kde-format
+msgid "Import VPN Connection"
+msgstr "VPN 接続をインポート"
+
+#: qml/AddConnectionDialog.qml:31
+msgctxt "@title:window"
+msgid "Choose a Connection Type"
+msgstr "接続のタイプを選択"
+
+#: qml/AddConnectionDialog.qml:174
+msgid "Create"
+msgstr "作成"
+
+#: qml/AddConnectionDialog.qml:184 qml/ConfigurationDialog.qml:130
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: qml/ConfigurationDialog.qml:30
+msgctxt "@title:window"
+msgid "Configuration"
+msgstr ""
+
+#: qml/ConfigurationDialog.qml:55
+msgid "General"
+msgstr ""
+
+#: qml/ConfigurationDialog.qml:60
+msgid "Ask for PIN on modem detection"
+msgstr ""
+
+#: qml/ConfigurationDialog.qml:67
+#, fuzzy
+#| msgid "Export selected connection"
+msgid "Show virtual connections"
+msgstr "選択された接続をエクスポート"
+
+#: qml/ConfigurationDialog.qml:75
+msgid "Hotspot"
+msgstr ""
+
+#: qml/ConfigurationDialog.qml:81
+msgid "Hotspot name:"
+msgstr ""
+
+#: qml/ConfigurationDialog.qml:91
+msgid "Hotspot password:"
+msgstr ""
+
+#: qml/ConfigurationDialog.qml:121
+msgid "Ok"
+msgstr ""
+
+#: qml/ConnectionItem.qml:112
+msgid "Connect"
+msgstr "接続"
+
+#: qml/ConnectionItem.qml:112
+msgid "Disconnect"
+msgstr "切断"
+
+#: qml/ConnectionItem.qml:125
+msgid "Delete"
+msgstr "削除"
+
+#: qml/ConnectionItem.qml:135
+msgid "Export"
+msgstr "エクスポート"
+
+#: qml/ConnectionItem.qml:160
+msgid "Connected"
+msgstr "接続済み"
+
+#: qml/ConnectionItem.qml:162
+msgid "Connecting"
+msgstr "接続中"
+
+#: qml/main.qml:75
+msgid "Search..."
+msgstr "検索..."
+
+#: qml/main.qml:154
+msgid "Add new connection"
+msgstr "新しい接続を追加"
+
+#: qml/main.qml:168
+msgid "Remove selected connection"
+msgstr "選択された接続を削除"
+
+#: qml/main.qml:184
+msgid "Export selected connection"
+msgstr "選択された接続をエクスポート"
+
+#: qml/main.qml:208
+msgid "Configuration"
+msgstr ""
+
+#: qml/main.qml:236
+msgctxt "@title:window"
+msgid "Remove Connection"
+msgstr "接続を削除"
+
+#: qml/main.qml:237
+msgid "Do you want to remove the connection '%1'?"
+msgstr "接続'%1'を削除しますか？"

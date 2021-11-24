@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import org.kde.kcm 1.2 as KCM
 import QtQuick 2.7
@@ -23,22 +13,23 @@ import org.kde.kirigami 2.15 as Kirigami
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
+import jingos.display 1.0
 
 Rectangle {
     id: root
 
     property int defaultFontSize: theme.defaultFont.pointSize
-    property int preferWidth: root.width - 40 * appScale
-    property int preferHeigh: 45 * appScale
+    property int preferWidth: root.width - 40 * appScaleSize
+    property int preferHeigh: 45 * appScaleSize
     property int selectIndex: 0
     property bool isConfigChanged: false
 
-    color: "#FFF6F9FF"
+    color: settingMinorBackground
 
     Component.onCompleted: {
-        if (currentModel.Router == "Automatic") {
+        if (currentModel.Method == "Automatic") {
             selectIndex = 0
-        } else if (currentModel.Router == "Manual") {
+        } else if (currentModel.Method == "Manual") {
             selectIndex = 1
         }
     }
@@ -48,96 +39,93 @@ Rectangle {
 
         anchors {
             left: parent.left
-            right:  parent.right
+            leftMargin: 20 * appScaleSize
+            right: parent.right
+            rightMargin: 20 * appScaleSize
             top: parent.top
-            leftMargin: 14 * appScale
-            topMargin: 48 * appScale
+            topMargin: JDisplay.statusBarHeight
         }
+        height: 62 * appScaleSize
 
-        height: 20 * appScale
-        //width: parent.width
-
-        Image {
-            id: backIcon
-
-            anchors.left: parent.left
+        Item {
+            width: parent.width
+            height: backIcon.height
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 6 * appScaleSize
 
-            width: 22 * appScale
-            height: 22 * appScale
+            Kirigami.JIconButton {
+                id: backIcon
 
-            source: "qrc:/image/arrow_left.png"
+                width: (22 + 8) * appScaleSize
+                height: (22 + 8) * appScaleSize
 
-            MouseArea {
-                anchors.fill: parent
+                source: isDarkTheme ? "qrc:/image/arrow_left_dark.png" : "qrc:/image/arrow_left.png"
+                onClicked: {
+                    wifi_root.popView()
+                }
+            }
+
+            Kirigami.Label {
+                id: title
+
+                anchors {
+                    left: backIcon.right
+                    leftMargin: 10 * appScaleSize
+                    verticalCenter: parent.verticalCenter
+                }
+
+                color: majorForeground
+                font.pixelSize: 20 * appFontSize
+                font.bold: true
+                text: currentModel.Name + i18n(" DNS")
+            }
+
+            Kirigami.JButton {
+                id: confirmIcon
+
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                enabled : isConfigChanged
+
+                backgroundColor:"transparent"
+                fontColor: confirmIcon.enabled ? Kirigami.JTheme.highlightColor : Kirigami.JTheme.disableForeground
+                font.pixelSize: 17 * appFontSize
+                text: i18n("Save")
 
                 onClicked: {
+                    if (defaultDnsMethod === "Automatic") {
+                        currentMethod = "Automatic"
+                        currentModel.Method = "Automatic"
+                        currentModel.NameServer = ""
+                        currentModel.DNSSearch = ""
+                        currentModel.UpdateConnect = "update"
+                    } else if (defaultDnsMethod === "Manual") {
+                        currentMethod = "Manual"
+                        currentModel.Method = "Manual"
+                        currentModel.NameServer = dnsServer.inputName
+                        currentModel.DNSSearch = dnsSearch.inputName
+                        currentModel.UpdateConnect = "update"
+                    }
                     wifi_root.popView()
                 }
             }
         }
 
-        Kirigami.Label {
-            id: title
-
-            anchors {
-                left: backIcon.right
-                leftMargin: 10 * appScale
-                verticalCenter: parent.verticalCenter
-            }
-
-            font.pixelSize: 14
-            font.bold: true
-            text: currentModel.Name + i18n(" DNS")
-        }
-
-        Kirigami.JIconButton {
-            id: confirmIcon
-
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.rightMargin: 25 * appScale
-
-            width: 40 * appScale + 10
-            height: 22 * appScale + 10
-
-            enabled : isConfigChanged
-
-            Text{
-                anchors.centerIn: parent
-                
-                font.pixelSize: 17
-                text: i18n("Save")
-                color: confirmIcon.enabled ? "#FF3C4BE8" : "#2E000000"
-            }
-            
-            onClicked: {
-                if (defaultDnsMethod === "Automatic") {
-                    currentModel.Router = "Automatic"
-                    currentModel.UpdateConnect = "update"
-                } else if (defaultDnsMethod === "Manual") {
-                    currentModel.Router = "Manual"
-                    currentModel.NameServer = dnsServer.inputName
-                    currentModel.DNSSearch = dnsSearch.inputName
-                    currentModel.UpdateConnect = "update"
-                }
-                wifi_root.popView()
-            }
-        }
     }
 
     Rectangle {
         anchors {
             top: topItem.bottom
-            topMargin: 31 * appScale
+            topMargin: 31 * appScaleSize
             horizontalCenter: parent.horizontalCenter
         }
 
         width: preferWidth
         height: listView.height
 
-        color: "white"
-        radius: 10 * appScale
+        color: cardBackground
+        radius: 10 * appScaleSize
         
         ListView {
             id: listView
@@ -146,6 +134,7 @@ Rectangle {
             height: childrenRect.height
 
             model: listMode
+            interactive: false
 
             delegate: SelectItem {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -159,93 +148,123 @@ Rectangle {
                     anchors.fill: parent
 
                     onClicked: {
+                        wifi_root.selectIpv4Method(model.displayName)
+                        wifi_root.selectDnsMethod(model.displayName)
                         isConfigChanged = true
                         selectIndex = index
-                        wifi_root.selectDnsMethod(model.displayName)
+                        if(index == 0 ){
+                            dnsServer.inputName =  currentModel.NameServer
+                            dnsSearch.inputName = currentModel.DNSSearch
+                        }
                     }
                 }
             }
         }
 
-        Column {
+        Rectangle{
             id: dnsServerColumn
 
             anchors {
                 top: listView.bottom
-                topMargin: 24 * appScale
+                topMargin: 24 * appScaleSize
             }
 
             width: preferWidth
+            height: childrenRect.height
+            color: cardBackground
 
-            spacing: 10 * appScale
+            radius: 10 * appScaleSize
 
-            Text {
-                anchors {
-                    left: parent.left
-                    leftMargin: 20 * appScale
+            Column {
+
+                width: preferWidth
+
+                Text {
+                    anchors {
+                        left: parent.left
+                        leftMargin: 20 * appScaleSize
+                    }
+
+                    height: 22 * appScaleSize
+
+                    verticalAlignment:Text.AlignBottom
+                    text: i18n("DNS Servers")
+                    color: minorForeground
+                    font.pixelSize: 12 * appFontSize
                 }
 
-                text: i18n("DNS Servers")
-                color: "#4D000000"
-                font.pixelSize: 12
-            }
+                Rectangle {
+                    width: preferWidth
+                    height: preferHeigh
 
-            Rectangle {
-                width: preferWidth
-                height: preferHeigh
+                    radius: 10 * appScaleSize
+                    color: cardBackground
 
-                radius: 10 * appScale
+                    NormalInputItem {
+                        id: dnsServer
 
-                NormalInputItem {
-                    id: dnsServer
+                        inputName: currentModel.NameServer
+                        showBottomLine: false
+                        isReadOnly: wifi_root.defaultDnsMethod == "Automatic"
+                        hintText:"0.0.0.0"
 
-                    inputName: currentModel.NameServer
-                    showBottomLine: false
-                    onTextChanged:{
-                        if(txt != currentModel.NameServer){
-                            isConfigChanged = true
+                        onTextChanged:{
+                            if(txt != currentModel.NameServer){
+                                isConfigChanged = true
+                            }
+                            
                         }
-                        
                     }
                 }
             }
         }
 
-        Column {
+        Rectangle{
             anchors {
                 top: dnsServerColumn.bottom
-                topMargin: 24 * appScale
+                topMargin: 24 * appScaleSize
             }
 
             width: preferWidth
+            height: childrenRect.height
 
-            spacing: 18 * appScale
-            visible: wifi_root.defaultDnsMethod === "Manual"
+            radius: 10 * appScaleSize
+            visible: selectIndex == 1
+            color: cardBackground
 
-            Text {
-                anchors {
-                    left: parent.left
-                    leftMargin: 20 * appScale
+            Column {
+
+                width: preferWidth
+
+                Text {
+                    anchors {
+                        left: parent.left
+                        leftMargin: 20 * appScaleSize
+                    }
+                    
+                    height: 22 * appScaleSize
+
+                    verticalAlignment:Text.AlignBottom
+                    text: i18n("Search Domains")
+                    color: minorForeground
+                    font.pixelSize: 12 * appFontSize
                 }
 
-                text: i18n("Search Domains")
-                color: "#4D000000"
-                font.pixelSize: 12
-            }
+                Rectangle {
+                    width: preferWidth
+                    height: preferHeigh
 
-            Rectangle {
-                width: preferWidth
-                height: preferHeigh
+                    radius: 10 * appScaleSize
+                    color: cardBackground
 
-                radius: 10 * appScale
+                    NormalInputItem {
+                        id: dnsSearch
 
-                NormalInputItem {
-                    id: dnsSearch
-
-                    inputName: currentModel.DNSSearch
-                    hintText: "domain.com"
-                    showBottomLine: false
-                    ipValid: false
+                        inputName: currentModel.DNSSearch
+                        hintText: "domain.com"
+                        showBottomLine: false
+                        ipValid: false
+                    }
                 }
             }
         }

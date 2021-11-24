@@ -1,0 +1,143 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+# Wantoyo <wantoyek@gmail.com>, 2018, 2019, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-03-10 03:49+0100\n"
+"PO-Revision-Date: 2020-02-24 08:26+0700\n"
+"Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
+"Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.12.1\n"
+
+#: kcm.cpp:362
+#, kde-format
+msgid "my_shared_connection"
+msgstr "koneksi_berbagiku"
+
+#: kcm.cpp:424
+#, kde-format
+msgid "Export VPN Connection"
+msgstr "Ekspor Koneksi VPN"
+
+#: kcm.cpp:444
+#, kde-format
+msgid "Do you want to save changes made to the connection '%1'?"
+msgstr "Apakah kamu ingin menyimpan perubahan yang dibuat ke koneksi '%1'?"
+
+#: kcm.cpp:444
+#, kde-format
+msgctxt "@title:window"
+msgid "Save Changes"
+msgstr "Simpan Perubahan"
+
+#: kcm.cpp:533
+#, kde-format
+msgid "Import VPN Connection"
+msgstr "Impor Koneksi VPN"
+
+#: qml/AddConnectionDialog.qml:31
+msgctxt "@title:window"
+msgid "Choose a Connection Type"
+msgstr "Pilihlah sebuah Tipe Koneksi"
+
+#: qml/AddConnectionDialog.qml:174
+msgid "Create"
+msgstr "Ciptakan"
+
+#: qml/AddConnectionDialog.qml:184 qml/ConfigurationDialog.qml:130
+msgid "Cancel"
+msgstr "Batal"
+
+#: qml/ConfigurationDialog.qml:30
+msgctxt "@title:window"
+msgid "Configuration"
+msgstr "Konfigurasi"
+
+#: qml/ConfigurationDialog.qml:55
+msgid "General"
+msgstr "Umum"
+
+#: qml/ConfigurationDialog.qml:60
+msgid "Ask for PIN on modem detection"
+msgstr "Tanyakan PIN saat deteksi modem"
+
+#: qml/ConfigurationDialog.qml:67
+msgid "Show virtual connections"
+msgstr "Tampilkan koneksi virtual"
+
+#: qml/ConfigurationDialog.qml:75
+msgid "Hotspot"
+msgstr "Hotspot"
+
+#: qml/ConfigurationDialog.qml:81
+msgid "Hotspot name:"
+msgstr "Nama hotspot:"
+
+#: qml/ConfigurationDialog.qml:91
+msgid "Hotspot password:"
+msgstr "Sandi hotspot:"
+
+#: qml/ConfigurationDialog.qml:121
+msgid "Ok"
+msgstr "Oke"
+
+#: qml/ConnectionItem.qml:112
+msgid "Connect"
+msgstr "Koneksikan"
+
+#: qml/ConnectionItem.qml:112
+msgid "Disconnect"
+msgstr "Diskoneksikan"
+
+#: qml/ConnectionItem.qml:125
+msgid "Delete"
+msgstr "Hapus"
+
+#: qml/ConnectionItem.qml:135
+msgid "Export"
+msgstr "Ekspor"
+
+#: qml/ConnectionItem.qml:160
+msgid "Connected"
+msgstr "Terkoneksi"
+
+#: qml/ConnectionItem.qml:162
+msgid "Connecting"
+msgstr "Mengkonek"
+
+#: qml/main.qml:75
+msgid "Search..."
+msgstr "Cari..."
+
+#: qml/main.qml:154
+msgid "Add new connection"
+msgstr "Tambahkan koneksi baru"
+
+#: qml/main.qml:168
+msgid "Remove selected connection"
+msgstr "Hapus koneksi terpilih"
+
+#: qml/main.qml:184
+msgid "Export selected connection"
+msgstr "Expor koneksi terpilih"
+
+#: qml/main.qml:208
+msgid "Configuration"
+msgstr "Konfigurasi"
+
+#: qml/main.qml:236
+msgctxt "@title:window"
+msgid "Remove Connection"
+msgstr "Hapus Koneksi"
+
+#: qml/main.qml:237
+msgid "Do you want to remove the connection '%1'?"
+msgstr "Apakah kamu ingin menghapus koneksi '%1'?"

@@ -60,6 +60,9 @@ bool NetworkModel::setData(const QModelIndex &index, const QVariant &value, int 
             case RouterRole:
                 item->setRouter(value.toString());
                 return true;
+            case MethodRole:
+                item->setMethod(value.toString());
+                return true;
             case NameServerRole:
                 item->setDnsServer(value.toString());
                 return true;
@@ -167,6 +170,8 @@ QVariant NetworkModel::data(const QModelIndex &index, int role) const
                 return item->subnetMask();
             case RouterRole:
                 return item->router();
+            case MethodRole:
+                return item->method();
             case NameServerRole:
                 return item->dnsServer();
             case DNSSearchRole:
@@ -181,6 +186,8 @@ QVariant NetworkModel::data(const QModelIndex &index, int role) const
                 return item->keyMgmtType();
             case SavedCountRole:
                 return getSavedCount();
+            case HardwareAddressRole:
+                return item->hardwareAddress();
 
             default:
                 break;
@@ -231,6 +238,7 @@ QHash<int, QByteArray> NetworkModel::roleNames() const
     roles[IpAddressRole] = "IpAddress";
     roles[SubnetMaskRole] = "SubnetMask";
     roles[RouterRole] = "Router";
+    roles[MethodRole] = "Method";
     roles[NameServerRole] = "NameServer";
     roles[DNSSearchRole] = "DNSSearch";
     roles[AutoconnectRole] = "Autoconnect";
@@ -241,6 +249,7 @@ QHash<int, QByteArray> NetworkModel::roleNames() const
     roles[KeyMgmtTypeRole] = "KeyMgmtType";
     roles[UpdateItemRole] = "UpdateItem";
     roles[SavedCountRole] = "SavedCount";
+    roles[HardwareAddressRole] = "HardwareAddress";
     
 
     return roles;
@@ -1121,26 +1130,24 @@ void NetworkModel::wirelessNetworkDisappeared(const QString &ssid)
 void NetworkModel::wirelessNetworkReferenceApChanged(const QString &accessPoint)
 {
     NetworkManager::WirelessNetwork *networkPtr = qobject_cast<NetworkManager::WirelessNetwork*>(sender());
-
     if (!networkPtr) {
         return;
     }
 
     for (NetworkModelItem *item : m_list.returnItems(NetworkItemsList::Ssid, networkPtr->ssid(), networkPtr->device())) {
-        NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(item->connectionPath());
-        if (!connection) {
-            continue;
-        }
+        // NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(item->connectionPath());
+        // if (!connection) {
+        //     continue;
+        // }
 
-        NetworkManager::WirelessSetting::Ptr wirelessSetting = connection->settings()->setting(NetworkManager::Setting::Wireless).staticCast<NetworkManager::WirelessSetting>();
-        if (!wirelessSetting) {
-            continue;
-        }
-
-        if (wirelessSetting->bssid().isEmpty()) {
+        // NetworkManager::WirelessSetting::Ptr wirelessSetting = connection->settings()->setting(NetworkManager::Setting::Wireless).staticCast<NetworkManager::WirelessSetting>();
+        // if (!wirelessSetting) {
+        //     continue;
+        // }
+        // if (wirelessSetting->bssid().isEmpty()) {
             item->setSpecificPath(accessPoint);
             updateItem(item);
-        }
+        // }
     }
 }
 
@@ -1233,3 +1240,16 @@ int NetworkModel::getSavedCount() const
     return count;
 }
 
+QString NetworkModel::getAccessPointBySsid(const QString &ssid, const QString &specificPath)
+{
+    for (int row = 0; row < m_list.count(); row++) {
+         NetworkModelItem *item = m_list.itemAt(row);
+       
+        if(item->type() == NetworkManager::ConnectionSettings::Wireless && 
+           item->ssid() == ssid){
+               return item->specificPath();
+        }
+    }
+    return specificPath;
+    
+}

@@ -47,6 +47,9 @@ public:
     Q_INVOKABLE void addNoSecurityConnection(QString connectionPath,QString devicePath,QString specificPath);
     Q_INVOKABLE void setHandler(Handler *handler);
 
+public Q_SLOTS:
+    void availableConnectionAppeared(const QString &connection);
+
 private:
     Handler *m_handler;
     bool isActiveEnable;

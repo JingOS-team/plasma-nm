@@ -1,0 +1,426 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasmanetworkmanagement_vpncui\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:25+0200\n"
+"PO-Revision-Date: 2020-06-27 03:51+0000\n"
+"Last-Translator: transxx.py program <null@kde.org>\n"
+"Language-Team: KDE Test Language <kde-i18n-doc@kde.org>\n"
+"Language: x-test\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: vpnc.cpp:89
+#, kde-format
+msgid "Error decrypting the obfuscated password"
+msgstr "xxError decrypting the obfuscated passwordxx"
+
+#: vpnc.cpp:89
+#, kde-format
+msgid "Error"
+msgstr "xxErrorxx"
+
+#: vpnc.cpp:147
+#, kde-format
+msgid "File %1 could not be opened."
+msgstr "xxFile %1 could not be opened.xx"
+
+#: vpnc.cpp:156
+#, kde-format
+msgid "Needed executable cisco-decrypt could not be found."
+msgstr "xxNeeded executable cisco-decrypt could not be found.xx"
+
+#: vpnc.cpp:268
+#, kde-format
+msgid ""
+"The VPN settings file '%1' specifies that VPN traffic should be tunneled "
+"through TCP which is currently not supported in the vpnc software.\n"
+"\n"
+"The connection can still be created, with TCP tunneling disabled, however it "
+"may not work as expected."
+msgstr ""
+"xxThe VPN settings file '%1' specifies that VPN traffic should be tunneled "
+"through TCP which is currently not supported in the vpnc software.\n"
+"\n"
+"The connection can still be created, with TCP tunneling disabled, however it "
+"may not work as expected.xx"
+
+#: vpnc.cpp:268
+#, kde-format
+msgid "Not supported"
+msgstr "xxNot supportedxx"
+
+#: vpnc.cpp:318
+#, kde-format
+msgid "%1: file format error."
+msgstr "xx%1: file format error.xx"
+
+#: vpnc.cpp:337
+#, kde-format
+msgid "%1: file could not be created"
+msgstr "xx%1: file could not be createdxx"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: vpnc.ui:18
+#, kde-format
+msgid "Gateway:"
+msgstr "xxGateway:xx"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, gateway)
+#: vpnc.ui:31
+#, kde-format
+msgid "IP/hostname of IPsec gateway."
+msgstr "xxIP/hostname of IPsec gateway.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: vpnc.ui:38
+#, kde-format
+msgid "User name:"
+msgstr "xxUser name:xx"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, user)
+#. i18n: ectx: property (toolTip), widget (QLineEdit, leUserName)
+#: vpnc.ui:51 vpncauth.ui:97
+#, kde-format
+msgid "User name for the connection."
+msgstr "xxUser name for the connection.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: vpnc.ui:58
+#, kde-format
+msgid "User password:"
+msgstr "xxUser password:xx"
+
+#. i18n: ectx: property (toolTip), widget (PasswordField, userPassword)
+#. i18n: ectx: property (toolTip), widget (PasswordField, leUserPassword)
+#: vpnc.ui:79 vpncauth.ui:58
+#, kde-format
+msgid "User password for the connection."
+msgstr "xxUser password for the connection.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#. i18n: ectx: property (text), widget (QLabel, groupNameLabel)
+#: vpnc.ui:91 vpncauth.ui:124
+#, kde-format
+msgid "Group name:"
+msgstr "xxGroup name:xx"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, group)
+#: vpnc.ui:104
+#, kde-format
+msgid "Group name"
+msgstr "xxGroup namexx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: vpnc.ui:111
+#, kde-format
+msgid "Group password:"
+msgstr "xxGroup password:xx"
+
+#. i18n: ectx: property (toolTip), widget (PasswordField, groupPassword)
+#. i18n: ectx: property (toolTip), widget (PasswordField, leGroupPassword)
+#: vpnc.ui:129 vpncauth.ui:84
+#, kde-format
+msgid "Group password."
+msgstr "xxGroup password.xx"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, useHybridAuth)
+#: vpnc.ui:141
+#, kde-format
+msgid ""
+"Enable hybrid authentication, i.e. use certificate in addition to password."
+msgstr ""
+"xxEnable hybrid authentication, i.e. use certificate in addition to password."
+"xx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, useHybridAuth)
+#: vpnc.ui:144
+#, kde-format
+msgid "Use hybrid authentication"
+msgstr "xxUse hybrid authenticationxx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: vpnc.ui:154
+#, kde-format
+msgid "CA file:"
+msgstr "xxCA file:xx"
+
+#. i18n: ectx: property (toolTip), widget (KUrlRequester, caFile)
+#: vpnc.ui:167
+#, kde-format
+msgid "CA certificate in PEM format."
+msgstr "xxCA certificate in PEM format.xx"
+
+#. i18n: ectx: property (filter), widget (KUrlRequester, caFile)
+#: vpnc.ui:170
+#, kde-format
+msgid "*.pem *.crt *.cer"
+msgstr "xx*.pem *.crt *.cerxx"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnAdvanced)
+#: vpnc.ui:192
+#, kde-format
+msgid "Advanced..."
+msgstr "xxAdvanced...xx"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: vpncadvanced.ui:18
+#, kde-format
+msgid "Identification"
+msgstr "xxIdentificationxx"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: vpncadvanced.ui:27
+#, kde-format
+msgid "Domain:"
+msgstr "xxDomain:xx"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, domain)
+#: vpncadvanced.ui:37
+#, kde-format
+msgid "(NT-)Domain name for authentication."
+msgstr "xx(NT-)Domain name for authentication.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: vpncadvanced.ui:44
+#, kde-format
+msgid "Vendor:"
+msgstr "xxVendor:xx"
+
+#. i18n: ectx: property (toolTip), widget (QComboBox, vendor)
+#: vpncadvanced.ui:60
+#, kde-format
+msgid "Vendor of your IPsec gateway."
+msgstr "xxVendor of your IPsec gateway.xx"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: vpncadvanced.ui:70
+#, kde-format
+msgid "Transport and Security"
+msgstr "xxTransport and Securityxx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: vpncadvanced.ui:82
+#, kde-format
+msgid "Encryption method:"
+msgstr "xxEncryption method:xx"
+
+#. i18n: ectx: property (toolTip), widget (QComboBox, encryption)
+#: vpncadvanced.ui:98
+#, kde-format
+msgid "Encryption method."
+msgstr "xxEncryption method.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: vpncadvanced.ui:105
+#, kde-format
+msgid "NAT traversal:"
+msgstr "xxNAT traversal:xx"
+
+#. i18n: ectx: property (toolTip), widget (QComboBox, nat)
+#: vpncadvanced.ui:121
+#, kde-format
+msgid "NAT traversal method to use."
+msgstr "xxNAT traversal method to use.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: vpncadvanced.ui:128
+#, kde-format
+msgid "IKE DH Group:"
+msgstr "xxIKE DH Group:xx"
+
+#. i18n: ectx: property (toolTip), widget (QComboBox, dhGroup)
+#: vpncadvanced.ui:144
+#, kde-format
+msgid "Name of the IKE DH group."
+msgstr "xxName of the IKE DH group.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: vpncadvanced.ui:151
+#, kde-format
+msgid "Perfect Forward Secrecy:"
+msgstr "xxPerfect Forward Secrecy:xx"
+
+#. i18n: ectx: property (toolTip), widget (QComboBox, pfs)
+#: vpncadvanced.ui:167
+#, kde-format
+msgid "Diffie-Hellman group to use for PFS."
+msgstr "xxDiffie-Hellman group to use for PFS.xx"
+
+#. i18n: ectx: property (text), widget (QLabel, label_7)
+#: vpncadvanced.ui:174
+#, kde-format
+msgid "Local Port:"
+msgstr "xxLocal Port:xx"
+
+#. i18n: ectx: property (toolTip), widget (QSpinBox, localport)
+#: vpncadvanced.ui:190
+#, kde-format
+msgid ""
+"Local port to use (0-65535). 0 (default value) means random port. 500 is "
+"vpnc's default."
+msgstr ""
+"xxLocal port to use (0-65535). 0 (default value) means random port. 500 is "
+"vpnc's default.xx"
+
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, localport)
+#: vpncadvanced.ui:193
+#, kde-format
+msgid "Random"
+msgstr "xxRandomxx"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, deadPeer)
+#: vpncadvanced.ui:209
+#, kde-format
+msgid "Disable sending DPD packets (set timeout to 0)."
+msgstr "xxDisable sending DPD packets (set timeout to 0).xx"
+
+#. i18n: ectx: property (text), widget (QCheckBox, deadPeer)
+#: vpncadvanced.ui:212
+#, kde-format
+msgid "Disable dead peer detection"
+msgstr "xxDisable dead peer detectionxx"
+
+#: vpncadvancedwidget.cpp:34
+#, kde-format
+msgid "Advanced VPNC properties"
+msgstr "xxAdvanced VPNC propertiesxx"
+
+#: vpncadvancedwidget.cpp:37
+#, kde-format
+msgctxt "VPNC vendor name"
+msgid "Cisco"
+msgstr "xxCiscoxx"
+
+#: vpncadvancedwidget.cpp:38
+#, kde-format
+msgctxt "VPNC vendor name"
+msgid "Netscreen"
+msgstr "xxNetscreenxx"
+
+#: vpncadvancedwidget.cpp:41
+#, kde-format
+msgctxt "VPNC encryption method"
+msgid "Secure (default)"
+msgstr "xxSecure (default)xx"
+
+#: vpncadvancedwidget.cpp:42
+#, kde-format
+msgctxt "VPNC encryption method"
+msgid "Weak (DES encryption, use with caution)"
+msgstr "xxWeak (DES encryption, use with caution)xx"
+
+#: vpncadvancedwidget.cpp:43
+#, kde-format
+msgctxt "VPNC encryption method"
+msgid "None (completely insecure)"
+msgstr "xxNone (completely insecure)xx"
+
+#: vpncadvancedwidget.cpp:46
+#, kde-format
+msgctxt "NAT traversal method"
+msgid "NAT-T when available (default)"
+msgstr "xxNAT-T when available (default)xx"
+
+#: vpncadvancedwidget.cpp:47
+#, kde-format
+msgctxt "NAT traversal method"
+msgid "NAT-T always"
+msgstr "xxNAT-T alwaysxx"
+
+#: vpncadvancedwidget.cpp:48
+#, kde-format
+msgctxt "NAT traversal method"
+msgid "Cisco UDP"
+msgstr "xxCisco UDPxx"
+
+#: vpncadvancedwidget.cpp:49
+#, kde-format
+msgctxt "NAT traversal method"
+msgid "Disabled"
+msgstr "xxDisabledxx"
+
+#: vpncadvancedwidget.cpp:52
+#, kde-format
+msgctxt "IKE DH group"
+msgid "DH Group 1"
+msgstr "xxDH Group 1xx"
+
+#: vpncadvancedwidget.cpp:53
+#, kde-format
+msgctxt "IKE DH group"
+msgid "DH Group 2 (default)"
+msgstr "xxDH Group 2 (default)xx"
+
+#: vpncadvancedwidget.cpp:54
+#, kde-format
+msgctxt "IKE DH group"
+msgid "DH Group 5"
+msgstr "xxDH Group 5xx"
+
+#: vpncadvancedwidget.cpp:57
+#, kde-format
+msgctxt "Perfect Forward Secrecy"
+msgid "Server (default)"
+msgstr "xxServer (default)xx"
+
+#: vpncadvancedwidget.cpp:58
+#, kde-format
+msgctxt "Perfect Forward Secrecy"
+msgid "None"
+msgstr "xxNonexx"
+
+#: vpncadvancedwidget.cpp:59
+#, kde-format
+msgctxt "Perfect Forward Secrecy"
+msgid "DH Group 1"
+msgstr "xxDH Group 1xx"
+
+#: vpncadvancedwidget.cpp:60
+#, kde-format
+msgctxt "Perfect Forward Secrecy"
+msgid "DH Group 2"
+msgstr "xxDH Group 2xx"
+
+#: vpncadvancedwidget.cpp:61
+#, kde-format
+msgctxt "Perfect Forward Secrecy"
+msgid "DH Group 5"
+msgstr "xxDH Group 5xx"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, VpncAuth)
+#: vpncauth.ui:14
+#, kde-format
+msgid "VPNCAuthentication"
+msgstr "xxVPNCAuthenticationxx"
+
+#. i18n: ectx: property (text), widget (QLabel, userPasswordLabel)
+#: vpncauth.ui:32
+#, kde-format
+msgid "User Password:"
+msgstr "xxUser Password:xx"
+
+#. i18n: ectx: property (text), widget (QLabel, groupPasswordLabel)
+#: vpncauth.ui:45
+#, kde-format
+msgid "Group Password:"
+msgstr "xxGroup Password:xx"
+
+#. i18n: ectx: property (text), widget (QLabel, userNameLabel)
+#: vpncauth.ui:104
+#, kde-format
+msgid "Username:"
+msgstr "xxUsername:xx"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, leGroupName)
+#: vpncauth.ui:117
+#, kde-format
+msgid "Group name."
+msgstr "xxGroup name.xx"

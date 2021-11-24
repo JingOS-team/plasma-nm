@@ -1,8 +1,6 @@
-if (WITH_MODEMMANAGER_SUPPORT)
-    add_subdirectory(broadband)
-endif()
-
 add_subdirectory(wifi)
 add_subdirectory(hotspot)
 add_subdirectory(vpn)
+add_subdirectory(cellular)
+
 

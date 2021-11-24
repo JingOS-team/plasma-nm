@@ -27,15 +27,15 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
 import org.kde.kirigami 2.15 as Kirigami
+import jingos.display 1.0
 
 Item {
     id: wifi_root
 
     property int rootWidth: parent.width
     property int rootHeigh: parent.height
-    property real appScale: 1
-    //property real appScale: 1.3 * rootWidth / (1920 * 0.7)
-    //property real appRealScale: 1.3 * rootWidth / (1920 * 0.7)
+    property real appScaleSize: JDisplay.dp(1.0)
+    property real appFontSize: JDisplay.sp(1.0)
     property int defaultFontSize: theme.defaultFont.pointSize + 2
     property var currentModel
     property int currentIndex: 0
@@ -45,6 +45,18 @@ Item {
     property var defaultIpv4Method: "Automatic"
     property var defaultDnsMethod: "Automatic"
     property PlasmaNM.NetworkModel networkModel: null
+    property var currentMethod: currentModel.Method
+    property var currentIpAddress: currentModel.IpAddress
+    property var currentSubnetMask:currentModel.SubnetMask
+
+    property var majorForeground: Kirigami.JTheme.majorForeground
+    property var minorForeground: Kirigami.JTheme.minorForeground
+    property var settingMinorBackground: Kirigami.JTheme.settingMinorBackground
+    property var cardBackground: Kirigami.JTheme.cardBackground
+    property var highlightColor: Kirigami.JTheme.highlightColor
+    property var dividerForeground: Kirigami.JTheme.dividerForeground
+    property bool isDarkTheme: Kirigami.JTheme.colorScheme === "jingosDark"
+
 
     signal selectIpv4Method(var displayName)
     signal selectDnsMethod(var displayName)
@@ -60,6 +72,41 @@ Item {
         defaultDnsMethod = displayName
     }
 
+    onVisibleChanged: {
+        if(visible == true)
+        {
+            scanTimer.triggered()
+            scanTimer.restart()
+        }
+        else{
+            scanTimer.stop()
+        }
+
+    }
+
+    Connections {
+        target: kcm
+
+        onCurrentIndexChanged:{
+            if(index == 1){
+                popAllView();
+            }
+        }
+    }
+
+    Connections {
+        target: parent
+
+        onPause: {
+            scanTimer.stop()
+        }
+
+        onResume: {
+            scanTimer.triggered()
+            scanTimer.restart()
+        }
+    }
+    
     PlasmaNM.KcmIdentityModel {
         id: connectionModel
     }
@@ -72,6 +119,34 @@ Item {
 
     PlasmaNM.Handler {
         id: handler
+
+        onPasswordErrorChanged:{
+            console.log("onPasswordErrorChanged,name "+name);
+            errorDialog.visible = true
+            errorDialog.text = i18n("Incorrect password for \"%1\"",name)
+
+            handler.removeConnection(connectionPath)
+            appletProxyModel.sourceModel = connectionModel
+        }
+
+        onReplyFinishedError:{
+            console.log("onReplyFinishedError,type:"+type+" name:"+name+" errorMsg:"+errorMsg)
+            if(type == "RemoveConnection"){
+                errorDialog.title = i18n("Failed to delete")
+                errorDialog.text = i18n("Forget the failure, please make sure the network module is normal.")
+                errorDialog.visible = true
+            } else if (type == "AddAndActivateConnection" | type == "ActivateConnection"){
+                errorDialog.title = i18n("Failed to join")
+                errorDialog.text = i18n("Join failed, please make sure the network equipment and related configuration are normal.")
+                errorDialog.visible = true
+            } else if (type == "UpdateConnection"){
+                errorDialog.title = i18n("Save failed")
+                errorDialog.text = i18n("Please make sure the configuration information is correct.")
+                errorDialog.visible = true
+            }
+
+            
+        }
     }
 
     PlasmaNM.NetworkStatus {
@@ -122,6 +197,12 @@ Item {
         stack.pop()
     }
 
+    function popAllView() {
+        while (stack.depth > 1) {
+            stack.pop()
+        }
+    }
+
     Component {
         id: home_view
 
@@ -152,7 +233,7 @@ Item {
         OtherNetwork {}
     }
 
-    JDialog {
+    Kirigami.JDialog {
         id: errorDialog
         
         title: i18n("Failed to join")
@@ -162,21 +243,23 @@ Item {
             errorDialog.visible = false
         }
     }
-
+    
     Kirigami.JDialog {
         id: passwordPop
 
         property var devicePath
         property var specificPath
+        property var ssid
 
         title: i18n("Enter Password")
         inputEnable: true
         showPassword: true
         leftButtonText: i18n("Cancel")
-        rightButtonText: i18n("Ok")
+        rightButtonText: i18n("OK")
+        validator: RegExpValidator {regExp: /^[\u4e00-\u9fa5 -~]+$/ }
 
         onInputTextChanged:{
-            if(inputText.length > 5 ){
+            if(inputText.length > 7 ){
                 rightButtonEnable = true
             }else{
                 rightButtonEnable = false
@@ -188,19 +271,22 @@ Item {
 
         onRightButtonClicked: {
 
-            if(passwordPop.inputText.length > 5){
+            if(passwordPop.inputText.length > 7){
                 if (networkStatus.networkStatus == "Connecting") {
                 handler.removeConnection(
                             editorProxyModel.currentConnectingdPath)
                 }
+                var findAccessPoint = currenProxyModel.sourceModel.sourceModel.getAccessPointBySsid(passwordPop.ssid,passwordPop.specificPath)
+                
                 handler.addAndActivateConnection(passwordPop.devicePath,
-                                                passwordPop.specificPath,
+                                                findAccessPoint,
                                                 passwordPop.inputText)
                 passwordPop.visible = false
             }
         }
         
         onLeftButtonClicked: {
+            passwordPop.inputText = ""
             passwordPop.visible = false
         }
     }

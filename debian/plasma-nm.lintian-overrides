@@ -1,0 +1,5 @@
+plasma-nm: package-name-doesnt-match-sonames libplasmanm-editor libplasmanm-internal
+plasma-nm: shlib-without-versioned-soname usr/lib/*/libplasmanm_editor.so libplasmanm_editor.so
+plasma-nm: shlib-without-versioned-soname usr/lib/*/libplasmanm_internal.so libplasmanm_internal.so
+plasma-nm: postinst-must-call-ldconfig usr/lib/*/libplasmanm_internal.so
+plasma-nm: package-must-activate-ldconfig-trigger usr/lib/*/libplasmanm_internal.so

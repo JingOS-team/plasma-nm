@@ -392,9 +392,34 @@ bool WifiSettings::addOtherConnection(const QString ssid,const QString userName,
     }
     csMapMap.insert(NetworkManager::Setting::typeAsString(NetworkManager::Setting::Ipv4), ipv4Map);
     m_handler->addConnection(csMapMap);
+     for (const NetworkManager::Device::Ptr &dev : NetworkManager::networkInterfaces()) {
+        if (!dev->managed()) {
+            continue;
+        }
+       connect(dev.data(), &NetworkManager::Device::availableConnectionAppeared, this, &WifiSettings::availableConnectionAppeared, Qt::UniqueConnection);
+    }
+    
     isSuccess = true;
 
     return isSuccess;
+}
+void WifiSettings::availableConnectionAppeared(const QString &connection)
+{
+    QString devicePath;
+    QString specificObject;
+    NetworkManager::Device::Ptr device = NetworkManager::findNetworkInterface(qobject_cast<NetworkManager::Device*>(sender())->uni());
+    if (device) {
+        devicePath = device->uni();
+        if (device->type() == NetworkManager::Device::Wifi) {
+            NetworkManager::WirelessDevice::Ptr wifiDev = device.objectCast<NetworkManager::WirelessDevice>();
+            for (const NetworkManager::WirelessNetwork::Ptr &wifiNetwork : wifiDev->networks()) {
+                specificObject = wifiNetwork->referenceAccessPoint()->uni();
+                break;
+            }
+        }
+    }
+    
+    m_handler->activateConnection(connection,devicePath,specificObject);
 }
 
 void WifiSettings::activeExistenceConnection(const QString m_devicePath,const QString m_specificPath,const QString pwd)

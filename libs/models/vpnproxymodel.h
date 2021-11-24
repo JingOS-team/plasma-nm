@@ -51,6 +51,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void addActiveConnection(const QString & path);
+    void activeConnectionRemoved(const QString & path);
     void addActiveConnection(const NetworkManager::ActiveConnection::Ptr & ac);
     void onVpnConnectionStateChanged(NetworkManager::VpnConnection::State state, NetworkManager::VpnConnection::StateChangeReason reason); 
 

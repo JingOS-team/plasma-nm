@@ -1,5 +1,6 @@
 /*
     Copyright 2014 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -31,8 +32,8 @@
 
 class Q_DECL_EXPORT Monitor : public QObject
 {
-Q_OBJECT
-Q_CLASSINFO("D-Bus Interface", "org.kde.plasmanetworkmanagement")
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.plasmanetworkmanagement")
 public:
     explicit Monitor(QObject * parent);
     ~Monitor() override;
@@ -43,10 +44,18 @@ public Q_SLOTS:
 #if WITH_MODEMMANAGER_SUPPORT
     Q_SCRIPTABLE void unlockModem(const QString &modem);
 #endif
+    Q_SCRIPTABLE void enableWireless(const bool enable);
+    Q_SCRIPTABLE void enableFlightMode(const bool enable);
+    Q_SCRIPTABLE void enableBluetooth(const bool enable);
+private:
+    void writeFlightModeToFile(bool enable);
+    bool readFlightModeFromFile();
+
 private:
     BluetoothMonitor * m_bluetoothMonitor;
 #if WITH_MODEMMANAGER_SUPPORT
-    ModemMonitor * m_modemMonitor;
+    ModemMonitor *  m_modemMonitor;
+    bool            m_flightMode;
 #endif
 };
 

@@ -97,16 +97,15 @@ PUBLIC
     KF5::Completion
     KF5::NetworkManagerQt
     KF5::WidgetsAddons
-    Qt5::Widgets
+    Qt::Widgets
 PRIVATE
-    KF5::IconThemes
     KF5::I18n
     KF5::KIOWidgets
     KF5::Notifications
     KF5::Solid
     KF5::Wallet
-    Qt5::DBus
-    Qt5::Network
+    Qt::DBus
+    Qt::Network
     qca-qt5
 )
 
@@ -114,5 +113,5 @@ if (WITH_MODEMMANAGER_SUPPORT)
     target_link_libraries(plasmanm_editor PUBLIC KF5::ModemManagerQt)
 endif()
 
-install(TARGETS plasmanm_editor ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS plasmanm_editor ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES plasma-networkmanagement-vpnuiplugin.desktop DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR})

@@ -1,5 +1,6 @@
 /*
  *   Copyright 2020 Tobias Fella <fella@posteo.de>
+ *   Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -30,6 +31,9 @@ class HotspotSettings : public KQuickAddons::ConfigModule
 public:
     HotspotSettings(QObject *parent, const QVariantList &args);
     virtual ~HotspotSettings() override;
+    Q_INVOKABLE void setDeviceName(const QString name);
+    Q_INVOKABLE QString getDeviceName();
+    Q_INVOKABLE QString getRadomPassword();
 };
 
 #endif // HOTSPOTSETTINGS_H

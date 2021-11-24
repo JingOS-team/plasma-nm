@@ -8,6 +8,7 @@ target_link_libraries(kcm_mobile_hotspot
     KF5::I18n
     KF5::CoreAddons
     KF5::QuickAddons
+    KF5::ConfigCore
 )
 
 kcoreaddons_desktop_to_json(kcm_mobile_hotspot "package/metadata.desktop")

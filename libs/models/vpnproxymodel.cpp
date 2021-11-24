@@ -31,6 +31,7 @@ VpnProxyModel::VpnProxyModel(QObject *parent)
     setSortLocaleAware(true);
     sort(0, Qt::DescendingOrder);
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::activeConnectionAdded, this, QOverload<const QString&>::of(&VpnProxyModel::addActiveConnection));
+    connect(NetworkManager::notifier(), &NetworkManager::Notifier::activeConnectionRemoved, this, QOverload<const QString&>::of(&VpnProxyModel::activeConnectionRemoved));
 }
 
 VpnProxyModel::~VpnProxyModel()
@@ -99,6 +100,12 @@ void VpnProxyModel::addActiveConnection(const QString &path)
         addActiveConnection(ac);
     }
 }
+
+void VpnProxyModel::activeConnectionRemoved(const QString &path)
+{
+    setVpnConnectedName("");
+}
+
 
 void VpnProxyModel::addActiveConnection(const NetworkManager::ActiveConnection::Ptr &ac)
 {

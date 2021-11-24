@@ -1,7 +1,6 @@
 # Plasma-nm
 
-Network-related settings of plasma-settings for JingOS. Contains wifi and vpn functions.
-Based on the kde open source project: https://invent.kde.org/plasma/plasma-nm.git
+wifi module of plasma-settings for JingOS.
 
 
 
@@ -31,9 +30,9 @@ Based on the kde open source project: https://invent.kde.org/plasma/plasma-nm.gi
 
 * Home page: https://www.jingos.com/
 
-* Project page: https://github.com/JingOS-team/plasma-nm
+* Project page: https://invent.kde.org/plasma/plasma-nm
 
-* Issues: https://github.com/JingOS-team/plasma-nm/issues
+* Issues: https://invent.kde.org/plasma/plasma-nm/-/issues
 
 * Development channel: https://forum.jingos.com/
 

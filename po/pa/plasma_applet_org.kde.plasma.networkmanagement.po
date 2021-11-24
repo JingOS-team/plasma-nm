@@ -1,0 +1,177 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# A S Alam <aalam@users.sf.net>, 2009, 2010, 2011, 2012, 2013, 2015, 2018, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-01-23 02:49+0100\n"
+"PO-Revision-Date: 2020-11-01 21:36-0800\n"
+"Last-Translator: A S Alam <aalam.yellow@gmail.com>\n"
+"Language-Team: Punjabi <punjabi-users@lists.sf.net>\n"
+"Language: pa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 20.08.1\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: contents/ui/ConnectionItem.qml:61
+#, kde-format
+msgid "Connect"
+msgstr "ਕਨੈਕਟ ਕਰੋ"
+
+#: contents/ui/ConnectionItem.qml:61
+#, kde-format
+msgid "Disconnect"
+msgstr "ਡਿਸ-ਕਨੈਕਟ ਕਰੋ"
+
+#: contents/ui/ConnectionItem.qml:97
+#, kde-format
+msgid "Show network's QR code"
+msgstr "ਨੈੱਟਵਰਕ ਦਾ QR ਕੋਡ ਵੇਖਾਓ"
+
+#: contents/ui/ConnectionItem.qml:108
+#, kde-format
+msgid "Configure..."
+msgstr "...ਸੰਰਚਨਾ"
+
+#: contents/ui/ConnectionItem.qml:132
+#, kde-format
+msgid "Speed"
+msgstr "ਸਪੀਡ"
+
+#: contents/ui/ConnectionItem.qml:137
+#, kde-format
+msgid "Details"
+msgstr "ਵੇਰਵੇ"
+
+#: contents/ui/ConnectionItem.qml:275
+#, kde-format
+msgid "Connected, ⬇ %1/s, ⬆ %2/s"
+msgstr "ਕਨੈਕਟ ਹੈ, ⬇ %1/s, ⬆ %2/s"
+
+#: contents/ui/ConnectionItem.qml:279
+#, kde-format
+msgid "Connected"
+msgstr "ਕਨੈਕਟ ਹੈ"
+
+#: contents/ui/DetailsText.qml:44
+#, kde-format
+msgid "Copy"
+msgstr "ਕਾਪੀ ਕਰੋ"
+
+#: contents/ui/main.qml:33
+#, kde-format
+msgid "Networks"
+msgstr "ਨੈੱਟਵਰਕ"
+
+#: contents/ui/main.qml:57
+#, kde-format
+msgid "&Configure Network Connections..."
+msgstr "...ਨੈੱਟਵਰਕ ਕਨੈਕਸ਼ਨਾਂ ਦੀ ਸੰਰਚਨਾ(&C)"
+
+#: contents/ui/main.qml:60
+#, kde-format
+msgid "Open Network Login Page..."
+msgstr "...ਨੈੱਟਵਰਕ ਲਾਗਇਨ ਸਫ਼ਾ ਖੋਲ੍ਹੋ"
+
+#: contents/ui/PasswordField.qml:30
+#, kde-format
+msgid "Password..."
+msgstr "...ਪਾਸਵਰਡ"
+
+#: contents/ui/PopupDialog.qml:74
+#, fuzzy, kde-format
+msgid "Airplane mode is enabled"
+msgstr "ਬੇਤਾਰ ਹਾਰਡਵੇਅਰ ਚਾਲੂ ਹੈ"
+
+#: contents/ui/PopupDialog.qml:78
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@info:status Notification text when a single wireless network disappeared"
+#| msgid "Wireless network %1 disappeared"
+msgid "Wireless and mobile networks are deactivated"
+msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ %1 ਗੁੰਮ ਹੋ ਗਿਆ"
+
+#: contents/ui/PopupDialog.qml:80
+#, fuzzy, kde-format
+msgid "Wireless is deactivated"
+msgstr "ਬੇਤਾਰ ਹਾਰਡਵੇਅਰ ਚਾਲੂ ਹੈ"
+
+#: contents/ui/PopupDialog.qml:83
+#, fuzzy, kde-format
+#| msgctxt "@item:inlistbox"
+#| msgid "Wired network interfaces"
+msgid "Mobile network is deactivated"
+msgstr "ਤਾਰ ਨੈੱਟਵਰਕ ਇੰਟਰਫੇਸ"
+
+#: contents/ui/PopupDialog.qml:85
+#, fuzzy, kde-format
+#| msgid "Available connections"
+msgid "No available connections"
+msgstr "ਮੌਜੂਦ ਕਨੈਕਸ਼ਨ"
+
+#: contents/ui/Toolbar.qml:80
+#, kde-format
+msgid "Enable Wi-Fi"
+msgstr "ਵਾਈ-ਫਾਈ ਸਮਰੱਥ ਕਰੋ"
+
+#: contents/ui/Toolbar.qml:96
+#, kde-format
+msgid "Enable mobile network"
+msgstr "ਮੋਬਾਈਲ ਨੈੱਟਵਰਕ ਸਮਰੱਥ ਕਰੋ"
+
+#: contents/ui/Toolbar.qml:131
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Disable airplane mode<nl/><nl/>This will enable Wi-Fi and Bluetooth"
+msgstr ""
+
+#: contents/ui/Toolbar.qml:132
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Enable airplane mode<nl/><nl/>This will disable Wi-Fi and Bluetooth"
+msgstr ""
+
+#: contents/ui/Toolbar.qml:142
+#, kde-format
+msgid "Hotspot"
+msgstr "ਹਾਟਸਪਾਟ"
+
+#: contents/ui/Toolbar.qml:163 contents/ui/Toolbar.qml:174
+#, kde-format
+msgid "Disable Hotspot"
+msgstr "ਹਾਟਸਪਾਟ ਅਸਮਰੱਥ ਕਰੋ"
+
+#: contents/ui/Toolbar.qml:168 contents/ui/Toolbar.qml:174
+#, kde-format
+msgid "Create Hotspot"
+msgstr "ਹਾਟ-ਸਪਾਟ ਬਣਾਓ"
+
+#: contents/ui/Toolbar.qml:185
+#, kde-format
+msgctxt "text field placeholder text"
+msgid "Search..."
+msgstr "...ਖੋਜੋ"
+
+#: contents/ui/Toolbar.qml:200
+#, kde-format
+msgid "Configure network connections..."
+msgstr "...ਨੈੱਟਵਰਕ ਕਨੈਕਸ਼ਨਾਂ ਦੀ ਸੰਰਚਨਾ"
+
+#: contents/ui/TrafficMonitor.qml:50 contents/ui/TrafficMonitor.qml:114
+#, kde-format
+msgid "/s"
+msgstr "/ਸ"
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Upload"
+msgstr "ਅੱਪਲੋਡ"
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Download"
+msgstr "ਡਾਊਨਲੋਡ"

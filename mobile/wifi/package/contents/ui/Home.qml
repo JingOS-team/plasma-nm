@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
@@ -26,7 +16,7 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
 import org.kde.kirigami 2.15 as Kirigami
 import org.kde.kcm 1.2
-
+import jingos.display 1.0
 SimpleKCM {
     id: home
     
@@ -34,7 +24,7 @@ SimpleKCM {
     property bool isDisconnected: enabledConnections.wirelessEnabled
                                   & networkStatus.networkStatus == "Disconnected"
     property var currentSelectSsid
-    property var savedNetworkCount: 0 
+    property var savedNetworkCount: 0
 
     signal selectedUuidChanged(string uuid)
 
@@ -50,24 +40,30 @@ SimpleKCM {
     Rectangle {
         anchors.fill: parent
 
-        color: "#FFF6F9FF"
+        color: settingMinorBackground
     }
 
-    Text {
-        id: title
 
+    Item {
+        id: title
         anchors {
-            top: parent.top
             left: parent.left
-            topMargin: 48 * appScale
-            leftMargin: 20 * appScale
+            leftMargin: 20 * appScaleSize
+            right: parent.right
+            rightMargin: 20 * appScaleSize
+            top: parent.top
+            topMargin:  JDisplay.statusBarHeight
         }
 
-        height: 22 * appScale
-        
-        font.pixelSize: 20
-        font.bold: true
-        text: i18n("WLAN") 
+        height: 62 * appScaleSize
+        Text {
+            color: majorForeground
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 6 * appScaleSize
+            font.pixelSize: 20 * appFontSize
+            font.bold: true
+            text: i18n("WLAN")
+        }
     }
 
     Rectangle {
@@ -75,17 +71,16 @@ SimpleKCM {
 
         anchors {
             top: title.bottom
-            topMargin: 18 * appScale
             left: parent.left
             right: parent.right
-            rightMargin: 20 * appScale
-            leftMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
+            leftMargin: 20 * appScaleSize
         }
 
         height: childrenRect.height
 
-        radius: 10 * appScale
-        color: "white"
+        radius: 10 * appScaleSize
+        color: cardBackground
 
         Item {
             id: wanMain
@@ -96,26 +91,27 @@ SimpleKCM {
                 right: parent.right
             }
 
-            height: 45 * appScale
+            height: 45 * appScaleSize
 
             Kirigami.Label {
                 anchors.left: parent.left
-                anchors.leftMargin: 20 * appScale
+                anchors.leftMargin: 20 * appScaleSize
                 anchors.verticalCenter: parent.verticalCenter
 
+                color: majorForeground
                 text: i18n("WLAN")
-                font.pixelSize: 17
+                font.pixelSize: 14 * appFontSize
             }
 
             Kirigami.JSwitch {
                 id: mSwitch
                 
                 anchors.right: parent.right
-                anchors.rightMargin: 20 * appScale
+                anchors.rightMargin: 20 * appScaleSize
                 anchors.verticalCenter: parent.verticalCenter
 
-                implicitWidth: 43 * appScale
-                implicitHeight: 26 * appScale
+                implicitWidth: 43 * appScaleSize
+                implicitHeight: 26 * appScaleSize
 
                 checked: enabledConnections.wirelessEnabled
 
@@ -140,14 +136,14 @@ SimpleKCM {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: 31 * appScale
-                    rightMargin: 31 * appScale
+                    leftMargin: 20 * appScaleSize
+                    rightMargin: 20 * appScaleSize
                     bottom: parent.bottom
                 }
 
-                visible: mSwitch.checked & networkStatus.networkStatus
-                         == "Connecting" | networkStatus.networkStatus == "Connected"
-                color: "#FFE5E5EA"
+                visible: mSwitch.checked & (networkStatus.networkStatus
+                                            == "Connecting" | networkStatus.networkStatus == "Connected")
+                color: dividerForeground
                 height: 1
             }
         }
@@ -161,42 +157,51 @@ SimpleKCM {
                 id: wifiItem
 
                 anchors.top: wanMain.bottom
-                    
-                height: Type == 14 & (networkStatus.networkStatus == "Connecting"
-                                      | networkStatus.networkStatus == "Connected")
-                        & mSwitch.checked ? 45 * appScale : 0
+
+                height: (Type == 14 && (ConnectionState == PlasmaNM.Enums.Activated
+                                        | ConnectionState == PlasmaNM.Enums.Activating)
+                         && mSwitch.checked) ? 45 * appScaleSize : 0
 
                 titleName: Name
                 showBottomLine: false
-                loadingType: Type == 14 ? ConnectionState : PlasmaNM.Enums.Activated
+                isloading: networkStatus.networkStatus == "Connecting"
+                //loadingType: Type == 14 ? ConnectionState : PlasmaNM.Enums.Activated
                 lockIconVisible: (model.SecurityType == -1 | model.SecurityType == 0) ? false : true
                 
-                visible: Type == 14 & (ConnectionState == PlasmaNM.Enums.Activated
-                                       | ConnectionState == PlasmaNM.Enums.Activating)
+                visible: Type == 14 && (ConnectionState == PlasmaNM.Enums.Activated
+                                        | ConnectionState == PlasmaNM.Enums.Activating)
+                         && mSwitch.checked
                 wifiIconPath: {
-                    if (model.Signal >= 90) {
-                        return "qrc:/image/signal_full.png"
-                    } else if (model.Signal >= 75) {
-                        return "qrc:/image/signal_high.png"
-                    } else if (model.Signal >= 50) {
-                        return "qrc:/image/signal_medium.png"
-                    } else if (model.Signal >= 20) {
-                        return "qrc:/image/signal_low.png"
-                    } else if (model.Signal >= 0) {
-                        return "qrc:/image/signal_weak.png"
+                    if (model.Signal > 75) {
+                        return isDarkTheme ? "qrc:/image/signal_full_dark.png" : "qrc:/image/signal_full.png"
+                    } else if (model.Signal > 50) {
+                        return isDarkTheme ? "qrc:/image/signal_high_dark.png" : "qrc:/image/signal_high.png"
+                    } else if (model.Signal > 25) {
+                        return isDarkTheme ? "qrc:/image/signal_medium_dark.png" : "qrc:/image/signal_medium.png"
+                    } else if (model.Signal > 0) {
+                        return isDarkTheme ? "qrc:/image/signal_low_dark.png" : "qrc:/image/signal_low.png"
+                    } else {
+                        return isDarkTheme ? "qrc:/image/signal_weak_dark.png" : "qrc:/image/signal_weak.png"
                     }
+                }
+
+                onClicked:{
+                    apletType = false
+                    wifi_root.currentModel = model
+                    wifi_root.currentIndex = index
+                    wifi_root.gotoPage("connectedItem_view")
                 }
                 
-                MouseArea {
-                    anchors.fill: parent
+                //                MouseArea {
+                //                    anchors.fill: parent
 
-                    onClicked: {
-                        apletType = false
-                        wifi_root.currentModel = model
-                        wifi_root.currentIndex = index
-                        wifi_root.gotoPage("connectedItem_view")
-                    }
-                }
+                //                    onClicked: {
+                //                        apletType = false
+                //                        wifi_root.currentModel = model
+                //                        wifi_root.currentIndex = index
+                //                        wifi_root.gotoPage("connectedItem_view")
+                //                    }
+                //                }
             }
         }
     }
@@ -207,32 +212,33 @@ SimpleKCM {
         anchors {
             top: wifiSetting.bottom
             bottom: home.bottom
-            topMargin: 24 * appScale
-            bottomMargin: 24 * appScale
+            topMargin: 24 * appScaleSize
+            bottomMargin: 24 * appScaleSize
             left: parent.left
             right: parent.right
-            rightMargin: 20 * appScale
-            leftMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
+            leftMargin: 20 * appScaleSize
         }
 
         visible: enabledConnections.wirelessEnabled
 
         Item {
             width: parent.width
-            height: 36 * appScale
+            height: 36 * appScaleSize
 
             visible: false
+
             Kirigami.Label {
                 id: otherLabel
 
                 anchors {
                     left: parent.left
-                    leftMargin: 30 * appScale
+                    leftMargin: 30 * appScaleSize
                     verticalCenter: parent.verticalCenter
                 }
-                font.pixelSize: 12
+                font.pixelSize: 12 * appFontSize
                 text: i18n("Nearby network")
-                color: "#4D000000"
+                color: minorForeground
             }
 
             Image {
@@ -240,12 +246,12 @@ SimpleKCM {
                 
                 anchors {
                     left: otherLabel.right
-                    leftMargin: 10 * appScale
+                    leftMargin: 10 * appScaleSize
                     verticalCenter: parent.verticalCenter
                 }
 
-                width: 22 * appScale
-                height: 22 * appScale
+                width: 22 * appScaleSize
+                height: 22 * appScaleSize
 
                 visible: isRefreshing
                 source: "qrc:/image/loading.png"
@@ -255,7 +261,7 @@ SimpleKCM {
 
                     target: loadingState
                     loops: Animation.Infinite
-                    running: true
+                    running: isRefreshing
                     from: 0
                     to: 360
                     duration: 3000
@@ -269,8 +275,9 @@ SimpleKCM {
             width: parent.width
             //height: listView.height + otherItem.height
             height: childrenRect.height
-            radius: 10 * appScale
-            color: "white"
+            radius: 10 * appScaleSize
+            color: cardBackground
+
             ListView {
                 id: listView
 
@@ -279,15 +286,14 @@ SimpleKCM {
                 property int contentYOnFlickStarted
 
                 width: parent.width
-                height: listView.count != savedNetworkCount ? savedNetworkCount > 0 ? listView.count == 0 ?  0 : listView.count < 7 ? 68 + listView.count * 45 * appScale : 370 * appScale
-                        : listView.count < 8 ? 34 + listView.count * 45 * appScale : 370 * appScale : savedNetworkCount * 45 * appScale + 34
-
+                height: listView.count != savedNetworkCount ? savedNetworkCount > 0 ? listView.count == 0 ?  0 : listView.count < 7 ? 68 * appScaleSize + listView.count * 45 * appScaleSize : rootHeigh - 208 * appScaleSize - 70 * appScaleSize
+                : listView.count < 8 ? 37 * appScaleSize + listView.count * 45 * appScaleSize : rootHeigh - 208 * appScaleSize - 70 * appScaleSize : savedNetworkCount * 45 * appScaleSize + 37 * appScaleSize
                 /*height: listView.count
                         != 0 ? listView.count
-                               < 8 ?  listView.count * 69 * appScale :  8 * 69 * appScale
-                                     + (isDisconnected ? 69 * appScale : 0) : 0
+                               < 8 ?  listView.count * 69 * appScaleSize :  8 * 69 * appScaleSize
+                                     + (isDisconnected ? 69 * appScaleSize : 0) : 0
                 */
-                ScrollBar.vertical: ScrollBar {}
+                //ScrollBar.vertical: ScrollBar {}
 
                 clip: true
                 model: appletProxyModel
@@ -300,22 +306,21 @@ SimpleKCM {
                         left: parent.left
                     }
 
-                    width: parent.width - 40 * appScale
-                    height: 34
+                    width: parent.width - 40 * appScaleSize
+                    height: 37 * appScaleSize
 
                     Text {
                         id: sectionText
 
                         anchors {
                             bottom: parent.bottom
+                            bottomMargin: (loadingState2.height - sectionText.height) / 2
                             left: parent.left
-                            leftMargin: 20 * appScale
-                            bottomMargin: 6 * appScale
+                            leftMargin: 20 * appScaleSize
                         }
-
                         text: i18n(section)
-                        color: "#4D000000"
-                        font.pixelSize: 12
+                        color: minorForeground
+                        font.pixelSize: 12 * appFontSize
                     }
 
                     Image {
@@ -323,14 +328,13 @@ SimpleKCM {
                         
                         anchors {
                             left: sectionText.right
-                            leftMargin: 10 * appScale
+                            leftMargin: 10 * appScaleSize
                             bottom: parent.bottom
-                            bottomMargin: 2 * appScale
                             //verticalCenter: parent.verticalCenter
                         }
 
-                        width: 22 * appScale
-                        height: 22 * appScale
+                        width: 22 * appScaleSize
+                        height: 22 * appScaleSize
 
                         visible: isRefreshing
                         source: "qrc:/image/loading.png"
@@ -340,7 +344,7 @@ SimpleKCM {
 
                             target: loadingState2
                             loops: Animation.Infinite
-                            running: true
+                            running: isRefreshing
                             from: 0
                             to: 360
                             duration: 3000
@@ -384,19 +388,19 @@ SimpleKCM {
                     lockIconVisible: (model.SecurityType == -1
                                       | model.SecurityType == 0) ? false : true
                     wifiIconPath: {
-                        if (model.Signal >= 90) {
-                            return "qrc:/image/signal_full.png"
-                        } else if (model.Signal >= 70) {
-                            return "qrc:/image/signal_high.png"
-                        } else if (model.Signal >= 50) {
-                            return "qrc:/image/signal_medium.png"
-                        } else if (model.Signal >= 20) {
-                            return "qrc:/image/signal_low.png"
-                        } else if (model.Signal >= 0) {
-                            return "qrc:/image/signal_weak.png"
+                        if (model.Signal > 75) {
+                            return isDarkTheme ? "qrc:/image/signal_full_dark.png" :"qrc:/image/signal_full.png"
+                        } else if (model.Signal > 50) {
+                            return  isDarkTheme ? "qrc:/image/signal_high_dark.png" : "qrc:/image/signal_high.png"
+                        } else if (model.Signal > 25) {
+                            return isDarkTheme ? "qrc:/image/signal_medium_dark.png" : "qrc:/image/signal_medium.png"
+                        } else if (model.Signal > 0) {
+                            return isDarkTheme ? "qrc:/image/signal_low_dark.png" : "qrc:/image/signal_low.png"
+                        } else  {
+                            return isDarkTheme ? "qrc:/image/signal_weak_dark.png" : "qrc:/image/signal_weak.png"
                         }
                     }
-                    
+
                     onSpecificPathChanged: {
                         if (currentSelectSsid == Ssid) {
                             passwordPop.specificPath = specificPath
@@ -410,6 +414,7 @@ SimpleKCM {
                     }
 
                     onDetailClicked: {
+                        currentSelectSsid = model.Ssid
                         apletType = true
                         currenProxyModel.sourceModel.sourceModel.isAllowUpdate = false
                         wifi_root.currentModel = model
@@ -439,6 +444,7 @@ SimpleKCM {
                             wifi_root.currentIndex = index
                             apletType = true
 
+                            passwordPop.ssid = model.Ssid
                             passwordPop.inputText = ""
                             passwordPop.devicePath = model.DevicePath
                             passwordPop.specificPath = model.SpecificPath
@@ -458,7 +464,7 @@ SimpleKCM {
                 width: parent.width
 
                 titleName: i18n("Add other")+"..."
-                titleNameColor: "#FF3C4BE8"
+                titleNameColor: highlightColor
                 iconVisible: false
 
                 MouseArea {
@@ -476,7 +482,9 @@ SimpleKCM {
         target: handler
 
         onAddConnectionFailed: {
-            currentModel.UpdateItem = currentSelectSsid
+            if(currentSelectSsid && currentSelectSsid != ""){
+                currentModel.UpdateItem = currentSelectSsid
+            }
         }
     }
 

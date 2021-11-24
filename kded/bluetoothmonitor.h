@@ -3,6 +3,7 @@
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013-2014 Jan Grulich <jgrulich@redhat.com>
     Copyright 2015 David Rosca <nowrep@gmail.com>
+    Copyright 2021 Liu Bangguo <liubangguo@jingos.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -32,12 +33,27 @@
 
 class BluetoothMonitor: public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     explicit BluetoothMonitor(QObject * parent);
     ~BluetoothMonitor() override;
 
     bool bluetoothConnectionExists(const QString &bdAddr, const QString &service);
     void addBluetoothConnection(const QString &bdAddr, const QString &service, const QString &connectionName);
+
+    void appendEnable(const bool enable);
+
+signals:
+    void enableEnd();
+
+public Q_SLOTS:
+    void checkEnableList();
+
+private:
+    void startEnableBluetooth(bool enable);
+
+private:
+    QList<bool> m_enableList;
+    bool        m_isBusy;
 };
 #endif

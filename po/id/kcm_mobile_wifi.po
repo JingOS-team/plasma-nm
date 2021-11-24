@@ -1,0 +1,217 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+# Wantoyo <wantoyek@gmail.com>, 2018, 2019, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-11-28 02:35+0100\n"
+"PO-Revision-Date: 2020-04-24 22:01+0700\n"
+"Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
+"Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.12.1\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Wantoyo"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "wantoyek@gmail.com"
+
+#: package/contents/ui/ConnectDialog.qml:50
+#, fuzzy, kde-format
+#| msgid "Cancel"
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Batal"
+
+#: package/contents/ui/ConnectDialog.qml:55
+#, kde-format
+msgctxt "@action:button"
+msgid "Done"
+msgstr ""
+
+#: package/contents/ui/ConnectDialog.qml:80
+#, kde-format
+msgid "Invalid input."
+msgstr ""
+
+#: package/contents/ui/ConnectionItemDelegate.qml:120
+#, fuzzy, kde-format
+#| msgid "Connection Editor"
+msgid "Connect to"
+msgstr "Pengedit Koneksi"
+
+#: package/contents/ui/main.qml:99
+#, kde-format
+msgid "Disable Wi-Fi"
+msgstr "Nonfungsikan Wi-Fi"
+
+#: package/contents/ui/main.qml:99
+#, kde-format
+msgid "Enable Wi-Fi"
+msgstr "Fungsikan Wi-Fi"
+
+#: package/contents/ui/main.qml:107
+#, kde-format
+msgid "Add custom connection"
+msgstr "Tambahkan kustom koneksi"
+
+#: package/contents/ui/main.qml:115
+#, kde-format
+msgid "Saved Connections"
+msgstr "Koneksi yang Disimpan"
+
+#: package/contents/ui/NetworkSettings.qml:27
+#, kde-format
+msgid "Add new Connection"
+msgstr "Tambahkan Koneksi baru"
+
+#: package/contents/ui/NetworkSettings.qml:47
+#, kde-format
+msgid "Save"
+msgstr "Simpan"
+
+#: package/contents/ui/NetworkSettings.qml:57
+#, kde-format
+msgid "General"
+msgstr "Umum"
+
+#: package/contents/ui/NetworkSettings.qml:62
+#, kde-format
+msgid "SSID:"
+msgstr "SSID:"
+
+#: package/contents/ui/NetworkSettings.qml:71
+#, kde-format
+msgid "Hidden Network:"
+msgstr "Jaringan Tersembunyi:"
+
+#: package/contents/ui/NetworkSettings.qml:77
+#, kde-format
+msgid "Security"
+msgstr "Keamanan"
+
+#: package/contents/ui/NetworkSettings.qml:83
+#, kde-format
+msgid "Security type:"
+msgstr "Tipe keamanan:"
+
+#: package/contents/ui/NetworkSettings.qml:92
+#, kde-format
+msgid "None"
+msgstr "Nihil"
+
+#: package/contents/ui/NetworkSettings.qml:93
+#, kde-format
+msgid "WEP Key"
+msgstr "Kunci WEP"
+
+#: package/contents/ui/NetworkSettings.qml:94
+#, kde-format
+msgid "Dynamic WEP"
+msgstr "WEP Dinamis"
+
+#: package/contents/ui/NetworkSettings.qml:95
+#, kde-format
+msgid "WPA/WPA2 Personal"
+msgstr "WPA/WPA2 Personal"
+
+#: package/contents/ui/NetworkSettings.qml:96
+#, kde-format
+msgid "WPA/WPA2 Enterprise"
+msgstr "WPA/WPA2 Enterprise"
+
+#: package/contents/ui/NetworkSettings.qml:121
+#, kde-format
+msgid "Password:"
+msgstr "Kata sandi:"
+
+#: package/contents/ui/NetworkSettings.qml:129
+#, kde-format
+msgid "Authentication:"
+msgstr "Autentikasi:"
+
+#: package/contents/ui/NetworkSettings.qml:132
+#, kde-format
+msgid "TLS"
+msgstr "TLS"
+
+#: package/contents/ui/NetworkSettings.qml:132
+#, kde-format
+msgid "LEAP"
+msgstr "LEAP"
+
+#: package/contents/ui/NetworkSettings.qml:132
+#, kde-format
+msgid "FAST"
+msgstr "FAST"
+
+#: package/contents/ui/NetworkSettings.qml:133
+#, kde-format
+msgid "Tunneled TLS"
+msgstr "Ditembus TLS"
+
+#: package/contents/ui/NetworkSettings.qml:134
+#, kde-format
+msgid "Protected EAP"
+msgstr "Dilindungi EAP"
+
+#: package/contents/ui/NetworkSettings.qml:143
+#, kde-format
+msgid "IP settings"
+msgstr "Pengaturan IP"
+
+#: package/contents/ui/NetworkSettings.qml:149
+#, kde-format
+msgid "Automatic"
+msgstr "Otomatis"
+
+#: package/contents/ui/NetworkSettings.qml:149
+#, kde-format
+msgid "Manual"
+msgstr "Manual"
+
+#: package/contents/ui/NetworkSettings.qml:159
+#, kde-format
+msgid "IP Address:"
+msgstr "Alamat IP:"
+
+#: package/contents/ui/NetworkSettings.qml:171
+#, kde-format
+msgid "Gateway:"
+msgstr "Gerbang:"
+
+#: package/contents/ui/NetworkSettings.qml:183
+#, kde-format
+msgid "Network prefix length:"
+msgstr "Panjang prefix jaringan:"
+
+#: package/contents/ui/NetworkSettings.qml:196
+#, kde-format
+msgid "DNS:"
+msgstr "DNS:"
+
+#: package/contents/ui/PasswordField.qml:27
+#, kde-format
+msgid "Password..."
+msgstr "Sandi..."
+
+#: wifisettings.cpp:45
+#, kde-format
+msgid "Wi-Fi networks"
+msgstr "Jaringan Wi-Fi"
+
+#: wifisettings.cpp:47
+#, kde-format
+msgid "Martin Kacej"
+msgstr "Martin Kacej"

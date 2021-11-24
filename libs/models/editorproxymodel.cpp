@@ -60,15 +60,18 @@ bool EditorProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
     const NetworkManager::ConnectionSettings::ConnectionType connType = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();
     if(connType == NetworkManager::ConnectionSettings::Wireless && sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activating){
         m_connectingPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
+
         Q_EMIT currentConnectingdPathChanged(m_connectingPath);
     }
 
     if(connType == NetworkManager::ConnectionSettings::Wireless && sourceModel()->data(index, NetworkModel::ConnectionStateRole).toUInt() == NetworkManager::ActiveConnection::Activated){
         m_connectedName = sourceModel()->data(index, NetworkModel::NameRole).toString();
         m_connectedPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
-        
+        m_connectedAddress = sourceModel()->data(index, NetworkModel::IpAddressRole).toString();
+
         Q_EMIT connectedNameChanged(m_connectedName);
         Q_EMIT connectedPathChanged(m_connectedPath);
+        Q_EMIT currentConnectedAddressChanged(m_connectedAddress);
     }
 
     const NetworkManager::ConnectionSettings::ConnectionType type = (NetworkManager::ConnectionSettings::ConnectionType) sourceModel()->data(index, NetworkModel::TypeRole).toUInt();

@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import QtQuick 2.7
 import org.kde.kirigami 2.15 as Kirigami
@@ -23,42 +13,38 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.15
 
-Popup {
+Kirigami.JArrowPopup {
     id: popup
 
     property var securityModel
     property int selectIndex: 2
 
-    height: listView.height
-    width: 240 * appScale
+    height: 45 * appScaleSize * 4 + topPadding + bottomPadding
+    width: 240 * appScaleSize
+    leftPadding:0
+    rightPadding:0
+    //topPadding:0
+    //bottomPadding:0
 
-    padding: 0
+    focus: true
+
+    blurBackground.arrowX: width * 0.75
+    blurBackground.arrowWidth: 16 * appScaleSize
+    blurBackground.arrowHeight: 11 * appScaleSize
+    blurBackground.arrowPos: Kirigami.JRoundRectangle.ARROW_TOP
     
-    background: Rectangle {
-        color: "transparent"
-    }
 
-    contentItem: Rectangle {
-        anchors.fill: parent
-
-        radius: 10 * appScale
-        layer.enabled: true
-        layer.effect: DropShadow {
-            horizontalOffset: 0
-            radius: 15
-            samples: 25
-            color: "#1A000000"
-            verticalOffset: 0
-            spread: 0
-        }
+    contentItem: Item {
 
         ListView {
             id: listView
 
-            width: parent.width
-            height: childrenRect.height
+            anchors.fill:parent
 
+            clip: true
+            interactive: false
             model: securityModel
+            snapMode:ListView.SnapToItem
 
             delegate: SelectItem {
                 anchors {
@@ -66,7 +52,8 @@ Popup {
                     right: parent.right
                 }
 
-                height: 45 * appScale
+                
+                height: 45 * appScaleSize
 
                 titleName: model.displayName
                 imgPath: "qrc:/image/select_blue.png"

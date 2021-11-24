@@ -23,6 +23,7 @@ import org.kde.kcm 1.2 as KCM
 import QtQuick 2.7
 import org.kde.kirigami 2.15 as Kirigami
 import QtQuick.Controls 2.10
+import jingos.display 1.0
 
 Item {
     id: detail_root
@@ -30,6 +31,7 @@ Item {
     property var currentModel
     property var currentName
     property var connectionPath
+    property var devicePath
 
     anchors.fill: parent
 
@@ -37,95 +39,85 @@ Item {
         id: title
 
         anchors {
-            top: parent.top
             left: parent.left
+            leftMargin: 20 * appScaleSize
             right: parent.right
-            topMargin: 48 * appScale
-            leftMargin: 14 * appScale
-            rightMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
+            top: parent.top
+            topMargin: JDisplay.statusBarHeight
         }
+        height: 62 * appScaleSize
 
-        width: parent.width
-        height: 22 * appScale
+        Item {
+            width: parent.width
+            height: icon_back.height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 6 * appScaleSize
 
-        Image {
-            id: icon_back
+            Kirigami.JIconButton {
+                id: icon_back
+                width: (22 + 8) * appScaleSize
+                height: (22 + 8) * appScaleSize
 
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-            }
-
-            width: 22 * appScale
-            height: 22 * appScale
-
-            source: "../image/icon_back.png"
-
-            MouseArea {
-                anchors.fill: parent
-
+                source: isDarkTheme ? Qt.resolvedUrl("../image/icon_back_dark.png") : Qt.resolvedUrl("../image/icon_back.png")
                 onClicked: {
                     popView()
                 }
             }
-        }
-
-        Text {
-            anchors.left: icon_back.right
-            anchors.leftMargin: 10 * appScale
-            anchors.verticalCenter: parent.verticalCenter
-
-            width: parent.width / 2
-
-            font.bold: true
-            font.pixelSize: 20
-            text: currentName
-            elide: Text.ElideRight
-            horizontalAlignment: Text.AlignLeft
-        }
-
-        Kirigami.JIconButton {
-            id: img_confirm
-
-            anchors {
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-            }
-
-            width: 53 * appScale + 10
-            height: 21 * appScale + 10
-
-            visible: !(currentModel.ConnectionState == 1
-                       || currentModel.ConnectionState == 2)
-            enabled: detailItem.visible == true | editConfig.addEnable
 
             Text {
-                id: stateText
+                anchors.left: icon_back.right
+                anchors.leftMargin: 10 * appScaleSize
+                anchors.verticalCenter: parent.verticalCenter
 
-                anchors.centerIn: parent
+                width: parent.width / 2
 
-                text: editConfig.visible ? i18n("Done") : i18n("Edit")
-                color: detailItem.visible == true | editConfig.addEnable ? "#FF3C4BE8" : "#2E000000"
-                font.pixelSize: 17
+                font.bold: true
+                font.pixelSize: 20 * appFontSize
+                text: currentName
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignLeft
+                color: majorForeground
             }
 
-            onClicked: {
-                if (stateText.text == i18n("Done")) {
-                    editConfig.updateVPNConfig()
-                    currentName = editConfig.desText
+            Kirigami.JButton {
+                id: img_confirm
 
-                    typeText.text = editConfig.currentType
-                    gateWayText.text = editConfig.gateWayText
-                    userNameText.text = editConfig.userNameText
-                    editConfig.visible = false
-                    detailItem.visible = true
-                } else if (stateText.text == i18n("Edit")) {
-                    editConfig.initParams()
-                    editConfig.visible = true
-                    detailItem.visible = false
+                anchors {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                }
+
+                visible: !(currentModel.ConnectionState == 1
+                           || currentModel.ConnectionState == 2)
+                enabled: detailItem.visible == true || editConfig.addEnable
+
+                backgroundColor:"transparent"
+                fontColor: detailItem.visible == true || editConfig.addEnable ? Kirigami.JTheme.highlightColor : Kirigami.JTheme.disableForeground
+                font.pixelSize: 17 * appFontSize
+                text: editConfig.visible ? i18n("Done") : i18n("Edit")
+
+                onClicked: {
+                    if (img_confirm.text == i18n("Done")) {
+                        editConfig.updateVPNConfig()
+                        currentName = editConfig.desText
+
+                        typeText.text = editConfig.currentType
+                        gateWayText.text = editConfig.gateWayText
+                        userNameText.text = editConfig.userNameText
+                        m_gateWayText = editConfig.gateWayText
+                        editConfig.visible = false
+                        detailItem.visible = true
+                    } else if (img_confirm.text == i18n("Edit")) {
+                        kcm.onDetailClicked(connectionPath,devicePath)
+                        editConfig.initParams()
+                        editConfig.visible = true
+                        detailItem.visible = false
+                    }
                 }
             }
         }
+
     }
 
     Item {
@@ -144,15 +136,15 @@ Item {
             anchors {
                 left: parent.left
                 top: parent.top
-                leftMargin: 20 * appScale
-                topMargin: 18 * appScale
+                leftMargin: 20 * appScaleSize
+                topMargin: 11 * appScaleSize
             }
 
-            width: parent.width - 40 * appScale
+            width: parent.width - 40 * appScaleSize
             height: column.height
 
-            radius: 10 * appScale
-            color: "white"
+            radius: 10 * appScaleSize
+            color: cardBackground
 
             Column {
                 id: column
@@ -163,7 +155,7 @@ Item {
                 }
 
                 width: content.width
-                height: 45 * appScale * 3 + 1
+                height: childrenRect.height + 1
 
                 Rectangle {
                     anchors {
@@ -171,20 +163,20 @@ Item {
                     }
 
                     width: column.width
-                    height: 45 * appScale
+                    height: 45 * appScaleSize
 
-                    color: "white"
-                    radius: 10 * appScale
+                    color: cardBackground
+                    radius: 10 * appScaleSize
 
                     Text {
                         anchors {
                             left: parent.left
-                            leftMargin: 20 * appScale
+                            leftMargin: 20 * appScaleSize
                             verticalCenter: parent.verticalCenter
                         }
 
-                        font.pixelSize: 14
-                        color: "black"
+                        font.pixelSize: 14 * appFontSize
+                        color: majorForeground
                         text: i18n("Type")
                     }
 
@@ -193,12 +185,12 @@ Item {
 
                         anchors {
                             right: parent.right
-                            rightMargin: 20 * appScale
+                            rightMargin: 20 * appScaleSize
                             verticalCenter: parent.verticalCenter
                         }
 
-                        font.pixelSize: 14
-                        color: "#99000000"
+                        font.pixelSize: 14 * appFontSize
+                        color: majorForeground
                         text: kcm.getConnectionType()
                     }
                 }
@@ -207,37 +199,37 @@ Item {
                     anchors {
                         left: parent.left
                         right: parent.right
-                        leftMargin: 20 * appScale
-                        rightMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
+                        rightMargin: 20 * appScaleSize
                     }
 
                     width: column.width
                     height: 1
 
-                    color: "#FFE5E5EA"
+                    color: dividerForeground
                 }
 
                 Rectangle {
                     anchors {
                         left: parent.left
-                        topMargin: 45 * appScale
+                        topMargin: 45 * appScaleSize
                     }
 
                     width: column.width
-                    height: 45 * appScale
+                    height: 45 * appScaleSize
 
-                    color: "white"
-                    radius: 15 * appScale
+                    color: cardBackground
+                    radius: 15 * appScaleSize
 
                     Text {
                         anchors {
                             left: parent.left
-                            leftMargin: 20 * appScale
+                            leftMargin: 20 * appScaleSize
                             verticalCenter: parent.verticalCenter
                         }
 
-                        font.pixelSize: 14
-                        color: "black"
+                        font.pixelSize: 14 * appFontSize
+                        color: majorForeground
                         text: i18n("Gateway")
                     }
 
@@ -247,11 +239,11 @@ Item {
                         anchors {
                             right: parent.right
                             verticalCenter: parent.verticalCenter
-                            rightMargin: 20 * appScale
+                            rightMargin: 20 * appScaleSize
                         }
 
-                        font.pixelSize: 14
-                        color: "#99000000"
+                        font.pixelSize: 14 * appFontSize
+                        color: majorForeground
                         text: kcm.getServerName()
                     }
                 }
@@ -260,15 +252,15 @@ Item {
                     anchors {
                         left: parent.left
                         right: parent.right
-                        leftMargin: 20 * appScale
-                        rightMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
+                        rightMargin: 20 * appScaleSize
                     }
 
                     width: column.width
                     height: 1
 
                     visible: userNameRect.visible
-                    color: "#FFE5E5EA"
+                    color: dividerForeground
                 }
 
                 Rectangle {
@@ -278,21 +270,23 @@ Item {
                         left: parent.left
                     }
 
-                    width: column.width
-                    height: 45 * appScale
+                    visible: kcm.getConnectionType() != "OpenVPN"
 
-                    color: "white"
-                    radius: 10 * appScale
+                    width: column.width
+                    height: 45 * appScaleSize
+
+                    color: cardBackground
+                    radius: 10 * appScaleSize
 
                     Text {
                         anchors {
                             left: parent.left
-                            leftMargin: 20 * appScale
+                            leftMargin: 20 * appScaleSize
                             verticalCenter: parent.verticalCenter
                         }
 
-                        font.pixelSize: 14
-                        color: "black"
+                        font.pixelSize: 14 * appFontSize
+                        color: majorForeground
                         text: i18n("Username")
                     }
 
@@ -302,11 +296,11 @@ Item {
                         anchors {
                             right: parent.right
                             verticalCenter: parent.verticalCenter
-                            rightMargin: 20 * appScale
+                            rightMargin: 20 * appScaleSize
                         }
 
-                        font.pixelSize: 14
-                        color: "#99000000"
+                        font.pixelSize: 14 * appFontSize
+                        color: majorForeground
                         text: kcm.getUserName()
                     }
                 }
@@ -319,16 +313,16 @@ Item {
             anchors {
                 left: content.left
                 top: content.bottom
-                leftMargin: 20 * appScale
-                topMargin: 9 * appScale
+                leftMargin: 20 * appScaleSize
+                topMargin: 9 * appScaleSize
             }
 
             text: i18n("To configure the settings for ”%1”,use the ”%1” application.",
                        currentName.length > 16 ? currentName.substr(
                                                      0,
                                                      16) + "..." : currentName)
-            font.pixelSize: 12
-            color: "#4D000000"
+            font.pixelSize: 12 * appFontSize
+            color: minorForeground
         }
 
         Rectangle {
@@ -336,20 +330,20 @@ Item {
                 left: content.left
                 right: content.right
                 top: tipText.bottom
-                topMargin: 24 * appScale
+                topMargin: 24 * appScaleSize
             }
 
-            height: 45 * appScale
+            height: 45 * appScaleSize
 
-            color: "white"
-            radius: 10 * appScale
+            color: cardBackground
+            radius: 10 * appScaleSize
 
             Text {
                 anchors.centerIn: parent
 
                 text: i18n("Delete VPN")
-                color: "#FF3C4BE8"
-                font.pixelSize: 14
+                color: highlightColor
+                font.pixelSize: 14 * appFontSize
 
                 MouseArea {
                     anchors.fill: parent
@@ -368,13 +362,14 @@ Item {
         anchors {
             left: parent.left
             top: title.bottom
-            leftMargin: 20 * appScale
-            topMargin: 18 * appScale
+            leftMargin: 20 * appScaleSize
+            topMargin: 18 * appScaleSize
         }
 
-        width: parent.width - 40 * appScale
+        width: parent.width - 40 * appScaleSize
 
         visible: false
+        isSelectable: false
     }
 
     Kirigami.JDialog {

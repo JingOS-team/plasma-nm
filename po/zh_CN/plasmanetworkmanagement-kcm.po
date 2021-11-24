@@ -1,0 +1,148 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Guo Yunhe <guoyunhebrave@gmail.com>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdeorg\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-03-10 03:49+0100\n"
+"PO-Revision-Date: 2021-01-28 05:06\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Simplified\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: kdeorg\n"
+"X-Crowdin-Project-ID: 269464\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /kf5-trunk/messages/plasma-nm/plasmanetworkmanagement-kcm."
+"pot\n"
+"X-Crowdin-File-ID: 4176\n"
+
+#: kcm.cpp:362
+#, kde-format
+msgid "my_shared_connection"
+msgstr "my_shared_connection"
+
+#: kcm.cpp:424
+#, kde-format
+msgid "Export VPN Connection"
+msgstr "导出 VPN 连接"
+
+#: kcm.cpp:444
+#, kde-format
+msgid "Do you want to save changes made to the connection '%1'?"
+msgstr "您想要保存对连接“%1”的更改吗？"
+
+#: kcm.cpp:444
+#, kde-format
+msgctxt "@title:window"
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: kcm.cpp:533
+#, kde-format
+msgid "Import VPN Connection"
+msgstr "导入 VPN 连接"
+
+#: qml/AddConnectionDialog.qml:31
+msgctxt "@title:window"
+msgid "Choose a Connection Type"
+msgstr "选择一个连接类型"
+
+#: qml/AddConnectionDialog.qml:174
+msgid "Create"
+msgstr "创建"
+
+#: qml/AddConnectionDialog.qml:184 qml/ConfigurationDialog.qml:130
+msgid "Cancel"
+msgstr "取消"
+
+#: qml/ConfigurationDialog.qml:30
+msgctxt "@title:window"
+msgid "Configuration"
+msgstr "配置"
+
+#: qml/ConfigurationDialog.qml:55
+msgid "General"
+msgstr "常规"
+
+#: qml/ConfigurationDialog.qml:60
+msgid "Ask for PIN on modem detection"
+msgstr "在调制解调器检测时询问 PIN"
+
+#: qml/ConfigurationDialog.qml:67
+msgid "Show virtual connections"
+msgstr "显示虚拟连接"
+
+#: qml/ConfigurationDialog.qml:75
+msgid "Hotspot"
+msgstr "热点"
+
+#: qml/ConfigurationDialog.qml:81
+msgid "Hotspot name:"
+msgstr "热点名称："
+
+#: qml/ConfigurationDialog.qml:91
+msgid "Hotspot password:"
+msgstr "热点密码："
+
+#: qml/ConfigurationDialog.qml:121
+msgid "Ok"
+msgstr "确定"
+
+#: qml/ConnectionItem.qml:112
+msgid "Connect"
+msgstr "连接"
+
+#: qml/ConnectionItem.qml:112
+msgid "Disconnect"
+msgstr "断开"
+
+#: qml/ConnectionItem.qml:125
+msgid "Delete"
+msgstr "删除"
+
+#: qml/ConnectionItem.qml:135
+msgid "Export"
+msgstr "导出"
+
+#: qml/ConnectionItem.qml:160
+msgid "Connected"
+msgstr "已连接"
+
+#: qml/ConnectionItem.qml:162
+msgid "Connecting"
+msgstr "正在连接"
+
+#: qml/main.qml:75
+msgid "Search..."
+msgstr "搜索..."
+
+#: qml/main.qml:154
+msgid "Add new connection"
+msgstr "添加连接"
+
+#: qml/main.qml:168
+msgid "Remove selected connection"
+msgstr "删除选中的连接"
+
+#: qml/main.qml:184
+msgid "Export selected connection"
+msgstr "导出选中的连接"
+
+#: qml/main.qml:208
+msgid "Configuration"
+msgstr "配置"
+
+#: qml/main.qml:236
+msgctxt "@title:window"
+msgid "Remove Connection"
+msgstr "删除连接"
+
+#: qml/main.qml:237
+msgid "Do you want to remove the connection '%1'?"
+msgstr "您想要删除连接“%1”吗？"

@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-msgid "VPN Status"
-msgstr "VPN状态"
+msgid "Status"
+msgstr "状态"
 
 msgid "To connect using ”%1”, use the “%1” application."
 msgstr "若要使用“%1”进行连接，请使用“%1”应用程序。"
@@ -98,11 +98,26 @@ msgstr "取消"
 msgid "Delete"
 msgstr "删除"
 
-msgid "Not connected"
+msgid "Not Connected"
 msgstr "未连接"
 
 msgid "Connected"
 msgstr "已连接"
 
+msgid "Connecting"
+msgstr "正在连接"
+
 msgid "Edit"
 msgstr "编辑"
+
+msgid "On"
+msgstr "开"
+
+msgid "Unable to turn on VPN"
+msgstr "无法打开VPN"
+
+msgid "Please make sure the data network is turned on"
+msgstr "请确保数据网络已开启"
+
+msgid "OK"
+msgstr "好"

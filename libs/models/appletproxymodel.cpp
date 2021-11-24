@@ -62,17 +62,21 @@ bool AppletProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sourc
         return false;
     }
     
-    if (itemType != NetworkModelItem::AvailableConnection && itemType != NetworkModelItem::AvailableAccessPoint) {
+
+    if (itemType != NetworkModelItem::AvailableAccessPoint) {
         QString connectionPath = sourceModel()->data(index, NetworkModel::ConnectionPathRole).toString();
         NetworkManager::Connection::Ptr connection = NetworkManager::findConnection(connectionPath);
         if (connection) {
             NetworkManager::ConnectionSettings::Ptr connectionSettings = connection->settings();
             if(connectionSettings->connectionType() == NetworkManager::ConnectionSettings::Wireless){
-                
                 return true;
             }
         }
 
+        return false;
+    }
+
+    if(sourceModel()->data(index, NetworkModel::SignalRole).toInt() < 20){
         return false;
     }
 

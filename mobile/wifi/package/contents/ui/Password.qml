@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import QtQuick 2.7
 import org.kde.kirigami 2.15 as Kirigami
@@ -26,8 +16,8 @@ import QtGraphicalEffects 1.15
 Popup {
     id: popup
 
-    height: 231 * appScale
-    width: 477 * appScale
+    height: 231 * appScaleSize
+    width: 477 * appScaleSize
 
     padding: 0
     parent: forgetWifi
@@ -39,7 +29,7 @@ Popup {
     contentItem: Rectangle {
         anchors.fill: parent
 
-        radius: 15 * appScale
+        radius: 15 * appScaleSize
         layer.enabled: true
         layer.effect: DropShadow {
             horizontalOffset: 0
@@ -57,12 +47,12 @@ Popup {
                 top: parent.top
                 left: parent.left
                 right: parent.right
-                topMargin: 32 * appScale
-                rightMargin: 32 * appScale
-                leftMargin: 32 * appScale
+                topMargin: 32 * appScaleSize
+                rightMargin: 32 * appScaleSize
+                leftMargin: 32 * appScaleSize
             }
 
-            height: 32 * appScale
+            height: 32 * appScaleSize
 
             Kirigami.Label {
                 anchors.left: parent.left
@@ -72,10 +62,10 @@ Popup {
 
             Kirigami.JIconButton {
                 anchors.right: confirm.left
-                anchors.rightMargin: 32 * appScale
+                anchors.rightMargin: 32 * appScaleSize
 
-                width: 34 * appScale
-                height: 34 * appScale
+                width: 34 * appScaleSize
+                height: 34 * appScaleSize
 
                 source: "qrc:/image/pwd_cancel.png"
 
@@ -84,6 +74,8 @@ Popup {
 
                     onClicked: {
                         popup.visible = false
+                        //clear password text
+                        password.clear();
                     }
                 }
             }
@@ -93,8 +85,8 @@ Popup {
 
                 anchors.right: parent.right
 
-                width: 34 * appScale
-                height: 34 * appScale
+                width: 34 * appScaleSize
+                height: 34 * appScaleSize
 
                 enabled: password.length > 8
                 source: "qrc:/image/pwd_confirm.png"
@@ -117,11 +109,11 @@ Popup {
                 left: title.left
                 right: title.right
                 top: title.bottom
-                topMargin: 30 * appScale
+                topMargin: 30 * appScaleSize
             }
 
-            width: 415 * appScale
-            height: 69 * appScale
+            width: 415 * appScaleSize
+            height: 69 * appScaleSize
 
             TextField {
                 id: password
@@ -145,7 +137,7 @@ Popup {
                 height: 1
                 width: parent.width
                 
-                color: "#FFE5E5EA"
+                color: "#FFF0F0F0"
             }
         }
     }

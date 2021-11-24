@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-23 15:32+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgid "Cellular"
+msgstr "蜂窝网络"
+
+msgid "Cellular Data"
+msgstr "蜂窝数据"
+
+msgid "Cellular Data Options"
+msgstr "蜂窝数据选项"
+
+msgid "Turn off cellular data to restrict all data to WLAN,including email,web browsing,and push notifications."
+msgstr "关闭蜂窝数据以将所有数据限制在WLAN中，包括电子邮件、网页浏览和推送通知。"
+
+msgid "Network Selection"
+msgstr "网络选择"
+
+msgid "Automatic"
+msgstr "自动"
+
+msgid "China Mobile"
+msgstr "中国移动"
+
+msgid "CHINA MOBILE"
+msgstr "中国移动"
+
+msgid "China Unicom"
+msgstr "中国联通"
+
+msgid "CHN-UNICOM"
+msgstr "中国联通"
+
+msgid "China Telecom"
+msgstr "中国电信"
+
+msgid "CHN-TELECOM"
+msgstr "中国电信"
+
+msgid "Data Roaming"
+msgstr "数据漫游"
+
+msgid "Data"
+msgstr "数据"
+
+msgid "Data Mode"
+msgstr "数据模式"
+
+msgid "Off"
+msgstr "关"
+
+msgid "5G On"
+msgstr "5G开启"
+
+msgid "5G Auto"
+msgstr "5G自动"
+
+msgid "Allow More Data On 5G provides higher-quality video when connected to 5G cellular networks. \n\nStandard allows automatic updates and background tasks on cellular,but limits video quality. \n\nLow Data Mode helps reduce WLAN and cellular data usage by pausing automatic updates and background tasks."
+msgstr "当连接到 5G 蜂窝网络时，允许更多 5G 数据提供更高质量的视频。 \n\n标准允许蜂窝网络上的自动更新和后台任务，但会限制视频质量。 \n\n低数据模式通过暂停自动更新和后台任务来帮助减少 WLAN 和蜂窝数据使用。"
+
+msgid "5G On uses 5G whenever it is available,even when it may reduce battery life. \n\n5G Auto uses 5G only when it will not significantly reduce battery life"
+msgstr "5G On 会在 5G 可用时使用，即使它可能会缩短电池寿命。 \n\n5G Auto 仅在不会显着降低电池寿命的情况下使用 5G"
+
+msgid "Allow More Data On 5G"
+msgstr "允许更多 5G 数据"
+
+msgid "Standard"
+msgstr "标准"
+
+msgid "Low Data Mode"
+msgstr "低数据模式"
+
+msgid "No SIM"
+msgstr "无SIM卡"
+

@@ -1,21 +1,11 @@
 /*
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2 or
- *   (at your option) any later version.
+ * Authors:
+ * Liu Bangguo <liubangguo@jingos.com>
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 import QtQuick.Layouts 1.2
 import QtQuick 2.7
@@ -25,25 +15,33 @@ import org.kde.kirigami 2.10 as Kirigami
 Item {
     id: root
 
-    property alias inputName: textFiled.text
+    property alias inputName: textField.text
     property bool showBottomLine: true
     property string hintText: ""
     property bool ipValid: true
+    property bool hanValid: true
     property bool isTitleNameShow: false
     property var titleName: ""
     property bool inputFocus: false
     property var inputEchoMode: TextInput.Normal
     property bool clearEnable: false
+    property bool isReadOnly: false
+    property int maxLength: 64//max default value
 
     signal enteredClick
     signal textChanged(var txt)
 
     width: parent.width
-    height: 45 * appScale
+    height: 45 * appScaleSize
 
     RegExpValidator {
         id: ipValidator
         regExp: /^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$/
+    }
+
+    RegExpValidator {
+        id:  normalValidator
+        regExp: /^[\u4e00-\u9fa5 -~]+$/ 
     }
 
     Text {
@@ -51,38 +49,77 @@ Item {
 
         anchors {
             left: parent.left
-            leftMargin: 20 * appScale
+            leftMargin: 20 * appScaleSize
             verticalCenter: parent.verticalCenter
         }
 
-        width: 89 * appScale
+        width: 89 * appScaleSize
 
+        color: majorForeground
         text: titleName
-        font.pixelSize: 14
+        font.pixelSize: 14 * appFontSize
         visible: isTitleNameShow
     }
 
     TextField {
-        id: textFiled
+        id: textField
 
         anchors {
             left: isTitleNameShow ? label.right : parent.left
-            leftMargin: isTitleNameShow ? 0 : 20 * appScale
+            leftMargin: isTitleNameShow ? 0 : 20 * appScaleSize
             right: clearEnable ? img_pwd.left : parent.right
-            rightMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
             verticalCenter: parent.verticalCenter
         }
         
+        focus:inputFocus
+        leftPadding:0
         placeholderText: hintText
         text: inputName
         wrapMode: TextInput.WordWrap
         echoMode: inputEchoMode
         passwordMaskDelay: 500
-        validator: ipValid ? ipValidator : ""
-        font.pixelSize: 14
+        maximumLength: maxLength
+        validator: ipValid ? ipValidator : hanValid ? "" : normalValidator
+        font.pixelSize: 14 * appFontSize
+        readOnly: isReadOnly
+        activeFocusOnPress:!isReadOnly
+        passwordCharacter:  String.fromCharCode(0x2022, 16)
 
         background: Rectangle {
             color: "transparent"
+        }
+
+        cursorDelegate: Rectangle {
+            id: cursorBg
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            width: units.devicePixelRatio * 2
+            height: parent.height / 2
+
+            color: "#FF3C4BE8"
+
+            Timer {
+                id: timer
+
+                interval: 700
+                repeat: true
+                running: textField.focus
+
+                onTriggered: {
+                    if (timer.running) {
+                        cursorBg.visible = !cursorBg.visible
+                    } else {
+                        cursorBg.visible = false
+                    }
+                }
+            }
+
+            Connections {
+                target: textField
+                onFocusChanged: cursorBg.visible = focus
+            }
         }
 
         onAccepted: {
@@ -90,7 +127,16 @@ Item {
         }
 
         onTextChanged:{
-            root.textChanged(textFiled.text)
+            root.textChanged(textField.text)
+        }
+
+        onReadOnlyChanged:{
+            if(readOnly){
+                textField.focus = false   
+            }else{
+                textField.focus = false     
+                textField.forceActiveFocus()
+            }
         }
     }
 
@@ -99,23 +145,23 @@ Item {
 
         anchors {
             right:img_clear.left
-            rightMargin: 8 * appScale
+            rightMargin: 8 * appScaleSize
             verticalCenter:parent.verticalCenter
         }
         
-        width: 22
-        height: 22
+        width: 22 * appScaleSize
+        height: 22 * appScaleSize
 
         visible: clearEnable  
-        source: textFiled.echoMode == TextInput.Password ? "qrc:/image/pwd_hidden.png" : "qrc:/image/pwd_visible.png"
+        source: textField.echoMode == TextInput.Password ? "qrc:/image/pwd_hidden.png" : "qrc:/image/pwd_visible.png"
         MouseArea{
             
             anchors.fill: parent
             onClicked: {
-                if(textFiled.echoMode == TextInput.Password){
-                    textFiled.echoMode = TextInput.Normal
+                if(textField.echoMode == TextInput.Password){
+                    textField.echoMode = TextInput.Normal
                 }else{
-                    textFiled.echoMode = TextInput.Password
+                    textField.echoMode = TextInput.Password
                 }
             }
             
@@ -128,20 +174,20 @@ Item {
 
         anchors {
             right:parent.right
-            rightMargin: 20 * appScale
+            rightMargin: 20 * appScaleSize
             verticalCenter:parent.verticalCenter
         }
         
-        width: 22
-        height: 22
+        width: 22 * appScaleSize
+        height: 22 * appScaleSize
         source: "qrc:/image/txt_close.png"
 
-        visible: clearEnable && textFiled.text.length > 0
+        visible: clearEnable && textField.text.length > 0
         MouseArea{
             
             anchors.fill: parent
             onClicked: {
-                textFiled.text = ""
+                textField.text = ""
             }
         }
     }
@@ -152,16 +198,16 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            leftMargin: 20 * appScale
-            rightMargin: 20 * appScale
+            leftMargin: 20 * appScaleSize
+            rightMargin: 20 * appScaleSize
             bottom: parent.bottom
         }
 
         height: 1
-        color: "#FFE5E5EA"
+        color: dividerForeground
     }
     
     Component.onCompleted: {
-        textFiled.forceActiveFocus()
+        textField.forceActiveFocus()
     }
 }

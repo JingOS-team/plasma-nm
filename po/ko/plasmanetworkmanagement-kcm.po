@@ -1,0 +1,143 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Shinjo Park <kde@peremen.name>, 2017, 2019, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-03-10 03:49+0100\n"
+"PO-Revision-Date: 2020-01-27 00:02+0100\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 19.04.3\n"
+
+#: kcm.cpp:362
+#, kde-format
+msgid "my_shared_connection"
+msgstr "my_shared_connection"
+
+#: kcm.cpp:424
+#, kde-format
+msgid "Export VPN Connection"
+msgstr "VPN 연결 내보내기"
+
+#: kcm.cpp:444
+#, kde-format
+msgid "Do you want to save changes made to the connection '%1'?"
+msgstr "연결 '%1'의 변경 사항을 저장하시겠습니까?"
+
+#: kcm.cpp:444
+#, kde-format
+msgctxt "@title:window"
+msgid "Save Changes"
+msgstr "변경 사항 저장"
+
+#: kcm.cpp:533
+#, kde-format
+msgid "Import VPN Connection"
+msgstr "VPN 연결 가져오기"
+
+#: qml/AddConnectionDialog.qml:31
+msgctxt "@title:window"
+msgid "Choose a Connection Type"
+msgstr "연결 종류 선택"
+
+#: qml/AddConnectionDialog.qml:174
+msgid "Create"
+msgstr "만들기"
+
+#: qml/AddConnectionDialog.qml:184 qml/ConfigurationDialog.qml:130
+msgid "Cancel"
+msgstr "취소"
+
+#: qml/ConfigurationDialog.qml:30
+msgctxt "@title:window"
+msgid "Configuration"
+msgstr "설정"
+
+#: qml/ConfigurationDialog.qml:55
+msgid "General"
+msgstr "일반"
+
+#: qml/ConfigurationDialog.qml:60
+msgid "Ask for PIN on modem detection"
+msgstr "모뎀을 감지했을 때 PIN 묻기"
+
+#: qml/ConfigurationDialog.qml:67
+msgid "Show virtual connections"
+msgstr "가상 연결 표시"
+
+#: qml/ConfigurationDialog.qml:75
+msgid "Hotspot"
+msgstr "핫스팟"
+
+#: qml/ConfigurationDialog.qml:81
+msgid "Hotspot name:"
+msgstr "핫스팟 이름:"
+
+#: qml/ConfigurationDialog.qml:91
+msgid "Hotspot password:"
+msgstr "핫스팟 암호:"
+
+#: qml/ConfigurationDialog.qml:121
+msgid "Ok"
+msgstr "확인"
+
+#: qml/ConnectionItem.qml:112
+msgid "Connect"
+msgstr "연결"
+
+#: qml/ConnectionItem.qml:112
+msgid "Disconnect"
+msgstr "연결 해제"
+
+#: qml/ConnectionItem.qml:125
+msgid "Delete"
+msgstr "삭제"
+
+#: qml/ConnectionItem.qml:135
+msgid "Export"
+msgstr "내보내기"
+
+#: qml/ConnectionItem.qml:160
+msgid "Connected"
+msgstr "연결됨"
+
+#: qml/ConnectionItem.qml:162
+msgid "Connecting"
+msgstr "연결 중"
+
+#: qml/main.qml:75
+msgid "Search..."
+msgstr "찾기..."
+
+#: qml/main.qml:154
+msgid "Add new connection"
+msgstr "새 연결 추가"
+
+#: qml/main.qml:168
+msgid "Remove selected connection"
+msgstr "선택한 연결 삭제"
+
+#: qml/main.qml:184
+msgid "Export selected connection"
+msgstr "선택한 연결 내보내기"
+
+#: qml/main.qml:208
+msgid "Configuration"
+msgstr "설정"
+
+#: qml/main.qml:236
+msgctxt "@title:window"
+msgid "Remove Connection"
+msgstr "연결 삭제"
+
+#: qml/main.qml:237
+msgid "Do you want to remove the connection '%1'?"
+msgstr "연결 '%1'을(를) 삭제하시겠습니까?"

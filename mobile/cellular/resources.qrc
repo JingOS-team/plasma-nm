@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+	 <file alias="DataModePop.qml">package/contents/ui/DataModePop.qml</file>
+        <file alias="DataOptions.qml">package/contents/ui/DataOptions.qml</file>
+        <file alias="DataPop.qml">package/contents/ui/DataPop.qml</file>
+        <file alias="Home.qml">package/contents/ui/Home.qml</file>
+        <file alias="main.qml">package/contents/ui/main.qml</file>
+        <file alias="SelectionPop.qml">package/contents/ui/SelectionPop.qml</file>
+        
+    </qresource>
+    <qresource prefix="/image">
+       <file alias="no_sim.png">package/contents/image/no_sim.png</file>
+	<file alias="icon_back.png">package/contents/image/icon_back.png</file>
+	<file alias="icon_confirm.png">package/contents/image/icon_confirm.png</file>
+	<file alias="icon_right.png">package/contents/image/icon_right.png</file>
+	<file alias="loading.png">package/contents/image/loading.png</file>
+	<file alias="icon_back_dark.png">package/contents/image/icon_back_dark.png</file>
+    </qresource>
+</RCC>

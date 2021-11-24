@@ -1,0 +1,190 @@
+# Translation of libknetworkmanager to Croatian
+#
+# Zarko Pintar <zarko.pintar@gmail.com>, 2009.
+# DoDo <DoDoEntertainment@gmail.com>, 2009.
+# Marko Dimjasevic <marko@dimjasevic.net>, 2010.
+# Andrej Dundovic <andrej@dundovic.com.hr>, 2010.
+# Marko Dimjašević <marko@dimjasevic.net>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-01-23 02:49+0100\n"
+"PO-Revision-Date: 2011-06-27 14:57+0200\n"
+"Last-Translator: Marko Dimjašević <marko@dimjasevic.net>\n"
+"Language-Team: Croatian <kde-croatia-list@lists.sourceforge.net>\n"
+"Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Environment: kde\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+
+#: contents/ui/ConnectionItem.qml:61
+#, fuzzy, kde-format
+msgid "Connect"
+msgstr "Spojen"
+
+#: contents/ui/ConnectionItem.qml:61
+#, fuzzy, kde-format
+msgid "Disconnect"
+msgstr "Koristi TCP vezu"
+
+#: contents/ui/ConnectionItem.qml:97
+#, kde-format
+msgid "Show network's QR code"
+msgstr ""
+
+#: contents/ui/ConnectionItem.qml:108
+#, fuzzy, kde-format
+#| msgid "Confirm Delete"
+msgid "Configure..."
+msgstr "Potvrda brisanja"
+
+#: contents/ui/ConnectionItem.qml:132
+#, kde-format
+msgid "Speed"
+msgstr "Brzina"
+
+#: contents/ui/ConnectionItem.qml:137
+#, fuzzy, kde-format
+msgid "Details"
+msgstr "Detalji"
+
+#: contents/ui/ConnectionItem.qml:275
+#, fuzzy, kde-format
+msgid "Connected, ⬇ %1/s, ⬆ %2/s"
+msgstr "Spojen na %1"
+
+#: contents/ui/ConnectionItem.qml:279
+#, fuzzy, kde-format
+msgid "Connected"
+msgstr "Spojen"
+
+#: contents/ui/DetailsText.qml:44
+#, kde-format
+msgid "Copy"
+msgstr ""
+
+#: contents/ui/main.qml:33
+#, fuzzy, kde-format
+#| msgid "Net&work:"
+msgid "Networks"
+msgstr "Mr&eža:"
+
+#: contents/ui/main.qml:57
+#, fuzzy, kde-format
+#| msgid "Configure notifications..."
+msgid "&Configure Network Connections..."
+msgstr "Konfiguriraj obavijesti…"
+
+#: contents/ui/main.qml:60
+#, kde-format
+msgid "Open Network Login Page..."
+msgstr ""
+
+#: contents/ui/PasswordField.qml:30
+#, fuzzy, kde-format
+#| msgid "Password"
+msgid "Password..."
+msgstr "Zaporka"
+
+#: contents/ui/PopupDialog.qml:74
+#, fuzzy, kde-format
+msgid "Airplane mode is enabled"
+msgstr "Hardver za bežičnu vezu omogućen"
+
+#: contents/ui/PopupDialog.qml:78
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@info:status Notification text when a single wireless network disappeared"
+#| msgid "Wireless network %1 disappeared"
+msgid "Wireless and mobile networks are deactivated"
+msgstr "Bežična mreža %1 je nestala"
+
+#: contents/ui/PopupDialog.qml:80
+#, fuzzy, kde-format
+msgid "Wireless is deactivated"
+msgstr "Hardver za bežičnu vezu omogućen"
+
+#: contents/ui/PopupDialog.qml:83
+#, fuzzy, kde-format
+#| msgctxt "@item:inlistbox"
+#| msgid "Wired network interfaces"
+msgid "Mobile network is deactivated"
+msgstr "Žičana mrežna sučelja"
+
+#: contents/ui/PopupDialog.qml:85
+#, fuzzy, kde-format
+msgid "No available connections"
+msgstr "&Sistemska veza"
+
+#: contents/ui/Toolbar.qml:80
+#, kde-format
+msgid "Enable Wi-Fi"
+msgstr ""
+
+#: contents/ui/Toolbar.qml:96
+#, fuzzy, kde-format
+#| msgid "User name on this network"
+msgid "Enable mobile network"
+msgstr "Korisničko ime na ovoj mreži"
+
+#: contents/ui/Toolbar.qml:131
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Disable airplane mode<nl/><nl/>This will enable Wi-Fi and Bluetooth"
+msgstr ""
+
+#: contents/ui/Toolbar.qml:132
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Enable airplane mode<nl/><nl/>This will disable Wi-Fi and Bluetooth"
+msgstr ""
+
+#: contents/ui/Toolbar.qml:142
+#, kde-format
+msgid "Hotspot"
+msgstr ""
+
+#: contents/ui/Toolbar.qml:163 contents/ui/Toolbar.qml:174
+#, fuzzy, kde-format
+#| msgid "Disabled"
+msgid "Disable Hotspot"
+msgstr "Onemogućeno"
+
+#: contents/ui/Toolbar.qml:168 contents/ui/Toolbar.qml:174
+#, kde-format
+msgid "Create Hotspot"
+msgstr ""
+
+#: contents/ui/Toolbar.qml:185
+#, kde-format
+msgctxt "text field placeholder text"
+msgid "Search..."
+msgstr ""
+
+#: contents/ui/Toolbar.qml:200
+#, fuzzy, kde-format
+#| msgid "Configure notifications..."
+msgid "Configure network connections..."
+msgstr "Konfiguriraj obavijesti…"
+
+#: contents/ui/TrafficMonitor.qml:50 contents/ui/TrafficMonitor.qml:114
+#, kde-format
+msgid "/s"
+msgstr ""
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Upload"
+msgstr ""
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Download"
+msgstr ""

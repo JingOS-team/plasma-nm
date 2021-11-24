@@ -1,0 +1,175 @@
+# translation of libknetworkmanager.po to Estonian
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Marek Laane <bald@smail.ee>, 2009, 2010, 2011, 2012, 2013, 2016, 2019, 2020.
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: libknetworkmanager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-01-23 02:49+0100\n"
+"PO-Revision-Date: 2020-09-28 13:41+0200\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
+"Language-Team: Estonian <>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 20.08.1\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: contents/ui/ConnectionItem.qml:61
+#, kde-format
+msgid "Connect"
+msgstr "Ühenda"
+
+#: contents/ui/ConnectionItem.qml:61
+#, kde-format
+msgid "Disconnect"
+msgstr "Katkesta ühendus"
+
+#: contents/ui/ConnectionItem.qml:97
+#, kde-format
+msgid "Show network's QR code"
+msgstr "Võrgu QR-koodi näitamine"
+
+#: contents/ui/ConnectionItem.qml:108
+#, kde-format
+msgid "Configure..."
+msgstr "Seadista ..."
+
+#: contents/ui/ConnectionItem.qml:132
+#, kde-format
+msgid "Speed"
+msgstr "Kiirus"
+
+#: contents/ui/ConnectionItem.qml:137
+#, kde-format
+msgid "Details"
+msgstr "Üksikasjad"
+
+#: contents/ui/ConnectionItem.qml:275
+#, kde-format
+msgid "Connected, ⬇ %1/s, ⬆ %2/s"
+msgstr "Ühendatud, ⬇ %1/s, ⬆ %2/s"
+
+#: contents/ui/ConnectionItem.qml:279
+#, kde-format
+msgid "Connected"
+msgstr "Ühendatud"
+
+#: contents/ui/DetailsText.qml:44
+#, kde-format
+msgid "Copy"
+msgstr "Kopeeri"
+
+#: contents/ui/main.qml:33
+#, kde-format
+msgid "Networks"
+msgstr "Võrgud"
+
+#: contents/ui/main.qml:57
+#, kde-format
+msgid "&Configure Network Connections..."
+msgstr "Seadista &võrguühendusi ..."
+
+#: contents/ui/main.qml:60
+#, kde-format
+msgid "Open Network Login Page..."
+msgstr "Ava võrku sisselogimise lehekülg ..."
+
+#: contents/ui/PasswordField.qml:30
+#, kde-format
+msgid "Password..."
+msgstr "Parool ..."
+
+#: contents/ui/PopupDialog.qml:74
+#, kde-format
+msgid "Airplane mode is enabled"
+msgstr "Lennurežiim on sisse lülitatud"
+
+#: contents/ui/PopupDialog.qml:78
+#, kde-format
+msgid "Wireless and mobile networks are deactivated"
+msgstr "Juhtmeta ja mobiilne side on välja lülitatud"
+
+#: contents/ui/PopupDialog.qml:80
+#, kde-format
+msgid "Wireless is deactivated"
+msgstr "Juhtmeta side on välja lülitatud"
+
+#: contents/ui/PopupDialog.qml:83
+#, kde-format
+msgid "Mobile network is deactivated"
+msgstr "Mobiilne side on välja lülitatud"
+
+#: contents/ui/PopupDialog.qml:85
+#, kde-format
+msgid "No available connections"
+msgstr "Ühtegi ühendust pole saadaval"
+
+#: contents/ui/Toolbar.qml:80
+#, kde-format
+msgid "Enable Wi-Fi"
+msgstr "Wi-Fi lubamine"
+
+#: contents/ui/Toolbar.qml:96
+#, kde-format
+msgid "Enable mobile network"
+msgstr "Mobiilandmeside lubamine"
+
+#: contents/ui/Toolbar.qml:131
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Disable airplane mode<nl/><nl/>This will enable Wi-Fi and Bluetooth"
+msgstr ""
+"Lennurežiimi välja lülitamine<nl/><nl/>See lülitab sisse Wi-Fi ja Bluetoothi"
+
+#: contents/ui/Toolbar.qml:132
+#, kde-kuit-format
+msgctxt "@info"
+msgid "Enable airplane mode<nl/><nl/>This will disable Wi-Fi and Bluetooth"
+msgstr ""
+"Lennurežiimi sisse lülitamine<nl/><nl/>See lülitab välja Wi-Fi ja Bluetoothi"
+
+#: contents/ui/Toolbar.qml:142
+#, kde-format
+msgid "Hotspot"
+msgstr "Pääsupunkt"
+
+#: contents/ui/Toolbar.qml:163 contents/ui/Toolbar.qml:174
+#, kde-format
+msgid "Disable Hotspot"
+msgstr "Keela pääsupunkt"
+
+#: contents/ui/Toolbar.qml:168 contents/ui/Toolbar.qml:174
+#, kde-format
+msgid "Create Hotspot"
+msgstr "Loo pääsupunkt"
+
+#: contents/ui/Toolbar.qml:185
+#, kde-format
+msgctxt "text field placeholder text"
+msgid "Search..."
+msgstr "Otsi ..."
+
+#: contents/ui/Toolbar.qml:200
+#, kde-format
+msgid "Configure network connections..."
+msgstr "Seadista võrguühendusi ..."
+
+#: contents/ui/TrafficMonitor.qml:50 contents/ui/TrafficMonitor.qml:114
+#, kde-format
+msgid "/s"
+msgstr "/s"
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Upload"
+msgstr "Üleslaadimine"
+
+#: contents/ui/TrafficMonitor.qml:96
+#, kde-format
+msgid "Download"
+msgstr "Allalaadimine"

@@ -1,0 +1,218 @@
+# Translation for kcm_mobile_wifi.po to Euskara/Basque (eu).
+# Copyright (C) 2019-2020, This file is copyright:
+# This file is distributed under the same license as the plasma-nm package.
+# KDE Euskaratzeko proiektuko arduraduna <xalba@euskalnet.net>.
+#
+# Translators:
+# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nm\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2020-11-28 02:35+0100\n"
+"PO-Revision-Date: 2020-12-21 21:25+0100\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
+"Language-Team: Basque <kde-i18n-eu@kde.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 20.12.0\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Iñigo Salvador Azurmendi"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "xalba@euskalnet.net"
+
+#: package/contents/ui/ConnectDialog.qml:50
+#, kde-format
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Utzi"
+
+#: package/contents/ui/ConnectDialog.qml:55
+#, kde-format
+msgctxt "@action:button"
+msgid "Done"
+msgstr "Eginda"
+
+#: package/contents/ui/ConnectDialog.qml:80
+#, kde-format
+msgid "Invalid input."
+msgstr "Sarrerako baliogabea."
+
+#: package/contents/ui/ConnectionItemDelegate.qml:120
+#, kde-format
+msgid "Connect to"
+msgstr "Konektatu hona:"
+
+#: package/contents/ui/main.qml:99
+#, kde-format
+msgid "Disable Wi-Fi"
+msgstr "Ezgaitu Wi-Fi"
+
+#: package/contents/ui/main.qml:99
+#, kde-format
+msgid "Enable Wi-Fi"
+msgstr "Gaitu Wi-Fi"
+
+#: package/contents/ui/main.qml:107
+#, kde-format
+msgid "Add custom connection"
+msgstr "Gehitu erabiltzaileak finkatutako konexioa"
+
+#: package/contents/ui/main.qml:115
+#, kde-format
+msgid "Saved Connections"
+msgstr "Gordetako konexioak"
+
+#: package/contents/ui/NetworkSettings.qml:27
+#, kde-format
+msgid "Add new Connection"
+msgstr "Gehitu konexioa berria"
+
+#: package/contents/ui/NetworkSettings.qml:47
+#, kde-format
+msgid "Save"
+msgstr "Gorde"
+
+#: package/contents/ui/NetworkSettings.qml:57
+#, kde-format
+msgid "General"
+msgstr "Orokorra"
+
+#: package/contents/ui/NetworkSettings.qml:62
+#, kde-format
+msgid "SSID:"
+msgstr "SSID:"
+
+#: package/contents/ui/NetworkSettings.qml:71
+#, kde-format
+msgid "Hidden Network:"
+msgstr "Ezkutuko sarea:"
+
+#: package/contents/ui/NetworkSettings.qml:77
+#, kde-format
+msgid "Security"
+msgstr "Segurtasuna"
+
+#: package/contents/ui/NetworkSettings.qml:83
+#, kde-format
+msgid "Security type:"
+msgstr "Segurtasun mota:"
+
+#: package/contents/ui/NetworkSettings.qml:92
+#, kde-format
+msgid "None"
+msgstr "Bat ere ez"
+
+#: package/contents/ui/NetworkSettings.qml:93
+#, kde-format
+msgid "WEP Key"
+msgstr "WEP gakoa"
+
+#: package/contents/ui/NetworkSettings.qml:94
+#, kde-format
+msgid "Dynamic WEP"
+msgstr "WEP dinamikoa"
+
+#: package/contents/ui/NetworkSettings.qml:95
+#, kde-format
+msgid "WPA/WPA2 Personal"
+msgstr "WPA/WPA2 pertsonala"
+
+#: package/contents/ui/NetworkSettings.qml:96
+#, kde-format
+msgid "WPA/WPA2 Enterprise"
+msgstr "WPA/WPA2 Enpresakoa"
+
+#: package/contents/ui/NetworkSettings.qml:121
+#, kde-format
+msgid "Password:"
+msgstr "Pasahitza:"
+
+#: package/contents/ui/NetworkSettings.qml:129
+#, kde-format
+msgid "Authentication:"
+msgstr "Autentifikazioa:"
+
+#: package/contents/ui/NetworkSettings.qml:132
+#, kde-format
+msgid "TLS"
+msgstr "TLS"
+
+#: package/contents/ui/NetworkSettings.qml:132
+#, kde-format
+msgid "LEAP"
+msgstr "LEAP"
+
+#: package/contents/ui/NetworkSettings.qml:132
+#, kde-format
+msgid "FAST"
+msgstr "FAST"
+
+#: package/contents/ui/NetworkSettings.qml:133
+#, kde-format
+msgid "Tunneled TLS"
+msgstr "Tunel bidez TLS"
+
+#: package/contents/ui/NetworkSettings.qml:134
+#, kde-format
+msgid "Protected EAP"
+msgstr "Babestutako EAP"
+
+#: package/contents/ui/NetworkSettings.qml:143
+#, kde-format
+msgid "IP settings"
+msgstr "IP ezarpenak"
+
+#: package/contents/ui/NetworkSettings.qml:149
+#, kde-format
+msgid "Automatic"
+msgstr "Automatikoa"
+
+#: package/contents/ui/NetworkSettings.qml:149
+#, kde-format
+msgid "Manual"
+msgstr "Eskuzkoa"
+
+#: package/contents/ui/NetworkSettings.qml:159
+#, kde-format
+msgid "IP Address:"
+msgstr "IP helbidea:"
+
+#: package/contents/ui/NetworkSettings.qml:171
+#, kde-format
+msgid "Gateway:"
+msgstr "Atebidea:"
+
+#: package/contents/ui/NetworkSettings.qml:183
+#, kde-format
+msgid "Network prefix length:"
+msgstr "Sareko aurrizkiaren luzera:"
+
+#: package/contents/ui/NetworkSettings.qml:196
+#, kde-format
+msgid "DNS:"
+msgstr "DNS:"
+
+#: package/contents/ui/PasswordField.qml:27
+#, kde-format
+msgid "Password..."
+msgstr "Pasahitza..."
+
+#: wifisettings.cpp:45
+#, kde-format
+msgid "Wi-Fi networks"
+msgstr "Wi-Fi sareak"
+
+#: wifisettings.cpp:47
+#, kde-format
+msgid "Martin Kacej"
+msgstr "Martin Kacej"

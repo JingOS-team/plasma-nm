@@ -23,18 +23,18 @@ import QtQuick 2.7
 import org.kde.kirigami 2.15 as Kirigami
 import QtQuick.Controls 2.10
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
-
+import jingos.display 1.0
 Item {
     id: home_root
 
-    property bool isVPNConnected: false
+    property bool isCurrentVpnConnected: false
     property bool isLvCompleted: false
     property var isConnectingClick: false
     property var isConnectFaild: false
 
     width: parent.width
     height: parent.height
-
+    
     Connections {
         target: kcm
 
@@ -45,6 +45,15 @@ Item {
 
         onVpnConnectedSuccess: {
         }
+
+        onActivateVpnConnectionFailed:{
+            console.log("onActivateVpnConnectionFailed   currentModel.Name:"+currentModel.Name+"  name:"+name)
+            if(currentModel.Name == name){
+                isConnectFaild = true
+                slince_switch.checked = false 
+                errorDialog.visible = true
+            }
+        }
     }
 
     PlasmaNM.NetworkStatus {
@@ -53,12 +62,12 @@ Item {
 
     function switchVPN(status) {
         if (status) {
-            isVPNConnected = true
+            isCurrentVpnConnected = true
             kcm.activateVPNConnection(currentModel.ConnectionPath,
                                       currentModel.DevicePath,
                                       currentModel.SpecificPath)
         } else {
-            isVPNConnected = false
+            isCurrentVpnConnected = false
             if (!isConnectFaild) {
                 kcm.deactivateVPNConnection(currentModel.ConnectionPath,
                                             currentModel.DevicePath)
@@ -67,26 +76,33 @@ Item {
             }
         }
     }
-
+    
     Item {
         anchors.fill: parent
 
-        Text {
-            id: vpn_title
 
+        Item {
+            id: vpn_title
             anchors {
                 left: parent.left
+                leftMargin: 20 * appScaleSize
+                right: parent.right
+                rightMargin: 20 * appScaleSize
                 top: parent.top
-                leftMargin: 20 * appScale
-                topMargin: 48 * appScale
+                topMargin:  JDisplay.statusBarHeight
             }
 
-            width: parent.width / 3
-            height: 22 * appScale
+            height: 62 * appScaleSize
 
-            text: i18n("VPN")
-            font.pixelSize: 20
-            font.weight: Font.Bold
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 6 * appScaleSize
+
+                color: majorForeground
+                text: i18n("VPN")
+                font.pixelSize: 20 * appFontSize
+                font.weight: Font.Bold
+            }
         }
 
         Rectangle {
@@ -95,15 +111,15 @@ Item {
             anchors {
                 left: parent.left
                 top: vpn_title.bottom
-                leftMargin: 20 * appScale
-                topMargin: 18 * appScale
+                leftMargin: 20 * appScaleSize
+                topMargin: 18 * appScaleSize
             }
 
-            width: parent.width - 40 * appScale
-            height: 45 * appScale
+            width: parent.width - 40 * appScaleSize
+            height: 45 * appScaleSize
 
-            color: "white"
-            radius: 10 * appScale
+            color: cardBackground
+            radius: 10 * appScaleSize
 
             Rectangle {
                 id: vpn_item
@@ -113,7 +129,7 @@ Item {
                 }
 
                 width: parent.width
-                height: parent.height
+                height: 45 * appScaleSize
 
                 color: "transparent"
 
@@ -122,12 +138,25 @@ Item {
 
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    text: i18n("VPN Status")
-                    font.pixelSize: 14
+                    color: majorForeground
+                    text: i18n("Status")
+                    font.pixelSize: 14 * appFontSize
+                }
+
+                Text{
+                    anchors {
+                        right: slince_switch.left
+                        rightMargin: slince_switch.visible ? 10 * appScaleSize : 0
+                        verticalCenter: parent.verticalCenter
+                    }    
+
+                    color: isDarkTheme ? "#8CF7F7F7" : "#993C3C43"
+                    font.pixelSize: 14 * appFontSize
+                    text: isVpnConnected ? i18n("Connected") : isCurrentVpnConnected ? i18n("Connecting") : i18n("Not Connected")
                 }
 
                 Kirigami.JSwitch {
@@ -136,10 +165,16 @@ Item {
                     anchors {
                         verticalCenter: parent.verticalCenter
                         right: parent.right
-                        rightMargin: 17 * appScale
+                        rightMargin: 17 * appScaleSize
                     }
 
-                    checked: isVPNConnected
+                    width:listView.count != 0 ? 46 * appScaleSize : 0
+                    implicitWidth: 43 * appScaleSize
+                    implicitHeight: 26 * appScaleSize
+                    
+                    checked: isCurrentVpnConnected 
+                    visible: listView.count != 0
+                    
                     onCheckedChanged: {
                         if (isLvCompleted) {
                             switchVPN(checked)
@@ -167,8 +202,8 @@ Item {
             anchors {
                 top: vpn_area.bottom
                 left: vpn_area.left
-                topMargin: 8 * appScale
-                leftMargin: 20 * appScale
+                topMargin: 8 * appScaleSize
+                leftMargin: 20 * appScaleSize
             }
 
             visible: listView.currentIndex != -1
@@ -176,8 +211,8 @@ Item {
                        currentModel.Name.length > 16 ? currentModel.Name.substr(
                                                            0,
                                                            16) + "..." : currentModel.Name)
-            color: "#4D000000"
-            font.pixelSize: 12
+            color: minorForeground
+            font.pixelSize: 12 * appFontSize
         }
 
         Rectangle {
@@ -186,28 +221,28 @@ Item {
             anchors {
                 top: tipText.bottom
                 left: parent.left
-                leftMargin: 20 * appScale
-                topMargin: 24 * appScale
+                leftMargin: 20 * appScaleSize
+                topMargin: 24 * appScaleSize
             }
 
-            width: parent.width - 40 * appScale
+            width: parent.width - 40 * appScaleSize
             height: listView.height
 
-            color: "white"
-            radius: 10 * appScale
+            color: cardBackground
+            radius: 10 * appScaleSize
 
             ListView {
                 id: listView
 
                 anchors.top: parent.top
                 width: parent.width
-                height: listView.count < 7 ? listView.count * 60 * appScale
-                                             - 1 : 6 * 60 * appScale - 1
+                height: listView.count < 7 ? listView.count * 60 * appScaleSize
+                                             - 1 : 6 * 60 * appScaleSize - 1
                 model: vpnProxyModel
                 clip: true
 
                 Component.onCompleted: {
-                    if (!isVPNConnected) {
+                    if (!isCurrentVpnConnected) {
                         listView.currentIndex = kcm.getValue("selectIndex")
                     }
                 }
@@ -219,7 +254,7 @@ Item {
                     property bool isCurrentItem: ListView.isCurrentItem
 
                     width: listView.width
-                    height: 60 * appScale
+                    height: 60 * appScaleSize
 
                     Component.onCompleted: {
                         if (index == 0) {
@@ -228,7 +263,7 @@ Item {
                         if (model.ConnectionState == PlasmaNM.Enums.Activated) {
                             listView.currentIndex = index
                             currentModel = model
-                            isVPNConnected = true
+                            isCurrentVpnConnected = true
                         }
                     }
 
@@ -247,10 +282,10 @@ Item {
 
                             kcm.saveValue("selectIndex", index)
                             if (listView.currentIndex != index) {
-                                if (isVPNConnected | model.ConnectionState
+                                if (isCurrentVpnConnected | model.ConnectionState
                                         == PlasmaNM.Enums.Activating) {
                                     isConnectingClick = true
-                                    isVPNConnected = false
+                                    isCurrentVpnConnected = false
                                 }
                                 listView.currentIndex = index
                                 currentModel = model
@@ -264,11 +299,11 @@ Item {
                         anchors {
                             left: parent.left
                             verticalCenter: parent.verticalCenter
-                            leftMargin: 21 * appScale
+                            leftMargin: 21 * appScaleSize
                         }
 
-                        width: 22 * appScale
-                        height: 22 * appScale
+                        width: 22 * appScaleSize
+                        height: 22 * appScaleSize
 
                         visible: isCurrentItem
                         source: "../image/icon_confirm.png"
@@ -279,7 +314,7 @@ Item {
 
                         anchors {
                             left: selectImg.right
-                            leftMargin: 9 * appScale
+                            leftMargin: 9 * appScaleSize
                             verticalCenter: parent.verticalCenter
                         }
 
@@ -292,8 +327,8 @@ Item {
                             width: nameRect.width
 
                             text: model.Name
-                            font.pixelSize: 14
-                            color: "#FF000000"
+                            font.pixelSize: 14 * appFontSize
+                            color: majorForeground
 
                             elide: Text.ElideRight
                             horizontalAlignment: Text.AlignLeft
@@ -307,9 +342,9 @@ Item {
 
                             width: nameRect.width
 
-                            text: kcm.getServerName(model.ConnectionPath)
-                            font.pixelSize: 12
-                            color: "#4D000000"
+                            text: m_gateWayText == "" ? kcm.getServerName(model.ConnectionPath) : m_gateWayText
+                            font.pixelSize: 12 * appFontSize
+                            color: minorForeground
                         }
                     }
 
@@ -319,11 +354,11 @@ Item {
                         anchors {
                             right: parent.right
                             verticalCenter: parent.verticalCenter
-                            rightMargin: 18 * appScale
+                            rightMargin: 18 * appScaleSize
                         }
 
-                        width: 22 * appScale
-                        height: 22 * appScale
+                        width: 22 * appScaleSize
+                        height: 22 * appScaleSize
 
                         source: "../image/icon_info.png"
 
@@ -337,7 +372,8 @@ Item {
                                 gotoPage("detail_view", {
                                              "currentModel": model,
                                              "currentName": model.Name,
-                                             "connectionPath": model.ConnectionPath
+                                             "connectionPath": model.ConnectionPath,
+                                             "devicePath": model.DevicePath
                                          })
                             }
                         }
@@ -348,14 +384,14 @@ Item {
                             bottom: parent.bottom
                             left: parent.left
                             right: parent.right
-                            leftMargin: 20 * appScale
-                            rightMargin: 18 * appScale
+                            leftMargin: 20 * appScaleSize
+                            rightMargin: 18 * appScaleSize
                         }
 
                         height: 1
 
                         visible: index != listView.count - 1
-                        color: "#FFE5E5EA"
+                        color: dividerForeground
                     }
                 }
             }
@@ -364,24 +400,24 @@ Item {
                 anchors {
                     left: parent.left
                     top: listRect.bottom
-                    topMargin: listView.count == 0 ? 0 : 25 * appScale
+                    topMargin: listView.count == 0 ? 0 : 25 * appScaleSize
                 }
 
                 width: parent.width
-                height: 45 * appScale
+                height: 45 * appScaleSize
 
-                color: "white"
-                radius: 10 * appScale
+                color: cardBackground
+                radius: 10 * appScaleSize
 
                 Text {
                     anchors {
                         left: parent.left
-                        leftMargin: 20 * appScale
+                        leftMargin: 20 * appScaleSize
                         verticalCenter: parent.verticalCenter
                     }
 
-                    font.pixelSize: 14
-                    color: "#FF3C4BE8"
+                    font.pixelSize: 14 * appFontSize
+                    color: highlightColor
                     text: i18n("Add VPN Configuration…")
                 }
 
@@ -428,6 +464,18 @@ Item {
         }
         ListElement {
             Name: "Shadowrocket"
+        }
+    }
+
+    Kirigami.JDialog {
+        id: errorDialog
+        
+        title: i18n("Unable to turn on VPN")
+        text: i18n("Please make sure the data network is turned on")
+        centerButtonText: i18n("OK")
+
+        onCenterButtonClicked: {
+            errorDialog.visible = false
         }
     }
 }
